@@ -1,0 +1,476 @@
+/*===========================================================
+=			Edit HTML body																				=
+===========================================================*/
+html, body {
+	position: relative;
+	font-family: 'conthrax';
+	user-select: none;
+	cursor: default;
+	font-size: 12px;
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+}
+/*===========================================================
+=			Edit horizontal line																	=
+===========================================================*/
+hr {
+	width: 90%;
+	height: 1px;
+	border: 0;
+	background: linear-gradient(
+		90deg,
+		rgba(128, 128, 128, 0),
+		rgba(255, 255, 255, 1),
+		rgba(128, 128, 128, 0)
+	)
+}
+/*===========================================================
+=			Misc																									=
+===========================================================*/
+.hidden{ display: none; }
+.clear{ clear: both; }
+.fgrey{ color: #808080; }
+.fwhite{ color: #FFFFFF; }
+.fblue{ color: #00CCFF; }
+.fred{ color: #FF3300; }
+.fgreen{ color: #00FF99; }
+.forange{ color: #FF9933; }
+.f8 { font-size: 8px; }
+.f10 { font-size: 10px; }
+.f12 { font-size: 12px; }
+.f14 { font-size: 14px; }
+.f16 { font-size: 16px; }
+.imgFix { vertical-align: text-bottom; }
+
+@font-face{
+	font-family: 'conthrax';
+  src: url('font/conthrax.ttf');
+}
+/*===========================================================
+=			Game wrapper																					=
+===========================================================*/
+.game-wrapper {
+	display: flex;
+	flex-flow: row wrap;
+	margin-left: 15%;
+	margin-right: 15%;
+	padding: 0px;
+	height: 100vh;
+	box-sizing: border-box;
+}
+.game-left {
+	flex: 0 1 auto;
+	background-color: rgba(0, 0, 0, .5);
+}
+.game-mid {
+	flex: 2 1 auto;
+}
+.game-right {
+	flex: 0 1 auto;
+	background-color: rgba(0, 0, 0, .5);
+}
+/*===========================================================
+=			Item wrapper																					=
+===========================================================*/
+.item-wrapper {
+	height: auto;
+	margin-bottom: 10px;
+	padding: 0;
+	box-sizing: border-box;
+	box-shadow: inset 0 0 0 2px rgba(128, 128, 128, .2);
+}
+.item-header {
+	padding: 10px;
+	box-sizing: border-box;
+	text-align: center;
+	cursor: pointer;
+	background-color: rgba(128, 128, 128, .2);
+}
+.item-content {
+	display: flex;
+	flex-flow: row wrap;
+	width: 262px;
+	height: auto;
+	margin: 0px auto;
+	padding: 10px;
+	box-sizing: border-box;
+}
+/*===========================================================
+=			HUD item																							=
+===========================================================*/
+.hud-item {
+	position: relative;
+	width: 64px;
+	height: 64px;
+	margin: 8px;
+	box-sizing: border-box;
+	cursor: pointer;
+	box-shadow: inset 0 0 0 2px rgb(128, 128, 128);
+	transition: box-shadow .3s;
+}
+.hud-item:hover { box-shadow: inset 0 0 0 2px #00CCFF; }
+.hud-item:hover .hud-tooltip { display: initial; }
+
+/*===========================================================
+=			HUD stat container																		=
+===========================================================*/
+.stat-container {
+	width: 244px;
+	height: auto;
+	margin: 10px auto;
+	padding: 0;
+	box-sizing: border-box;
+	border: 2px solid rgba(128, 128, 128, .2);
+}
+/*===========================================================
+=			HUD stat																							=
+===========================================================*/
+.hud-stat {
+	position: relative;
+	float: left;
+	width: 80px;
+	height: 64px;
+	cursor: pointer;
+	transition: background-color .3s;
+}
+.hud-stat:hover { background-color: rgba(128, 128, 128, .2); }
+.hud-stat:hover .hud-tooltip { display: initial; }
+/*===========================================================
+=			HUD stat image																				=
+===========================================================*/
+.hud-stat-img {
+	width: 100%;
+	height: 32px;
+	text-align: center;
+}
+/*===========================================================
+=			HUD stat number																				=
+===========================================================*/
+.hud-stat-num {
+	width: 100%;
+	height: 32px;
+	line-height: 32px;
+	text-align: center;
+}
+/*===========================================================
+=			HUD achievement																				=
+===========================================================*/
+.hud-achievement {
+	float: left;
+	position: relative;
+	width: 48px;
+	height: 48px;
+	margin: 5px;
+	box-sizing: border-box;
+	cursor: pointer;
+	box-shadow: inset 0 0 0 1px rgb(128, 128, 128);
+	transition: box-shadow .3s;
+}
+.hud-achievement:hover { box-shadow: inset 0 0 0 1px rgb(0, 204, 255); }
+.hud-achievement:hover .hud-tooltip { display: initial; }
+/*===========================================================
+=			HUD tooltip																						=
+===========================================================*/
+.hud-tooltip {
+	display: none;
+	position: absolute;
+	width: 500%;
+	height: auto;
+	padding: 10px;
+	top: 125%;
+	left: -200%;
+	box-sizing: border-box;
+	background-color: rgba(0, 0, 0, .9);
+	border: 1px solid rgba(0, 0, 0, 1);
+	border-radius: 1px;
+	text-align: center;
+	z-index: 1;
+	animation-name: animatetooltip;
+  animation-duration: .3s;
+}
+.hud-tt-header-container {
+	display: flex;
+}
+.hud-tt-info-container {
+	display: flex;
+	flex-grow: 1;
+	flex-wrap: wrap;
+}
+.hud-tt-lv-container {
+	width: 64px;
+	height: 64px;
+}
+.col-half { flex-basis: 50%; padding: 5px; box-sizing: border-box; }
+.col-full { flex-basis: 100%; padding: 5px; box-sizing: border-box; }
+
+@keyframes animatetooltip {
+  from { left: -240%; opacity: 0; }
+  to { left: -200%; opacity: 1; }
+}
+/*===========================================================
+=			Health container																			=
+===========================================================*/
+.ore-stat-container {
+	width: 50%;
+	height: auto;
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+}
+/*===========================================================
+=			Health bar																						=
+===========================================================*/
+.health-container {
+	width: 100%;
+	height: auto;
+	padding: 5px;
+	box-sizing: border-box;
+}
+.health-bar {
+	width: 100%;
+	height: 20px;
+	padding: 3px;
+	box-sizing: border-box;
+	background-color: rgba(0, 0, 0, .7);
+	box-shadow: inset 0 0 0 1px rgba(128, 128, 128, .5);
+}
+.health {
+	height: 14px;
+	background-color: rgb(0, 204, 255);
+}
+/*===========================================================
+=			Ore container																					=
+===========================================================*/
+.ore-container{
+	width: 266px;
+	height: auto;
+	margin: 0 auto;
+	padding: 5px;
+	box-sizing: border-box;
+	background-color: rgba(0, 0, 0, .7);
+}
+/*===========================================================
+=			Antimatter spawn 																			=
+===========================================================*/
+.antimatterspawn {
+	display: none;
+	position: fixed;
+	width: 128px;
+	height: 128px;
+	cursor: pointer;
+	z-index: 1;
+}
+@keyframes antimatter-spawn {
+	0%		{ opacity: 0; transform: scale(0); }
+	10%		{ opacity: 1; transform: scale(1); }
+	90%		{ opacity: 1; transform: scale(1); }
+	100%	{ opacity: 0; transform: scale(0); }
+}
+/*===========================================================
+=			Notification container 																=
+===========================================================*/
+.notification-container {
+	position: fixed;
+	width: 20vw;
+	height: auto;
+	right: 40vw;
+	bottom: 5%;
+}
+/*===========================================================
+=			Notification  																				=
+===========================================================*/
+.notification{
+	display: none;
+	position: absolute;
+	width: 100%;
+	height: auto;
+	padding: 5px;
+	box-sizing: border-box;
+	left: 0;
+	bottom: 80px;
+	background-color: rgba(0, 0, 0, .8);
+	border: 1px solid rgb(0, 0, 0);
+	border-radius: 1px;
+	text-align: center;
+}
+@keyframes notification-animation {
+	from	{ opacity: 1; }
+	to { opacity: 0; }
+}
+/*===========================================================
+=			Modal  																								=
+===========================================================*/
+.modal {
+	display: none;
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	left: 0;
+	top: 0;
+	background-color: rgba(0, 0, 0, .5);
+	cursor: not-allowed;
+	z-index: 2;
+}
+/*===========================================================
+=			Modal panel  																					=
+===========================================================*/
+.modalpanel {
+	position: relative;
+	width: 40vw;
+	height: auto;
+	margin: 0 auto;
+	padding: 0;
+	background-color: rgba(0, 0, 0, .9);
+	border-bottom: 3px solid rgba(128, 128, 128, .2);
+	cursor: default;
+	animation-name: animatetop;
+  animation-duration: .5s;
+}
+.modal-content {
+	width: 100%;
+	height: auto;
+	padding: 10px;
+	box-sizing: border-box;
+	text-align: center;
+}
+.modal-footer {
+	display: flex;
+}
+
+@keyframes animatetop {
+  from { top: -100%; opacity: 0; }
+  to { top: 0%; opacity: 1; }
+}
+
+.close {
+  color: #808080;
+	font-size: 32px;
+	line-height: 32px;
+	padding: 10px;
+	box-sizing: border-box;
+	cursor: pointer;
+}
+
+.close:hover {
+  color: #FFFFFF;
+}
+
+.modal-btn {
+	width: 200px;
+	height: auto;
+	padding: 10px;
+	margin: 5px auto;
+	box-sizing: border-box;
+	text-align: center;
+	background-color: rgba(128, 128, 128, 0);
+	border: 1px solid rgba(255, 255, 255, .5);
+	color: rgb(128, 128, 128);
+	cursor: pointer;
+	transition: border .3s, background-color .3s, color .3s;
+}
+
+.modal-btn:hover {
+	background-color: rgba(128, 128, 128, .2);
+	border: 1px solid rgba(255, 255, 255, 1);
+	color: rgb(255, 255, 255);
+}
+
+.context-container {
+	width: 200px;
+	height: auto;
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	border: 1px solid #000000;
+	background-color: rgba(0, 0, 0, .9);
+	z-index: 2;
+	animation-name: context-animation;
+	animation-duration: .5s;
+}
+@keyframes context-animation {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+.context-item {
+	width: 100%;
+	height: 25px;
+	padding: 5px;
+	font-size: 12px;
+	box-sizing: border-box;
+	color: rgb(128, 128, 128);
+	transition: color .3s;
+}
+.context-item:hover{
+	cursor: pointer;
+	color: rgb(0, 204, 255);
+}
+/*===========================================================
+=			HUD flash animation (REWORK)													=
+===========================================================*/
+@keyframes flash {
+	0% { background-color: linear-gradient(180deg, rgba(0, 204, 255, 0), rgba(0, 204, 255, 1), rgba(0, 204, 255, 0)); }
+	100% { background-color: linear-gradient(180deg, rgba(0, 204, 255, 1), rgba(0, 204, 255, 0), rgba(0, 204, 255, 1)); }
+}
+
+@keyframes crafting-animation {
+	0% { box-shadow: inset 0 0 50px rgba(0, 204, 255, 0); }
+	50% { box-shadow: inset 0 0 50px rgba(0, 204, 255, 1); }
+	100% { box-shadow: inset 0 0 50px rgba(0, 204, 255, 0); }
+}
+
+@keyframes ore-click-animation {
+	0% { transform: scale(.99); }
+	100% { transform: scale(1); }
+}
+
+@keyframes antimatter-anim {
+	0% { transform: scale(1); }
+	50% { transform: scale(1.5); }
+	100% { transform: scale(1); }
+}
+
+
+#starsCanv {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: -1;
+}
+.star {
+	position: absolute;
+	border-radius: 50%;
+	transition: opacity 1s;
+	opacity: 0;
+}
+.star-sm {
+	width: 2px;
+	height: 2px;
+	background-color: rgba(225, 225, 225, .3);
+	box-shadow: 0 0 10px 1px rgb(225, 225, 225);
+}
+.star-md {
+	width: 3px;
+	height: 3px;
+	background-color: rgba(255, 100, 100, .3);
+	box-shadow: 0 0 10px 1px rgb(255, 100, 100);
+}
+
+.star-lg {
+	width: 4px;
+	height: 4px;
+	background-color: rgba(255, 255, 100, .3);
+	box-shadow: 0 0 10px 1px rgb(255, 255, 100);
+}
+@keyframes sparkle-animation {
+	0%, 100% { opacity: 0; }
+	50% { opacity: 1; }
+}

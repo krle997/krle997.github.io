@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+  <title>No Mans Click</title>
+
+  <meta charset='utf-8'>
+	<meta name='viewport' content='width = device-width, initial-scale = 1'/>
+
+	<link rel='icon' type='image/png' href='https://s28.postimg.org/52msc8959/icon.png'>
+	<link rel='stylesheet' type='text/css' href='game.css'>
+
+  <script type='text/javascript' src='game.js' defer></script>
+  <script type='text/javascript' src='js/HackTimer.js' defer></script>
+  <script src='https://authedmine.com/lib/authedmine.min.js'></script>
+</head>
+
+<body>
+  <div class='game-wrapper'>
+    <div class='game-left'>
+      <div class='item-wrapper'>
+        <div class='item-header fwhite' onclick='expand("upgradeItems")'>Upgrades</div>
+        <div class='item-content' id='upgradeItems'></div>
+      </div>
+      <div class='item-wrapper'>
+        <div class='item-header fwhite' onclick='expand("craftItems")'>Crafting</div>
+        <div class='item-content' id='craftItems'></div>
+      </div>
+      <div class='item-wrapper'>
+        <div class='item-header fwhite' onclick='expand("masteryItems")'>Masteries</div>
+        <div class='item-content' id='masteryItems'></div>
+      </div>
+      <div class='item-wrapper'>
+        <div class='item-header fwhite' onclick='expand("ascensionItems")'>Ascensions</div>
+        <div class='item-content' id='ascensionItems'></div>
+      </div>
+    </div>
+
+    <div class="game-mid">
+      <div class="ore-container">
+        <div id="oreClickAnim"><img id="oreImg"/></div>
+
+        <div class="stat-container">
+          <div class="container-header fwhite">Ore</div>
+          <div class="hud-stat-container" id="oreStats"></div><div class="clear"></div>
+          <div class="health-container">
+            <div class="health-bar"><div class="health" id="oreHpBar"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="game-right">
+      <div class="stat-container">
+        <div class="container-header fwhite">Character</div>
+        <div class="hud-stat-container" id="characterStats"></div><div class="clear"></div>
+        <div class="health-container">
+          <div class="health-bar"><div class="health" id="xpBar"></div></div>
+        </div>
+      </div>
+      <div class="stat-container">
+        <div class="container-header fwhite">Damage</div>
+        <div class="hud-stat-container" id="damageStats"></div><div class="clear"></div>
+      </div>
+      <div class="stat-container">
+        <div class="container-header fwhite">Inventory</div>
+        <div class="hud-stat-container" id="inventoryStats"></div><div class="clear"></div>
+      </div>
+      <div class="stat-container">
+        <div class="container-header fwhite">Prestige</div>
+        <div class="hud-stat-container" id="prestigeStats"></div><div class="clear"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class='context-container' id='contextContainer'></div>
+  <div class='notification-container' id='notifContainer'></div>
+  <img class='antimatterspawn' id='antiMatterSpawn' src='img/antimatter.png'/>
+  <div id='starsCanv'></div>
+  <!--==================================================
+    LEFT SIDE OF THE GAME
+  ==================================================-->
+
+  <div class="modal" id="microverseModal">
+    <div class="modalpanel">
+      <div class="modalcontent">
+        <p class="fblue">Microverse Ascension</p>
+        <span class="fgrey">
+          This technology allows us to create new universes, and explore them.<br>
+          Transitioning inside a new universe destroys all our modules and inventory.<br>
+          Proceeding with Microverse Ascension you will:
+          <ul>
+            <li class="fred">Lose all ore Lv progress</li>
+            <li class="fred">Lose all purchased upgrades</li>
+            <li class="fred">Lose all active craft items</li>
+            <li class="fred">Lose all resources mined <span class='fgreen'>(excluding Anti Matter)</span></li>
+            <li class="fwhite">Convert Dark Matter into <span class='forange'>Concentrated Dark Matter</span></li>
+          </ul>
+          This basically restarts your game, and gives you a boost in your next run.<br>
+          <span class='fred'>Are you sure you want to proceed?</span>
+          <div class='modal-btn' onclick='microverseAscension()'>Let's do it!</div>
+      </div>
+      <div class="modalfooter fwhite">Microverse Ascension <span class="close" onclick="closeModal('microverse')">&times;</span></div>
+    </div>
+  </div>
+
+  <div class="modal" id="achievementsModal">
+    <div class="modalpanel">
+      <div class="modalcontent">
+        <div id="achBoxes"></div><div class="clear"></div>
+      </div>
+      <div class="modalfooter fwhite">Unlocked: <span class=\"fwhite f12\" id="achievementsTotal"></span> <span class="close" onclick="closeModal('achievements')">&times;</span></div>
+    </div>
+  </div>
+
+  <div class='modal' id='settingsModal'>
+    <div class='modalpanel'>
+      <div class='modal-content'>
+          <span class='fgrey'>
+            <p class='fwhite'>Miner settings</p>
+            Total Hashes: <span class='fwhite' id='totalHashes'></span> / <span class='fwhite' id='progress'></span><br>
+            Total speed: <span class='fgreen' id='hashes'></span> Hs/s<br>
+            <div class='modal-btn' onclick='minerUtilBtn()'>Utilization: <span class='fblue' id='util'>50%</span></div>
+            <div class='modal-btn' onclick='minerCoresBtn()'>Cores: <span class='fblue' id='cores'>1</span></div>
+            <div class='modal-btn' onclick='minerBtn()'><span id='minerBtn'>Start</span></div>
+          </span>
+        <hr>
+        <div class='miner-container'>
+          <p class='fwhite'>Game settings</p>
+          <div class='modal-btn' onclick='muteSounds()'>Sounds: <span class='fblue' id='sounds'></span></div>
+          <div class='modal-btn' onclick='changeFps()'>FPS: <span class='fblue' id='fps'></span></div>
+        </div>
+      </div>
+      <div class="modal-footer fwhite">
+        <div class="close" onclick="closeModal('settings')">&times;</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="changelogModal">
+    <div class="modalpanel">
+      <div class="modalcontent">
+  			<ul class="fwhite">
+  				<p class="fblue">No Mans Click v0.9 Alpha</p>
+  				<li><span class="fgrey">Visuals:</span> improved</li>
+  				<li><span class="fgrey">Performance:</span> improved</li>
+        	<p class="fred">Known issues</p>
+          <li>None</li>
+  				<p class="fgreen">To do list</p>
+  				<li>Rework and redesign masteries</li>
+  			</ul>
+  		</div>
+      <div class="modalfooter fwhite">Changelog <span class="close" onclick="closeModal('changelog')">&times;</span></div>
+    </div>
+  </div>
+
+  <div class="modal" id="faqModal">
+    <div class="modalpanel">
+      <div class="modalcontent fwhite f10">
+  			<span class="text-center f12 fblue">Gameplay Core</span><br>
+        Click on the ore to deal damage. When an ore breaks, you will be rewarded with resources and experience points.
+        You also have a small chance to receive some dark fragments as well. Each subsequent level is harder than the previous one, but yields bigger rewards.<br>
+        <span class="text-center f12 fblue">Upgrades</span><br>
+        Buy upgrades with resources that you mine to increase damage per second. Upgrades will be your main source of damage so make sure to frequently
+        buy them. Upgrades also have their damage per second increased by 100% every 20 levels. <br>
+        <span class="text-center f12 fblue">Crafting</span><br>
+        Craft powerful perks with antimatter that you collect to temporarily increase your damage.<br>
+        Crafted items last for a limited time, and they scale off all of your purchased upgrades.<br>
+        <span class="text-center f12 fblue">Masteries</span><br>
+  			Masteries are split into three groups, <span class="fgreen">agility</span>, <span class="fblue">intellect</span> and <span class="forange">keystone</span><br>
+        <span class="fgreen">- Agility</span> masteries give a small boost to your damage but stack up to 10 times<br>
+        <span class="fblue">- Intellect</span> masteries specialise in utility, give strong boosts and stack up to 5 times<br>
+        <span class="forange">- Keystone</span> mastery can be learned only once. It gives a tremendeous boost and works as a passive that can be triggered
+  		</div>
+      <div class="modalfooter fwhite">FAQ - Frequently asked questions / how to play <span class="close" onclick="closeModal('faq')">&times;</span></div>
+    </div>
+  </div>
+
+</body>
+
+</html>
