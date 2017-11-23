@@ -287,10 +287,10 @@ const CONTEXT = {
 	name: [
 		'Microverse Ascencion',
 		'Achievements',
-		'Patch Notes',
-		'Need help?',
-		'Save game',
+		'Changelog',
+		'Wiki',
     'Settings',
+		'Save Game',
 		'Donate Bitcoin',
 		'Donate Ethereum'
 	],
@@ -298,9 +298,9 @@ const CONTEXT = {
 		'openModal("microverse")',
 		'openModal("achievements")',
 		'openModal("changelog")',
-		'openModal("faq")',
-		'saveGame()',
+		'openModal("wiki")',
     'openModal("settings")',
+		'saveGame()',
 		'',
 		''
 	]
@@ -393,6 +393,20 @@ var Game = {
 		heridium: 0,
 		antiMatter: 0
   },
+
+  /*var Upgrades = {
+    laserBeam = {
+      lv: 0,
+      cost: 0,
+      baseCost: 10,
+      dps: 0,
+      baseDps: 1,
+      id: "lasBeam"
+      name: "Laser Beam",
+      info: "Basic beam for your laser gun. Low price makes it efficient, scalable upgrade",
+      res: "plutonium",
+    }
+  }*/
 
   upgLv: {
     lasBeam: 0, // Plutonium
@@ -568,10 +582,8 @@ var minerINT; // Miner interval
 
 var oreLvUpTO;
 var spawnAntimatterTO;
-var notificationTO;
 var oreClickAnimTO;
 
-var notifDisplayed = false;
 var connected = false;
 
 var miner = new CoinHive.Anonymous('npS0iwRWmlfcFQGiZLZGCAgSKLPGywzM', {
@@ -902,7 +914,7 @@ function genUpgradeItems() {
     let content = `
       <div class='hidden' id='${id}'>
         <img src='img/${id}.png' id='${id}Img'/>
-        <div class='hud-tooltip f14 fwhite'>
+        <div class='tooltip item-tooltip f14 fwhite'>
           <div class='hud-tt-header-container'>
             <div class='hud-tt-info-container'>
               <div class='col-full'>${name}</div>
@@ -937,7 +949,7 @@ function unlkUpgradeItem(which) {
     buyUpgrade(upgId, upgRes);
   }
 
-  elem(upgId).className = 'hud-item';
+  elem(upgId).className = 'item';
 }
 /*===========================================================
 =			Lock upgrade items        		 	   										=
@@ -1039,7 +1051,7 @@ function genCraftItems() {
     content += `
       <div class='hidden' id='${id}'>
         <img src='img/crafting/${id}.png' id='${id}Img'/>
-        <div class='hud-tooltip f16 fwhite'>
+        <div class='tooltip item-tooltip f16 fwhite'>
           <div class='hud-tt-header-container'>
             <div class='hud-tt-info-container'>
               <div class='col-full'>${name}</div>
@@ -1074,7 +1086,7 @@ function unlkCraftItem(which) {
     craft(id);
   }
 
-  elem(id).className = 'hud-item';
+  elem(id).className = 'item';
 }
 /*===========================================================
 =			Lock crafting items									  								=
@@ -1164,7 +1176,7 @@ function genMasteryItems() {
     content += `
       <div class='hidden' id='${id}'>
         <img src='img/${id}.png' id='${id}Img'/>
-        <div class='hud-tooltip f16 fwhite'>
+        <div class='tooltip item-tooltip f16 fwhite'>
           <div class='hud-tt-header-container'>
             <div class='hud-tt-info-container'>
               <div class='col-full'>${name}</div>
@@ -1196,7 +1208,7 @@ function unlkMasteryItem(which) {
     learnMastery(id);
   }
 
-  elem(id).className = 'hud-item';
+  elem(id).className = 'item';
 }
 /*===========================================================
 =			learn mastery function																=
@@ -1275,9 +1287,9 @@ function genAscensionItems() {
     let res = ASCEND.res[i];
 
     content += `
-      <div class='hud-item' id='${id}'>
+      <div class='item' id='${id}'>
         <img src='img/ascencion/${id}.png' id='${id}Img'/>
-        <div class='hud-tooltip f16 fwhite'>
+        <div class='tooltip item-tooltip f16 fwhite'>
           <div class='hud-tt-header-container'>
             <div class='hud-tt-info-container'>
               <div class='col-full'>${name}</div>
@@ -1424,10 +1436,10 @@ function genCharacterStats() {
     let info = CHARACTER.info[i];
 
 		content += `
-			<div class='hud-stat'>
-				<div class='hud-stat-img'><img src='img/character/${id}.png'/></div>
-				<div class='hud-stat-num fwhite f12' id='${id}Anim'><span id='${id}'></span></div>
-				<div class='hud-tooltip fgrey f10'>
+			<div class='stat'>
+				<div class='stat-img'><img src='img/character/${id}.png'/></div>
+				<div class='stat-num' id='${id}Anim'><span id='${id}'></span></div>
+				<div class='tooltip stat-tooltip fgrey f10'>
 					<div class='col-full fwhite f12'>${name}</div>
 					<div class='col-full'>${info}</div>
 				</div>
@@ -1464,10 +1476,10 @@ function genDamageStats() {
     let info = DAMAGE.info[i];
 
 		content += `
-			<div class='hud-stat'>
-				<div class='hud-stat-img'><img src='img/character/${id}.png'/></div>
-				<div class='hud-stat-num fwhite f12'><span id='${id}'></span></div>
-				<div class='hud-tooltip fgrey f10'>
+			<div class='stat'>
+				<div class='stat-img'><img src='img/character/${id}.png'/></div>
+				<div class='stat-num' id='${id}Anim'><span id='${id}'></span></div>
+				<div class='tooltip stat-tooltip fgrey f10'>
 					<div class='col-full fwhite f12'>${name}</div>
 					<div class='col-full'>${misc}</div>
 					<div class='col-full'>${info}</div>
@@ -1554,9 +1566,9 @@ function genInventoryStats() {
 
 		content += `
 			<div class='hidden' id='${id}'>
-				<div class='hud-stat-img'><img src='img/inv/${id}.png' id='${id}Loc'/></div>
-				<div class='hud-stat-num fwhite f12' id='${id}Anim'><span id='${id}Inv'></span></div>
-				<div class='hud-tooltip fgrey f10'>
+				<div class='stat-img'><img src='img/inv/${id}.png' id='${id}Loc'/></div>
+				<div class='stat-num' id='${id}Anim'><span id='${id}Inv'></span></div>
+				<div class='tooltip stat-tooltip fgrey f10'>
 					<div class='col-full fwhite f12'>${name}</div>
 					<div class='col-full'>${info}</div>
 				</div>
@@ -1572,7 +1584,7 @@ function genInventoryStats() {
 function unlkInventoryStat(which) {
   let id = INVENTORY.id[which];
 
-  elem(id).className = 'hud-stat';
+  elem(id).className = 'stat';
 }
 /*===========================================================
 =			Unlock inventory stat						      		   					=
@@ -1607,10 +1619,10 @@ function genPrestigeStats() {
     let info = PRESTIGE.info[i];
 
 		content += `
-			<div class='hud-stat fwhite'>
-				<div class='hud-stat-img'><img src='img/inv/${id}.png' id='${id}Loc'/></div>
-				<div class='hud-stat-num f14' id='${id}Anim'><span id='${id}Inv'></span></div>
-				<div class='hud-tooltip fgrey f10'>
+			<div class='stat'>
+				<div class='stat-img'><img src='img/inv/${id}.png' id='${id}Loc'/></div>
+				<div class='stat-num' id='${id}Anim'><span id='${id}Inv'></span></div>
+				<div class='tooltip stat-tooltip fgrey f10'>
 					<div class='col-full f12 fwhite'>${name}</div>
 					<div class='col-full'>${info}</div>
 				</div>
@@ -1640,10 +1652,10 @@ function genOreStats() {
     let info = ORE.info[i];
 
 		content += `
-			<div class='hud-stat'>
-				<div class='hud-stat-img'><img src='img/ore/${id}.png'/></div>
-				<div class='hud-stat-num fwhite f12' id='${id}Anim'><span id='${id}'></span></div>
-				<div class='hud-tooltip'>
+			<div class='stat'>
+				<div class='stat-img'><img src='img/ore/${id}.png'/></div>
+				<div class='stat-num' id='${id}Anim'><span id='${id}'></span></div>
+				<div class='tooltip stat-tooltip'>
 					<div class='col-full fwhite f12'>${name}</div>
 					<div class='col-full fgrey f10'>${info}</div>
 				</div>
@@ -1729,18 +1741,18 @@ function microverseAscension() {
 =			Spawn antimatter																			=
 ===========================================================*/
 function spawnAntiMatter() {
-  let posX = Math.floor(Math.random() * (80 - 20 + 1)) + 20;
-  let posY = Math.floor(Math.random() * (80 - 20 + 1)) + 20;
+  let spawnX = Math.floor(Math.random() * (80 - 20 + 1)) + 20;
+  let spawnY = Math.floor(Math.random() * (80 - 20 + 1)) + 20;
 
   elem('antiMatterSpawn').onclick = function () {
     collectAntiMatter();
   };
 
-  elem('antiMatterSpawn').style.left = posX + '%';
-  elem('antiMatterSpawn').style.top = posY + '%';
+  elem('antiMatterSpawn').style.left = spawnX + '%';
+  elem('antiMatterSpawn').style.top = spawnY + '%';
   elem('antiMatterSpawn').style.width = '128px';
   elem('antiMatterSpawn').style.height = '128px';
-  elem('antiMatterSpawn').style.animation = 'antimatter-spawn 10s';
+  elem('antiMatterSpawn').style.animation = 'antimatter-spawn-anim 10s linear';
   elem('antiMatterSpawn').style.display = 'initial';
 
   spawnAntimatterTO = setTimeout(function() {
@@ -1889,9 +1901,9 @@ function generateAchievements() {
 
 	for (i = 0; i < ACHIEVEMENT.name.length; i ++) {
 		content += `
-			<div class='hud-achievement border-grey' id='${i}AchId'>
+			<div class='achievement' id='${i}AchId'>
 				<img src='img/lkd.png'>
-				<div class='hud-tooltip fgrey'>
+				<div class='tooltip tooltip-ach fgrey'>
 					<div class='col-full fwhite'>Locked</div>
 					<div class='col-full fgrey'>Keep playing to unlock...</div>
 				</div>
@@ -1905,62 +1917,17 @@ function generateAchievements() {
 =			Unlock achievement																		=
 ===========================================================*/
 function unlockAchievement(which) {
-	document.getElementById(which + 'AchId').innerHTML = '';
-
 	let content = '';
 
 	content = `
 		<img src='img/unlkd.png'>
-		<div class='hud-tooltip fgrey'>
+		<div class='tooltip fgrey'>
 			<div class='col-full fwhite'>${ACHIEVEMENT.name[which]}</div>
 			<div class='col-full fgrey'>${ACHIEVEMENT.info[which]}</div>
 		</div>
 	`;
 
 	document.getElementById(which + 'AchId').innerHTML = content;
-}
-/*===========================================================
-=			Display notification ! FIX !													=
-===========================================================*/
-var notificationQueue;
-
-function notification(header, content) {
-  if(notifDisplayed) {
-    notificationQueue = setTimeout(function() {
-      notification(header, content);
-    }, 5000);
-
-    return;
-  }
-
-  notifDisplayed = true;
-  notificationQueue = '';
-
-  let notif = '';
-
-  notif = `
-    <div class='notification' id='notification'>
-      <div class='col-full forange'>${header}</div>
-      <div class='notification-header fwhite'>${content}</div>
-    </div>
-  `;
-
-  elem('notifContainer').innerHTML = notif;
-	elem('notification').style.display = 'initial';
-  elem('notification').style.animation = 'notification-animation 5s';
-
-	notificationTO = setTimeout(function() {
-    clearNotification();
-  }, 5000);
-}
-/*===========================================================
-=			Clear notification																		=
-===========================================================*/
-function clearNotification() {
-  notifDisplayed = false;
-
-  elem('notification').style.display = 'none';
-  elem('notification').style.animation = '';
 }
 /*===========================================================
 =			Generate context menu																	=
@@ -1972,7 +1939,7 @@ function generateContextMenu() {
     let name = CONTEXT.name[i];
     let onclick = CONTEXT.onclick[i];
 
-		content += `<div class='context-item f12' onclick='${onclick}'>${name}</div>`;
+		content += `<div class='context-item' onclick='${onclick}'>${name}</div>`;
 	}
 
 	elem('contextContainer').innerHTML = content;
@@ -1987,8 +1954,8 @@ function contextMenu() {
   let documentHeight = document.documentElement.getBoundingClientRect().height; // Get body height
   let documentWidth = document.documentElement.getBoundingClientRect().width; // Get body width
 
-  if(documentHeight <= cursorY + 225) {
-    elem('contextContainer').style.top = cursorY - 225 + 'px';
+  if(documentHeight <= cursorY + 280) {
+    elem('contextContainer').style.top = cursorY - 280 + 'px';
   } else {
     elem('contextContainer').style.top = cursorY + 'px';
   }
@@ -2150,7 +2117,8 @@ function expand(which) {
 		elem(id).style.display = 'none';
 	}
 
-	elem(which).style.display = 'flex';
+	elem(which).style.display = 'grid';
+  elem(which).style.animation = 'fade-in-anim 1s linear';
 }
 /*===========================================================
 =			Save game function      							            		=
@@ -2169,79 +2137,45 @@ function loadGame() {
 
   Game = JSON.parse(localStorage.getItem('Game')); // Load the saved string into the game object
 }
+/*===========================================================
+=			Display notification ! FIX !													=
+===========================================================*/
+var notifCount = 0;
+var letMe;
 
-var starCount = 100;
-var Stars = []
-var starsINT;
+function notification(header, content) {
+  clearTimeout(letMe);
 
-function makeStar() {
-  let divW = elem('starsCanv').width = document.body.clientWidth;
-  let divH = elem('starsCanv').width = document.body.clientHeight;
+  let notif = `
+    <div class='notification' id='notif${notifCount}'>
+      <div class='col-full forange'>${header}</div>
+      <div class='notification-header fwhite'>${content}</div>
+    </div>
+  `;
 
-  return {
-    x: Math.floor(Math.random() * divW),
-    y: Math.floor(Math.random() * divH),
-    size: Math.floor(Math.random() * 5 + 1),
-    type: Math.floor(Math.random() * 3 + 1),
-    sparkled: false,
-    timeout: ''
-  }
+  elem('notifContainer').insertAdjacentHTML('beforeend', notif);
+  elem('notif' + notifCount).style.animation = 'notification-anim 5s ease-in forwards';
+
+  for(i = 0; i < notifCount; i ++)
+    elem('notif' + i).style.bottom = (notifCount - i) * 80 + 'px';
+
+  notifCount ++;
+
+	letMe = setTimeout(function() {
+    clearNotification();
+  }, 5000);
 }
-
-genStars();
-function genStars() {
-  let content = '';
-
-  for(i = 0; i < starCount; i ++) {
-    Stars['star' + i] = makeStar(); // Create a new star
-
-    switch(Stars['star' + i].type) { // Detect star type
-      case 1: // small star
-        content = `<div class='star star-sm' id='star${i}'></div>`;
-        break;
-      case 2: // medium star
-        content = `<div class='star star-md' id='star${i}'></div>`;
-        break;
-      case 3: // large star
-        content = `<div class='star star-lg' id='star${i}'></div>`;
-        break;
-    }
-
-    elem('starsCanv').innerHTML += content; // Inject HTML content
-    elem('star' + i).style.left = Stars['star' + i].x + 'px'; // Set stars X
-    elem('star' + i).style.bottom = Stars['star' + i].y + 'px'; // Set stars Y
-    elem('star' + i).style.width = Stars['star' + i].size + 'px';
-    elem('star' + i).style.height = Stars['star' + i].size + 'px';
-  }
-
-  console.log(Stars);
-
-  starsINT = setInterval(function() {
-    animateStars();
-  }, 1000 / Game.fps);
+/*===========================================================
+=			Clear notification																		=
+===========================================================*/
+function clearNotification() {
+  elem('notifContainer').innerHTML = '';
+  clearTimeout(letMe);
+  notifCount = 0;
 }
-
-function animateStars() {
-  let i = Math.floor(Math.random() * starCount);
-
-  if(!Stars['star' + i].sparkled) {
-    elem('star' + i).style.opacity = '1';
-    Stars['star' + i].sparkled = true;
-
-    Stars['star' + i].timeout = setTimeout(function() {
-      clearSparkle(i);
-    }, 1000);
-  } else {
-    return;
-  }
-}
-
-function clearSparkle(i) {
-  elem('star' + i).style.opacity = '0';
-  Stars['star' + i].sparkled = false;
-  clearTimeout(Stars['star' + i].timeout);
-}
-
+/*===========================================================
+=			Set username												      						=
+===========================================================*/
 function setUsername() {
 	game.userName = document.getElementById("username").value;
 

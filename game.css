@@ -10,6 +10,7 @@ html, body {
 	overflow: hidden;
 	width: 100%;
 	height: 100%;
+	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 	background-repeat: no-repeat;
@@ -26,7 +27,7 @@ hr {
 	background: linear-gradient(
 		90deg,
 		rgba(128, 128, 128, 0),
-		rgba(255, 255, 255, 1),
+		rgba(128, 128, 128, 1),
 		rgba(128, 128, 128, 0)
 	)
 }
@@ -56,144 +57,160 @@ hr {
 =			Game wrapper																					=
 ===========================================================*/
 .game-wrapper {
-	display: flex;
-	flex-flow: row wrap;
-	margin-left: 15%;
-	margin-right: 15%;
-	padding: 0px;
-	height: 100vh;
-	box-sizing: border-box;
-}
-.game-left {
-	flex: 0 1 auto;
-	background-color: rgba(0, 0, 0, .5);
-}
-.game-mid {
-	flex: 2 1 auto;
-}
-.game-right {
-	flex: 0 1 auto;
-	background-color: rgba(0, 0, 0, .5);
-}
-/*===========================================================
-=			Item wrapper																					=
-===========================================================*/
-.item-wrapper {
-	height: auto;
-	margin-bottom: 10px;
+	display: grid;
+	grid-template-columns: 1fr 3fr 1fr;
+	grid-template-rows: 1fr 32fr;
+	grid-template-areas:
+		'nav nav nav'
+		'stats ore items'
+	;
+	height: 100%;
+	margin-left: 10%;
+	margin-right: 10%;
 	padding: 0;
 	box-sizing: border-box;
-	box-shadow: inset 0 0 0 2px rgba(128, 128, 128, .2);
+	background-color: rgba(0, 0, 0, .5);
+}/*===========================================================
+=			Grid rows																							=
+===========================================================*/
+.item-row {
+	grid-area: items;
 }
-.item-header {
+.stats-row {
+	grid-area: stats;
+}
+.ore-row {
+	grid-area: ore;
+}
+.nav-row {
+	grid-area: nav;
+	background-color: rgba(0, 0, 0, .8);
+	box-shadow: inset 0 0 0 1px #808080;
+}
+/*===========================================================
+=			Panel																									=
+===========================================================*/
+.panel {
+	margin: 15px;
+	padding: 0;
+	box-sizing: border-box;
+	box-shadow: inset 0 0 0 1px #808080;
+}
+
+.item-panel { width: 246px; height: auto; }
+.stats-panel { width: 260px; height: auto; }
+
+.header {
 	padding: 10px;
 	box-sizing: border-box;
 	text-align: center;
 	cursor: pointer;
 	background-color: rgba(128, 128, 128, .2);
+	color: #FFFFFF;
 }
-.item-content {
-	display: flex;
-	flex-flow: row wrap;
-	width: 262px;
-	height: auto;
-	margin: 0px auto;
+
+.content {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	margin: 0 auto;
 	padding: 10px;
 	box-sizing: border-box;
 }
 /*===========================================================
-=			HUD item																							=
+=			Item box																							=
 ===========================================================*/
-.hud-item {
+.item {
 	position: relative;
 	width: 64px;
 	height: 64px;
-	margin: 8px;
+	margin: 6px;
 	box-sizing: border-box;
 	cursor: pointer;
-	box-shadow: inset 0 0 0 2px rgb(128, 128, 128);
+	box-shadow: inset 0 0 0 1px #808080;
 	transition: box-shadow .3s;
 }
-.hud-item:hover { box-shadow: inset 0 0 0 2px #00CCFF; }
-.hud-item:hover .hud-tooltip { display: initial; }
-
+.item:hover { box-shadow: inset 0 0 0 3px #00CCFF; }
+.item:hover .tooltip { display: initial; }
 /*===========================================================
-=			HUD stat container																		=
+=			Stat box																							=
 ===========================================================*/
-.stat-container {
-	width: 244px;
-	height: auto;
-	margin: 10px auto;
-	padding: 0;
-	box-sizing: border-box;
-	border: 2px solid rgba(128, 128, 128, .2);
-}
-/*===========================================================
-=			HUD stat																							=
-===========================================================*/
-.hud-stat {
+.stat {
 	position: relative;
-	float: left;
 	width: 80px;
 	height: 64px;
 	cursor: pointer;
 	transition: background-color .3s;
 }
-.hud-stat:hover { background-color: rgba(128, 128, 128, .2); }
-.hud-stat:hover .hud-tooltip { display: initial; }
-/*===========================================================
-=			HUD stat image																				=
-===========================================================*/
-.hud-stat-img {
+.stat:hover { background-color: rgba(128, 128, 128, .2); }
+.stat:hover .tooltip { display: initial; }
+
+.stat-img {
 	width: 100%;
 	height: 32px;
 	text-align: center;
 }
-/*===========================================================
-=			HUD stat number																				=
-===========================================================*/
-.hud-stat-num {
+
+.stat-num {
 	width: 100%;
 	height: 32px;
 	line-height: 32px;
 	text-align: center;
+	color: #FFFFFF;
+}
+
+.ore-image {
+	width: 512px;
+	height: auto;
+	margin: 0 auto;
 }
 /*===========================================================
 =			HUD achievement																				=
 ===========================================================*/
-.hud-achievement {
-	float: left;
+.achievement-wrapper {
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+	margin: 0 auto;
+	padding: 10px;
+}
+.achievement {
 	position: relative;
-	width: 48px;
-	height: 48px;
-	margin: 5px;
+	width: 64px;
+	height: 64px;
+	margin: 3px;
 	box-sizing: border-box;
 	cursor: pointer;
-	box-shadow: inset 0 0 0 1px rgb(128, 128, 128);
+	box-shadow: inset 0 0 0 1px #808080;
 	transition: box-shadow .3s;
 }
-.hud-achievement:hover { box-shadow: inset 0 0 0 1px rgb(0, 204, 255); }
-.hud-achievement:hover .hud-tooltip { display: initial; }
+.achievement:hover { box-shadow: inset 0 0 0 3px #00CCFF; }
+.achievement:hover .tooltip { display: initial; }
 /*===========================================================
-=			HUD tooltip																						=
+=			Tooltip																								=
 ===========================================================*/
-.hud-tooltip {
+.tooltip {
 	display: none;
 	position: absolute;
-	width: 500%;
+	width: 350px;
 	height: auto;
+	margin: 0;
 	padding: 10px;
-	top: 125%;
-	left: -200%;
+	top: 0;
 	box-sizing: border-box;
 	background-color: rgba(0, 0, 0, .9);
-	border: 1px solid rgba(0, 0, 0, 1);
-	border-radius: 1px;
+	box-shadow: inset 0 0 0 1px #808080;
 	text-align: center;
 	z-index: 1;
-	animation-name: animatetooltip;
-  animation-duration: .3s;
 }
+
+.item-tooltip {
+	right: 84px;
+	animation: item-tooltip-anim .3s linear;
+}
+.stat-tooltip {
+	left: 100px;
+	animation: stat-tooltip-anim .3s linear;
+}
+
 .hud-tt-header-container {
 	display: flex;
 }
@@ -208,28 +225,13 @@ hr {
 }
 .col-half { flex-basis: 50%; padding: 5px; box-sizing: border-box; }
 .col-full { flex-basis: 100%; padding: 5px; box-sizing: border-box; }
-
-@keyframes animatetooltip {
-  from { left: -240%; opacity: 0; }
-  to { left: -200%; opacity: 1; }
-}
-/*===========================================================
-=			Health container																			=
-===========================================================*/
-.ore-stat-container {
-	width: 50%;
-	height: auto;
-	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
-}
 /*===========================================================
 =			Health bar																						=
 ===========================================================*/
-.health-container {
+.health-wrapper {
 	width: 100%;
 	height: auto;
-	padding: 5px;
+	padding: 10px;
 	box-sizing: border-box;
 }
 .health-bar {
@@ -237,71 +239,53 @@ hr {
 	height: 20px;
 	padding: 3px;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .7);
-	box-shadow: inset 0 0 0 1px rgba(128, 128, 128, .5);
+	background-color: rgba(0, 0, 0, .5);
+	box-shadow: inset 0 0 0 1px #808080;
 }
 .health {
 	height: 14px;
-	background-color: rgb(0, 204, 255);
-}
-/*===========================================================
-=			Ore container																					=
-===========================================================*/
-.ore-container{
-	width: 266px;
-	height: auto;
-	margin: 0 auto;
-	padding: 5px;
-	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .7);
+	background-color: #00CCFF;
 }
 /*===========================================================
 =			Antimatter spawn 																			=
 ===========================================================*/
-.antimatterspawn {
+.antimatter-spawn {
 	display: none;
 	position: fixed;
-	width: 128px;
-	height: 128px;
 	cursor: pointer;
 	z-index: 1;
-}
-@keyframes antimatter-spawn {
-	0%		{ opacity: 0; transform: scale(0); }
-	10%		{ opacity: 1; transform: scale(1); }
-	90%		{ opacity: 1; transform: scale(1); }
-	100%	{ opacity: 0; transform: scale(0); }
 }
 /*===========================================================
 =			Notification container 																=
 ===========================================================*/
 .notification-container {
-	position: fixed;
-	width: 20vw;
+	position: absolute;
+	width: 20%;
 	height: auto;
-	right: 40vw;
+	right: 40%;
 	bottom: 5%;
+	border: 1px solid red;
 }
 /*===========================================================
 =			Notification  																				=
 ===========================================================*/
 .notification{
-	display: none;
 	position: absolute;
 	width: 100%;
 	height: auto;
-	padding: 5px;
+	padding: 10px;
 	box-sizing: border-box;
 	left: 0;
-	bottom: 80px;
-	background-color: rgba(0, 0, 0, .8);
-	border: 1px solid rgb(0, 0, 0);
-	border-radius: 1px;
+	bottom: 0;
+	background-color: rgba(0, 0, 0, .9);
 	text-align: center;
 }
-@keyframes notification-animation {
-	from	{ opacity: 1; }
-	to { opacity: 0; }
+@keyframes notification-anim {
+	from {
+		opacity: 1;
+	} to {
+		opacity: 0;
+	}
 }
 /*===========================================================
 =			Modal  																								=
@@ -313,21 +297,22 @@ hr {
 	height: 100%;
 	left: 0;
 	top: 0;
-	background-color: rgba(0, 0, 0, .5);
+	background-color: rgba(0, 0, 0, .2);
 	cursor: not-allowed;
-	z-index: 2;
+	z-index: 1;
 }
 /*===========================================================
 =			Modal panel  																					=
 ===========================================================*/
-.modalpanel {
+.modal-panel {
 	position: relative;
-	width: 40vw;
+	width: 50%;
 	height: auto;
 	margin: 0 auto;
 	padding: 0;
+	box-sizing: border-box;
 	background-color: rgba(0, 0, 0, .9);
-	border-bottom: 3px solid rgba(128, 128, 128, .2);
+	box-shadow: inset 0 0 0 1px #808080;
 	cursor: default;
 	animation-name: animatetop;
   animation-duration: .5s;
@@ -335,12 +320,10 @@ hr {
 .modal-content {
 	width: 100%;
 	height: auto;
+	margin: 0;
 	padding: 10px;
 	box-sizing: border-box;
 	text-align: center;
-}
-.modal-footer {
-	display: flex;
 }
 
 @keyframes animatetop {
@@ -348,29 +331,17 @@ hr {
   to { top: 0%; opacity: 1; }
 }
 
-.close {
-  color: #808080;
-	font-size: 32px;
-	line-height: 32px;
-	padding: 10px;
-	box-sizing: border-box;
-	cursor: pointer;
-}
-
-.close:hover {
-  color: #FFFFFF;
-}
-
 .modal-btn {
 	width: 200px;
 	height: auto;
 	padding: 10px;
-	margin: 5px auto;
+	margin: 0 auto;
 	box-sizing: border-box;
 	text-align: center;
 	background-color: rgba(128, 128, 128, 0);
 	border: 1px solid rgba(255, 255, 255, .5);
 	color: rgb(128, 128, 128);
+	font-size: 16px;
 	cursor: pointer;
 	transition: border .3s, background-color .3s, color .3s;
 }
@@ -388,9 +359,8 @@ hr {
 	position: fixed;
 	top: 0;
 	left: 0;
-	border: 1px solid #000000;
-	background-color: rgba(0, 0, 0, .9);
-	z-index: 2;
+	box-shadow: inset 0 0 0 1px #808080;
+	z-index: 1;
 	animation-name: context-animation;
 	animation-duration: .5s;
 }
@@ -400,17 +370,15 @@ hr {
 }
 .context-item {
 	width: 100%;
-	height: 25px;
-	padding: 5px;
-	font-size: 12px;
+	height: auto;
+	padding: 10px;
 	box-sizing: border-box;
-	color: rgb(128, 128, 128);
+	color: #808080;
+	background-color: rgba(0, 0, 0, .7);
+	cursor: pointer;
 	transition: color .3s;
 }
-.context-item:hover{
-	cursor: pointer;
-	color: rgb(0, 204, 255);
-}
+.context-item:hover { color: #00CCFF; background-color: rgba(0, 0, 0, 1); }
 /*===========================================================
 =			HUD flash animation (REWORK)													=
 ===========================================================*/
@@ -435,42 +403,36 @@ hr {
 	50% { transform: scale(1.5); }
 	100% { transform: scale(1); }
 }
-
-
-#starsCanv {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	z-index: -1;
+@keyframes item-tooltip-anim {
+  from {
+		right: 114px;
+		opacity: 0;
+	} to {
+		right: 84px;
+		opacity: 1;
+	}
 }
-.star {
-	position: absolute;
-	border-radius: 50%;
-	transition: opacity 1s;
-	opacity: 0;
+@keyframes stat-tooltip-anim {
+	from {
+		left: 130px;
+		opacity: 0;
+	} to {
+		left: 100px;
+		opacity: 1;
+	}
 }
-.star-sm {
-	width: 2px;
-	height: 2px;
-	background-color: rgba(225, 225, 225, .3);
-	box-shadow: 0 0 10px 1px rgb(225, 225, 225);
-}
-.star-md {
-	width: 3px;
-	height: 3px;
-	background-color: rgba(255, 100, 100, .3);
-	box-shadow: 0 0 10px 1px rgb(255, 100, 100);
-}
-
-.star-lg {
-	width: 4px;
-	height: 4px;
-	background-color: rgba(255, 255, 100, .3);
-	box-shadow: 0 0 10px 1px rgb(255, 255, 100);
-}
-@keyframes sparkle-animation {
-	0%, 100% { opacity: 0; }
-	50% { opacity: 1; }
+@keyframes antimatter-spawn-anim {
+	0% {
+		opacity: 0;
+		transform: scale(0);
+	} 10%	{
+		opacity: 1;
+		transform: scale(1);
+	} 90% {
+		opacity: 1;
+		transform: scale(1);
+	} 100% {
+		opacity: 0;
+		transform: scale(0);
+	}
 }
