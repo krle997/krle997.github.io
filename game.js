@@ -325,6 +325,21 @@ const THROTTLE = {
     0.9, 0.8, 0.7, 0.6, 0.5, 0.4, 0.3, 0.2, 0.1, 0
   ]
 }
+
+
+var Upgrades = {
+  laserBeam: {
+    lv: 0,
+    cost: 0,
+    baseCost: 10,
+    dps: 0,
+    baseDps: 1,
+    id: "lasBeam",
+    name: "Laser Beam",
+    info: "Basic beam for your laser gun. Low price makes it efficient, scalable upgrade",
+    res: "plutonium"
+  }
+}
 /*===========================================================
 =			Game object									  	     									=
 ===========================================================*/
@@ -393,20 +408,6 @@ var Game = {
 		heridium: 0,
 		antiMatter: 0
   },
-
-  /*var Upgrades = {
-    laserBeam = {
-      lv: 0,
-      cost: 0,
-      baseCost: 10,
-      dps: 0,
-      baseDps: 1,
-      id: "lasBeam"
-      name: "Laser Beam",
-      info: "Basic beam for your laser gun. Low price makes it efficient, scalable upgrade",
-      res: "plutonium",
-    }
-  }*/
 
   upgLv: {
     lasBeam: 0, // Plutonium
