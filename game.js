@@ -128,6 +128,7 @@ function generateContent() {
   generateAccount();
   generateDamage();
   generateInventory();
+  generateStore();
 
   updateUpgrades();
   updateCrafting();
@@ -136,6 +137,7 @@ function generateContent() {
   updateOreStats();
   updateInventory();
 	updateAccount();
+  updateStore();
   updateDamage();
 
   loadContent();
@@ -737,7 +739,8 @@ function expand(which) {
 		'accountItems',
 		'upgradeItems',
 		'craftItems',
-		'ascensionItems'
+		'ascensionItems',
+    'storeItems'
 	]
 	for(i = 0; i < MINIMIZE.length; i ++) {
     let id = MINIMIZE[i];

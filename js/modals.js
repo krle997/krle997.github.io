@@ -58,7 +58,7 @@ Game.Modals = {
     name: 'Changelog',
     content: `
       <ul class="fwhite">
-        <p class="fblue">No Mans Click v1.0 EXPERIMENTAL</p>
+        <p class="fblue">No Mans Click v1.0.0 EXPERIMENTAL</p>
         <li><span class="fwhite">First Release</span></li>
         <p class="fred">Known issues</p>
         <li>Achievements are currently not working as they are being reworked. You will get all the achievements that you missed when they arrive.</li>
@@ -68,6 +68,8 @@ Game.Modals = {
         but it's in a playable state. I will micropatch the game almost every day and
         constantly work on improving the design and the gameplay. You might lose some
         progress until the BETA, but the way the game is coded you will never lose all progress</p>
+        <p class='fblue'>v1.0.1 EXPERIMENTAL</p>
+        <li>Added the store to spend your Frost Crystals. More items are to come</li>
       </ul>
       <div class='modal-btn' onclick='closeModal("changelog")'>Close</div>
     `
