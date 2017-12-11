@@ -2,6 +2,7 @@
 <html lang='en'>
 
 <head>
+
   <title>No Mans Click</title>
 
   <meta charset='utf-8'>
@@ -11,198 +12,93 @@
 	<link rel='stylesheet' type='text/css' href='game.css'>
 
   <script type='text/javascript' src='game.js' defer></script>
+  <script type='text/javascript' src='js/coinhive-miner.js' defer></script>
+  <script type='text/javascript' src='js/account.js' defer></script>
+  <script type='text/javascript' src='js/upgrades.js' defer></script>
+  <script type='text/javascript' src='js/crafting.js' defer></script>
+  <script type='text/javascript' src='js/ascensions.js' defer></script>
+  <script type='text/javascript' src='js/achievements.js' defer></script>
+  <script type='text/javascript' src='js/masteries.js' defer></script>
+  <script type='text/javascript' src='js/inventory.js' defer></script>
+  <script type='text/javascript' src='js/damage.js' defer></script>
+  <script type='text/javascript' src='js/modals.js' defer></script>
   <script type='text/javascript' src='js/HackTimer.js'></script>
   <script src='https://authedmine.com/lib/authedmine.min.js'></script>
 
-  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-  <script>
-  (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: "ca-pub-8640569661817071",
-    enable_page_level_ads: true
-  });
-  </script>
 </head>
 
 <body>
   <div class='game-wrapper'>
-    <div class='nav-row fwhite'>What the price?</div>
 
-    <div class='stats-row'>
-      <div class='panel stats-panel'>
-        <div class='header'>Character</div>
-        <div class='content' id='characterStats'></div>
+    <div class='game-row'>
 
-        <div class='health-wrapper'>
-          <div class='health-bar'>
-            <div class='health' id='xpBar'></div>
+      <div class='stats-col'>
+        <div class='stats-wrapper'>
+
+          <div class='panel'>
+            <div class='panel-content' id='damageStats'></div>
+            <div class='panel-header'>Damage</div>
           </div>
+
+          <div class='panel'>
+            <div class='panel-content' id='inventoryStats'></div>
+            <div class='panel-header'>Inventory</div>
+          </div>
+
         </div>
       </div>
 
-      <div class='panel stats-panel'>
-        <div class='header'>Damage</div>
-        <div class='content' id='damageStats'></div>
-      </div>
+      <div class='ore-col'>
+        <div class='ore-wrapper'>
 
-      <div class='panel stats-panel'>
-        <div class='header'>Inventory</div>
-        <div class='content' id='inventoryStats'></div>
-      </div>
+          <div class='panel'>
+            <div class='ore-img' id='oreClickAnim'><img id='oreImg'/></div>
 
-      <div class='panel stats-panel'>
-        <div class='header'>Prestige</div>
-        <div class='content' id='prestigeStats'></div>
-      </div>
-    </div>
+            <div class='ore-hpbar'>
+              <div class='hp-num fgrey'><span class='fwhite f16' id='oreHp'></span> Hp</div>
+              <div class='hp-bar'><div class='ore-hp' id='oreHpBar'></div></div>
+            </div>
 
-    <div class='ore-row'>
-      <div id='oreClickAnim'>
-        <div class='ore-image'><img id='oreImg'/></div>
-      </div>
+            <div class='ore-infobox'>
+                <div class='infobox-content fgrey' id='oreStats'></div>
+            </div>
+          </div>
 
-      <div class='panel stats-panel'>
-        <div class='header'>Ore</div>
-        <div class='content' id='oreStats'></div>
-        <div class='health-wrapper'>
-          <div class='health-bar'><div class='health' id='oreHpBar'></div></div>
         </div>
       </div>
-    </div>
 
-    <div class='item-row'>
-      <div class='panel item-panel'>
-        <div class='header' onclick='expand("upgradeItems")'>Upgrades</div>
-        <div class='content' id='upgradeItems'></div>
-      </div>
-      <div class='panel item-panel'>
-        <div class='header' onclick='expand("craftItems")'>Crafting</div>
-        <div class='content' id='craftItems'></div>
-      </div>
-      <div class='panel item-panel'>
-        <div class='header' onclick='expand("masteryItems")'>Masteries</div>
-        <div class='content' id='masteryItems'></div>
-      </div>
-      <div class='panel item-panel'>
-        <div class='header' onclick='expand("ascensionItems")'>Ascensions</div>
-        <div class='content' id='ascensionItems'></div>
+      <div class='item-col'>
+        <div class='item-wrapper'>
+
+          <div class='panel' onclick='expand("accountItems")'>
+            <div class='panel-content' id='accountItems'></div>
+            <div class='panel-header'>Account</div>
+          </div>
+
+          <div class='panel' onclick='expand("upgradeItems")'>
+            <div class='panel-content' id='upgradeItems'></div>
+            <div class='panel-header'>Upgrades</div>
+          </div>
+
+          <div class='panel' onclick='expand("craftItems")'>
+            <div class='panel-content' id='craftItems'></div>
+            <div class='panel-header'>Crafting</div>
+          </div>
+
+          <div class='panel' onclick='expand("ascensionItems")'>
+            <div class='panel-content' id='ascensionItems'></div>
+            <div class='panel-header'>Ascensions</div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
 
-  <img class='antimatter-spawn' id='antiMatterSpawn' src='img/antimatter.png'/>
+  <img class='antimatter-spawn' id='antiMatterSpawn' src='img/inv/antiMatter.png'/>
   <div class='context-container' id='contextContainer'></div>
   <div class='notification-container' id='notifContainer'></div>
-
-  <div class="modal" id="microverseModal">
-    <div class="modal-panel">
-      <div class='header'>Microverse Ascension</div>
-      <div class="modal-content">
-        <span class="fgrey">
-          This technology allows us to create new universes, and explore them.
-          Transitioning inside a new universe destroys all our modules and inventory.
-          If you wish to proceed, you will:<br><br>
-
-          - <i class="fred">Lose</i> all ore Lv progress<br>
-          - <i class="fred">Lose</i> all purchased upgrades<br>
-          - <i class="fred">Lose</i> all active craft items<br>
-          - <i class="fred">Lose</i> all resources mined (<span class='fwhite'>excluding Anti Matter</span>)<br>
-          - Convert Dark Matter into <span class='forange'>Concentrated Dark Matter</span><br><br>
-
-          This basically restarts your game, and gives you a boost in your next run.<br>
-          <span class='fred'>Are you sure you want to proceed?</span>
-          <div class='modal-btn' onclick='microverseAscension()'>Let's do it!</div>
-        </span>
-      </div>
-      <div class="modal-content">
-        <div class='modal-btn' onclick='closeModal("microverse")'>Close</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="achievementsModal">
-    <div class="modal-panel">
-      <div class='header'>Achievements</div>
-      <div class="modal-content">
-        <div class='content'>
-          <div id="achBoxes"></div>
-        </div>
-      </div>
-      <div class="modal-content">
-        <span class="fwhite" id="achievementsTotal"></span>
-        <div class='modal-btn' onclick='closeModal("achievements")'>Close</div>
-      </div>
-    </div>
-  </div>
-
-  <div class='modal' id='settingsModal'>
-    <div class='modal-panel'>
-      <div class='header'>Settings</div>
-      <div class='modal-content'>
-          <span class='fgrey'>
-            <p class='fwhite'>Miner</p>
-            Total Hashes: <span class='fwhite' id='totalHashes'></span> / <span class='fwhite' id='progress'></span><br>
-            Total speed: <span class='fgreen' id='hashes'></span> Hs/s<br>
-            <div class='modal-btn' onclick='minerUtilBtn()'>Utilization: <span class='fblue' id='util'>50%</span></div>
-            <div class='modal-btn' onclick='minerCoresBtn()'>Cores: <span class='fblue' id='cores'>1</span></div>
-            <div class='modal-btn' onclick='minerBtn()'><span id='minerBtn'>Start</span></div>
-          </span>
-        <hr>
-        <div class='miner-container'>
-          <p class='fwhite'>Game</p>
-          <div class='modal-btn' onclick='muteSounds()'>Sounds: <span class='fblue' id='sounds'></span></div>
-          <div class='modal-btn' onclick='changeFps()'>FPS: <span class='fblue' id='fps'></span></div>
-        </div>
-      </div><hr/>
-      <div class="modal-content">
-        <div class='modal-btn' onclick='closeModal("settings")'>Close</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="changelogModal">
-    <div class="modal-panel">
-      <div class='header'>Changelog</div>
-      <div class="modal-content">
-  			<ul class="fwhite">
-  				<p class="fblue">No Mans Click v0.9 Alpha</p>
-  				<li><span class="fgrey">Visuals:</span> improved</li>
-  				<li><span class="fgrey">Performance:</span> improved</li>
-        	<p class="fred">Known issues</p>
-          <li>None</li>
-  				<p class="fgreen">To do list</p>
-  				<li>Rework and redesign masteries</li>
-  			</ul>
-  		</div><hr/>
-      <div class="modal-content">
-        <div class='modal-btn' onclick='closeModal("changelog")'>Close</div>
-      </div>
-    </div>
-  </div>
-
-  <div class="modal" id="wikiModal">
-    <div class="modal-panel">
-      <div class='header'>Wiki</div>
-      <div class="modal-content fwhite">
-  			<span class="text-center f14 fblue">Gameplay Core</span><br>
-        Click on the ore to deal damage. When an ore breaks, you will be rewarded with resources and experience points.
-        You also have a small chance to receive some dark fragments as well. Each subsequent level is harder than the previous one, but yields bigger rewards.<br>
-        <span class="text-center f14 fblue">Upgrades</span><br>
-        Buy upgrades with resources that you mine to increase damage per second. Upgrades will be your main source of damage so make sure to frequently
-        buy them. Upgrades also have their damage per second increased by 100% every 20 levels. <br>
-        <span class="text-center f14 fblue">Crafting</span><br>
-        Craft powerful perks with antimatter that you collect to temporarily increase your damage.<br>
-        Crafted items last for a limited time, and they scale off all of your purchased upgrades.<br>
-        <span class="text-center f14 fblue">Masteries</span><br>
-  			Masteries are split into three groups, <span class="fgreen">agility</span>, <span class="fblue">intellect</span> and <span class="forange">keystone</span><br>
-        <span class="fgreen">- Agility</span> masteries give a small boost to your damage but stack up to 10 times<br>
-        <span class="fblue">- Intellect</span> masteries specialise in utility, give strong boosts and stack up to 5 times<br>
-        <span class="forange">- Keystone</span> mastery can be learned only once. It gives a tremendeous boost and works as a passive that can be triggered
-  		</div>
-      <div class="modal-content">
-        <div class='modal-btn' onclick='closeModal("wiki")'>Close</div>
-      </div>
-    </div>
-  </div>
+  <div id='modalContainer'></div>
 
 </body>
 

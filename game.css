@@ -21,27 +21,39 @@ html, body {
 =			Edit horizontal line																	=
 ===========================================================*/
 hr {
-	width: 90%;
+	width: 100%;
 	height: 1px;
 	border: 0;
 	background: linear-gradient(
 		90deg,
-		rgba(128, 128, 128, 0),
 		rgba(128, 128, 128, 1),
 		rgba(128, 128, 128, 0)
 	)
+}
+
+a {
+	text-decoration: none;
+	color: #FFFFFF;
+}
+
+a:after {
+	color: #FFFFFF;
+}
+
+a:hover {
+	color: #42A5F5;
 }
 /*===========================================================
 =			Misc																									=
 ===========================================================*/
 .hidden{ display: none; }
-.clear{ clear: both; }
-.fgrey{ color: #808080; }
+.fgrey{ color: #757575; }
 .fwhite{ color: #FFFFFF; }
-.fblue{ color: #00CCFF; }
+.fblue{ color: #42A5F5; }
 .fred{ color: #FF3300; }
-.fgreen{ color: #00FF99; }
-.forange{ color: #FF9933; }
+.fgreen{ color: #66BB6A; }
+.forange{ color: #FFA726; }
+.fpurple { color: #AB47BC; }
 .f8 { font-size: 8px; }
 .f10 { font-size: 10px; }
 .f12 { font-size: 12px; }
@@ -58,63 +70,166 @@ hr {
 ===========================================================*/
 .game-wrapper {
 	display: grid;
-	grid-template-columns: 1fr 3fr 1fr;
-	grid-template-rows: 1fr 32fr;
-	grid-template-areas:
-		'nav nav nav'
-		'stats ore items'
-	;
+	grid-template-areas: 'game';
 	height: 100%;
 	margin-left: 10%;
 	margin-right: 10%;
 	padding: 0;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .5);
-}/*===========================================================
-=			Grid rows																							=
+}
+/*===========================================================
+=					Game Row																					=
 ===========================================================*/
-.item-row {
-	grid-area: items;
+.game-row {
+	grid-area: game;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-areas: 'stats ore items';
+	background-color: rgba(0, 0, 0, .5);
 }
-.stats-row {
-	grid-area: stats;
+/*===========================================================
+=					Game Columns																			=
+===========================================================*/
+.stats-col { grid-area: stats; }
+.infobox-col { grid-area: infobox; }
+.ore-col { grid-area: ore; }
+.item-col { grid-area: items; }
+/*===========================================================
+=			Achievements wrapper																	=
+===========================================================*/
+.achievement-wrapper {
+	display: grid;
+	grid-template-columns: repeat(10, 1fr);
+	width: 580px;
+	height: auto;
+	margin: 0 auto;
+	box-sizing: border-box;
 }
-.ore-row {
-	grid-area: ore;
+.masteries-wrapper {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+	width: 380px;
+	height: auto;
+	margin: 0 auto;
+	box-sizing: border-box;
 }
-.nav-row {
-	grid-area: nav;
-	background-color: rgba(0, 0, 0, .8);
+.achievement {
+	position: relative;
+	width: 48px;
+	height: 48px;
+	margin: 5px;
+	box-sizing: border-box;
+	cursor: pointer;
 	box-shadow: inset 0 0 0 1px #808080;
+	transition: box-shadow .3s;
 }
+
+.achievement:hover { box-shadow: inset 0 0 0 3px #00CCFF; }
+.achievement:hover .tooltip { display: initial; }
+
 /*===========================================================
 =			Panel																									=
 ===========================================================*/
 .panel {
-	margin: 15px;
+	margin: 10px;
 	padding: 0;
+	border-radius: 3px;
 	box-sizing: border-box;
-	box-shadow: inset 0 0 0 1px #808080;
+	background-color: rgba(0, 0, 0, .5);
 }
-
-.item-panel { width: 246px; height: auto; }
-.stats-panel { width: 260px; height: auto; }
-
-.header {
+.panel-header {
 	padding: 10px;
 	box-sizing: border-box;
 	text-align: center;
 	cursor: pointer;
-	background-color: rgba(128, 128, 128, .2);
 	color: #FFFFFF;
+	border-top: 1px solid rgba(66, 165, 245, .3);
 }
-
-.content {
+.panel-content {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	margin: 0 auto;
 	padding: 10px;
 	box-sizing: border-box;
+}
+.infobox-content {
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.stats-wrapper {
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+	width: 280px;
+	height: auto;
+}
+
+.ore-wrapper {
+	width: 532px;
+	height: auto;
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+}
+.ore-img {
+	width: 512px;
+	height: 512px;
+}
+/*===========================================================
+=			Health bar																						=
+===========================================================*/
+.ore-hpbar {
+	display: grid;
+	grid-template-areas:
+		'num'
+		'bar';
+	width: 256px;
+	height: auto;
+	margin: 5px auto;
+	padding: 10px;
+	box-sizing: border-box;
+	border-bottom: 2px solid rgba(66, 165, 245, .3);
+}
+.ore-hp {
+	height: 10px;
+	background: linear-gradient(
+		90deg,
+		hsl(207, 90%, 41%),
+		hsl(207, 90%, 51%),
+		hsl(207, 90%, 61%),
+		hsl(207, 90%, 71%),
+		hsl(207, 90%, 81%)
+	)
+}
+.hp-num {
+	grid-area: num;
+	width: 100%;
+	height: auto;
+	text-align: center;
+	padding: 10px;
+	box-sizing: border-box;
+}
+.hp-bar {
+	grid-area: bar;
+	width: 100%;
+	height: 10px;
+	background-color: rgba(66, 165, 245, .3);
+}
+
+.ore-infobox {
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+	text-align: center;
+}
+
+.item-wrapper {
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+	width: 268px;
+	height: auto;
 }
 /*===========================================================
 =			Item box																							=
@@ -126,125 +241,81 @@ hr {
 	margin: 6px;
 	box-sizing: border-box;
 	cursor: pointer;
-	box-shadow: inset 0 0 0 1px #808080;
-	transition: box-shadow .3s;
+	border-bottom: 1px solid rgba(66, 165, 245, .3);
+	transition: background-color .3s;
 }
-.item:hover { box-shadow: inset 0 0 0 3px #00CCFF; }
-.item:hover .tooltip { display: initial; }
+
+/*.item:hover { box-shadow: inset 0 0 0 3px #00CCFF; }*/
+.item:hover {
+	background-color: rgba(189, 189, 189, .3);
+	border-bottom: 1px solid rgba(66, 165, 245, 1);
+}
+.item:hover .tooltip { display: grid; }
 /*===========================================================
 =			Stat box																							=
 ===========================================================*/
 .stat {
 	position: relative;
 	width: 80px;
-	height: 64px;
+	height: 90px;
 	cursor: pointer;
 	transition: background-color .3s;
 }
-.stat:hover { background-color: rgba(128, 128, 128, .2); }
+
+.stat:hover { background-color: rgba(128, 128, 128, .3); }
 .stat:hover .tooltip { display: initial; }
 
 .stat-img {
-	width: 100%;
-	height: 32px;
-	text-align: center;
+	width: 64px;
+	height: 64px;
+	margin: 0 auto;
+	box-sizing: border-box;
 }
 
 .stat-num {
-	width: 100%;
-	height: 32px;
-	line-height: 32px;
+	width: 80px;
+	height: 16px;
+	padding: 5px;
+	box-sizing: border-box;
 	text-align: center;
 	color: #FFFFFF;
 }
-
-.ore-image {
-	width: 512px;
-	height: auto;
-	margin: 0 auto;
-}
-/*===========================================================
-=			HUD achievement																				=
-===========================================================*/
-.achievement-wrapper {
-	display: grid;
-	grid-template-columns: repeat(8, 1fr);
-	margin: 0 auto;
-	padding: 10px;
-}
-.achievement {
-	position: relative;
-	width: 64px;
-	height: 64px;
-	margin: 3px;
-	box-sizing: border-box;
-	cursor: pointer;
-	box-shadow: inset 0 0 0 1px #808080;
-	transition: box-shadow .3s;
-}
-.achievement:hover { box-shadow: inset 0 0 0 3px #00CCFF; }
-.achievement:hover .tooltip { display: initial; }
 /*===========================================================
 =			Tooltip																								=
 ===========================================================*/
 .tooltip {
 	display: none;
 	position: absolute;
-	width: 350px;
+	grid-template-columns: 64px 192px;
+	grid-template-areas:
+		'tooltip-lv tooltip-content'
+		'tooltip-misc tooltip-content';
+	width: 276px;
 	height: auto;
 	margin: 0;
 	padding: 10px;
-	top: 0;
 	box-sizing: border-box;
 	background-color: rgba(0, 0, 0, .9);
-	box-shadow: inset 0 0 0 1px #808080;
-	text-align: center;
 	z-index: 1;
 }
+.tooltip-lv { grid-area: tooltip-lv; }
+.tooltip-content { grid-area: tooltip-content; padding: 10px; box-sizing: border-box; }
+.tooltip-misc { grid-area: tooltip-misc; margin: 10% auto; box-sizing: border-box; }
 
 .item-tooltip {
+	top: 0;
 	right: 84px;
 	animation: item-tooltip-anim .3s linear;
 }
 .stat-tooltip {
+	top: 0;
 	left: 100px;
 	animation: stat-tooltip-anim .3s linear;
 }
-
-.hud-tt-header-container {
-	display: flex;
-}
-.hud-tt-info-container {
-	display: flex;
-	flex-grow: 1;
-	flex-wrap: wrap;
-}
-.hud-tt-lv-container {
-	width: 64px;
-	height: 64px;
-}
-.col-half { flex-basis: 50%; padding: 5px; box-sizing: border-box; }
-.col-full { flex-basis: 100%; padding: 5px; box-sizing: border-box; }
-/*===========================================================
-=			Health bar																						=
-===========================================================*/
-.health-wrapper {
-	width: 100%;
-	height: auto;
-	padding: 10px;
-	box-sizing: border-box;
-}
-.health-bar {
-	width: 100%;
-	height: 20px;
-	padding: 3px;
-	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .5);
-	box-shadow: inset 0 0 0 1px #808080;
-}
-.health {
-	height: 14px;
-	background-color: #00CCFF;
+.ach-tooltip {
+	top: 68px;
+	left: -168px;
+	animation: ach-tooltip-anim .3s linear;
 }
 /*===========================================================
 =			Antimatter spawn 																			=
@@ -252,8 +323,12 @@ hr {
 .antimatter-spawn {
 	display: none;
 	position: fixed;
+	width: 64px;
+	height: 64px;
 	cursor: pointer;
 	z-index: 1;
+	box-sizing: border-box;
+	border-radius: 50%;
 }
 /*===========================================================
 =			Notification container 																=
@@ -263,8 +338,7 @@ hr {
 	width: 20%;
 	height: auto;
 	right: 40%;
-	bottom: 5%;
-	border: 1px solid red;
+	bottom: 15px;
 }
 /*===========================================================
 =			Notification  																				=
@@ -297,8 +371,7 @@ hr {
 	height: 100%;
 	left: 0;
 	top: 0;
-	background-color: rgba(0, 0, 0, .2);
-	cursor: not-allowed;
+	background-color: rgba(0, 0, 0, .3);
 	z-index: 1;
 }
 /*===========================================================
@@ -311,19 +384,43 @@ hr {
 	margin: 0 auto;
 	padding: 0;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .9);
-	box-shadow: inset 0 0 0 1px #808080;
+	background-color: rgba(0, 0, 0, .7);
 	cursor: default;
 	animation-name: animatetop;
   animation-duration: .5s;
+}
+.modal-header {
+	padding: 10px;
+	box-sizing: border-box;
+	text-align: center;
+	color: #FFFFFF;
+	border-top: 1px solid rgba(66, 165, 245, .3);
 }
 .modal-content {
 	width: 100%;
 	height: auto;
 	margin: 0;
-	padding: 10px;
+	padding: 0;
 	box-sizing: border-box;
-	text-align: center;
+}
+.character-modal {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-areas: 'microverse totals';
+}
+.microverse {
+	grid-area: microverse;
+	padding: 10px;
+	margin: 10px;
+	box-sizing: border-box;
+	background-color: rgba(0, 0, 0, .7);
+}
+.totals {
+	grid-area: totals;
+	padding: 10px;
+	margin: 10px;
+	box-sizing: border-box;
+	background-color: rgba(0, 0, 0, .7);
 }
 
 @keyframes animatetop {
@@ -332,24 +429,43 @@ hr {
 }
 
 .modal-btn {
-	width: 200px;
+	width: 150px;
 	height: auto;
 	padding: 10px;
-	margin: 0 auto;
+	margin: 5px auto;
 	box-sizing: border-box;
 	text-align: center;
-	background-color: rgba(128, 128, 128, 0);
-	border: 1px solid rgba(255, 255, 255, .5);
-	color: rgb(128, 128, 128);
-	font-size: 16px;
+	background-color: rgba(189, 189, 189, 0);
+	border-bottom: 1px solid rgba(189, 189, 189, 1);
+	color: rgb(189, 189, 189);
 	cursor: pointer;
 	transition: border .3s, background-color .3s, color .3s;
 }
 
 .modal-btn:hover {
-	background-color: rgba(128, 128, 128, .2);
-	border: 1px solid rgba(255, 255, 255, 1);
-	color: rgb(255, 255, 255);
+	background-color: rgba(189, 189, 189, .3);
+	border-bottom: 1px solid rgba(66, 165, 245, 1);
+	color: rgb(250, 250, 250);
+}
+
+.donate-wrapper {
+	width: 232px;
+	height: auto;
+	margin: 0 auto;
+	padding: 10px;
+	box-sizing: border-box;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+}
+.donate-img {
+	width: 64px;
+	height: 64px;
+	margin: 6px;
+	transition: all .3s;
+}
+.donate-img:hover {
+	transform: scale(1.2);
+	cursor: pointer;
 }
 
 .context-container {
@@ -370,8 +486,8 @@ hr {
 }
 .context-item {
 	width: 100%;
-	height: auto;
-	padding: 10px;
+	height: 32px;
+	padding: 8px;
 	box-sizing: border-box;
 	color: #808080;
 	background-color: rgba(0, 0, 0, .7);
@@ -387,10 +503,10 @@ hr {
 	100% { background-color: linear-gradient(180deg, rgba(0, 204, 255, 1), rgba(0, 204, 255, 0), rgba(0, 204, 255, 1)); }
 }
 
-@keyframes crafting-animation {
-	0% { box-shadow: inset 0 0 50px rgba(0, 204, 255, 0); }
-	50% { box-shadow: inset 0 0 50px rgba(0, 204, 255, 1); }
-	100% { box-shadow: inset 0 0 50px rgba(0, 204, 255, 0); }
+@keyframes crafting-anim {
+	0% { box-shadow: inset 0 0 50px 0 rgba(0, 204, 255, 0); }
+	50% { box-shadow: inset 0 0 50px 0 rgba(0, 204, 255, 1); }
+	100% { box-shadow: inset 0 0 50px 0 rgba(0, 204, 255, 0); }
 }
 
 @keyframes ore-click-animation {
@@ -405,7 +521,7 @@ hr {
 }
 @keyframes item-tooltip-anim {
   from {
-		right: 114px;
+		right: 104px;
 		opacity: 0;
 	} to {
 		right: 84px;
@@ -414,10 +530,19 @@ hr {
 }
 @keyframes stat-tooltip-anim {
 	from {
-		left: 130px;
+		left: 120px;
 		opacity: 0;
 	} to {
 		left: 100px;
+		opacity: 1;
+	}
+}
+@keyframes ach-tooltip-anim {
+	from {
+		left: -188px;
+		opacity: 0;
+	} to {
+		left: -168px;
 		opacity: 1;
 	}
 }
