@@ -464,9 +464,12 @@ function microverseAscension() {
 
   inv.concentratedDarkMatter.amount += inv.darkMatter.amount;
   inv.darkMatter.amount = 0;
+  inv.titanium.amount = 0;
   inv.plutonium.amount = 0;
-  inv.viridium.amount = 0;
-  inv.heridium.amount = 0;
+  inv.chrysonite.amount = 0;
+  inv.armadium.amount = 0;
+  inv.solanium.amount = 0;
+  inv.hawkingradiation.amount = 0;
 
 	for(key in inv) {
 		save(key + 'Amount', inv[key].amount);

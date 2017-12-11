@@ -70,6 +70,7 @@ Game.Modals = {
         progress until the BETA, but the way the game is coded you will never lose all progress</p>
         <p class='fblue'>v1.0.1 EXPERIMENTAL</p>
         <li>Added the store to spend your Frost Crystals. More items are to come</li>
+        <li>Fixed a bug where Microverse Ascension would just freeze the game</li>
       </ul>
       <div class='modal-btn' onclick='closeModal("changelog")'>Close</div>
     `
