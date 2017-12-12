@@ -96,7 +96,7 @@ function craft(key) {
   let item = Game.Crafting[key];
   let inv = Game.Inventory;
 
-  if(inv.amount < item.cost) {
+  if(inv.antiMatter.amount < item.cost) {
     return;
   } else if(item.status) {
     return;

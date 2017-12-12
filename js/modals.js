@@ -4,6 +4,7 @@ Game.Modals = {
     content: `
       <div class='character-modal'>
         <div class='microverse fgrey'>
+          <p class='fwhite'>The Microverse Ascension</p>
           This technology allows us to create new universes like ours, and explore them.
           Transitioning inside a new universe destroys all upgrades, crafted items,
           progression, and inventory (excluding Anti Matter and Frost Crystals).
@@ -71,6 +72,8 @@ Game.Modals = {
         <p class='fblue'>v1.0.1 EXPERIMENTAL</p>
         <li>Added the store to spend your Frost Crystals. More items are to come</li>
         <li>Fixed a bug where Microverse Ascension would just freeze the game</li>
+        <li>Fixed a bug where Ascensions wouldn't automatically be unlocked when user had earned enough Dark Matter</li>
+        <li>Fixed a bug that didn't deduct Anti Matter from user when crafting</li>
       </ul>
       <div class='modal-btn' onclick='closeModal("changelog")'>Close</div>
     `
@@ -94,6 +97,9 @@ Game.Modals = {
         and each grants a unique bonus to help you progress further. They are split into four
         categories: Common, Rare, Epic and Legendary. Epic may give greater bonuses than Commons,
         but Commons stack up to 8 Lvs, whereas Epic only go to 3.<br>
+        <span class='fblue f16'>Ascensions</span><hr/>
+        Acquiring a certaing amount of Dark Matter allows you to visit other planets, and mine
+        other resources. Each planet unlocks 3 new upgrades, and 1 new craft item.<br>
         <span class='forange f16'>Wikipedia will be updated constantly</span><br>
         <div class='modal-btn' onclick='closeModal("wiki")'>Close</div>
       </span>

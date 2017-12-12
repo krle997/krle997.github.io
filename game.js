@@ -379,10 +379,9 @@ function oreClear(key) {
 function checkDarkMatter() {
   let number = Math.random() * 100 + 1;
   let req = 90;
+  let inv = Game.Inventory.darkMatter;
 
   if(number > req) {
-		let inv = Game.Inventory.darkMatter;
-
     inv.amount += 1;
 		save('darkMatterAmount', inv.amount);
 
@@ -396,6 +395,25 @@ function checkDarkMatter() {
         progressBar(inv.amount, key, width);
       }
     }
+
+    if(Game.Inventory.darkMatter.amount >= 0)
+      unlockEarth();
+
+    if(Game.Inventory.darkMatter.amount >= 100)
+      unlockGrudnock();
+
+    if(Game.Inventory.darkMatter.amount >= 500)
+      unlockTetherus();
+
+    if(Game.Inventory.darkMatter.amount >= 2500)
+      unlockGazorpazorp();
+
+    if(Game.Inventory.darkMatter.amount >= 10000)
+      unlockXeln();
+
+    if(Game.Inventory.darkMatter.amount >= 25000)
+      unlockBlackHole();
+
 
     canAscend();
 
