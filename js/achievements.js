@@ -2,219 +2,249 @@
 =         Achievemens                                       =
 ===========================================================*/
 Game.Achievements = {
-  plut1: {
-    name: 'The Origins',
-    info: `Mine a total of 1 M Plutonium<br>
-    <i class='f10'>You have no idea what you're getting yourself into...</i>`,
-    status: false
+  titanium: {
+    name: 'Titanium Mining',
+    misc: `
+      Total 1 M [<span class='fgrey f16' id='titaniumOne'>✖</span>]<br>
+      Total 1 B [<span class='fgrey f16' id='titaniumTwo'>✖</span>]<br>
+      Total 1 T [<span class='fgrey f16' id='titaniumThree'>✖</span>]<br>
+      Total 1 Qa [<span class='fgrey f16' id='titaniumFour'>✖</span>]<br>
+      Total 1 Qi [<span class='fgrey f16' id='titaniumFive'>✖</span>]<br>
+      Total 1 Sx [<span class='fgrey f16' id='titaniumSix'>✖</span>]<br>
+      Total 1 Sp [<span class='fgrey f16' id='titaniumSeven'>✖</span>]<br>
+      Total 1 Oct [<span class='fgrey f16' id='titaniumEight'>✖</span>]<br>
+      Total 1 Non [<span class='fgrey f16' id='titaniumNine'>✖</span>]<br>
+      Total 1 Dec [<span class='fgrey f16' id='titaniumTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
   },
-  plut2: {
-    name: 'Obtain Plutonium #2',
-    info: 'Mine a total of 1 B Plutonium',
-    status: false
+  plutonium: {
+    name: 'Plutonium Mining',
+    misc: `
+      Total 1 M [<span class='fgrey f16' id='plutoniumOne'>✖</span>]<br>
+      Total 1 B [<span class='fgrey f16' id='plutoniumTwo'>✖</span>]<br>
+      Total 1 T [<span class='fgrey f16' id='plutoniumThree'>✖</span>]<br>
+      Total 1 Qa [<span class='fgrey f16' id='plutoniumFour'>✖</span>]<br>
+      Total 1 Qi [<span class='fgrey f16' id='plutoniumFive'>✖</span>]<br>
+      Total 1 Sx [<span class='fgrey f16' id='plutoniumSix'>✖</span>]<br>
+      Total 1 Sp [<span class='fgrey f16' id='plutoniumSeven'>✖</span>]<br>
+      Total 1 Oct [<span class='fgrey f16' id='plutoniumEight'>✖</span>]<br>
+      Total 1 Non [<span class='fgrey f16' id='plutoniumNine'>✖</span>]<br>
+      Total 1 Dec [<span class='fgrey f16' id='plutoniumTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
   },
-  plut3: {
-    name: 'Obtain Plutonium #3',
-    info: 'Mine a total of 1 T Plutonium',
-    status: false
+  chrysonite: {
+    name: 'Chrysonite Mining',
+    misc: `
+      Total 1 M [<span class='fgrey f16' id='chrysoniteOne'>✖</span>]<br>
+      Total 1 B [<span class='fgrey f16' id='chrysoniteTwo'>✖</span>]<br>
+      Total 1 T [<span class='fgrey f16' id='chrysoniteThree'>✖</span>]<br>
+      Total 1 Qa [<span class='fgrey f16' id='chrysoniteFour'>✖</span>]<br>
+      Total 1 Qi [<span class='fgrey f16' id='chrysoniteFive'>✖</span>]<br>
+      Total 1 Sx [<span class='fgrey f16' id='chrysoniteSix'>✖</span>]<br>
+      Total 1 Sp [<span class='fgrey f16' id='chrysoniteSeven'>✖</span>]<br>
+      Total 1 Oct [<span class='fgrey f16' id='chrysoniteEight'>✖</span>]<br>
+      Total 1 Non [<span class='fgrey f16' id='chrysoniteNine'>✖</span>]<br>
+      Total 1 Dec [<span class='fgrey f16' id='chrysoniteTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
   },
-  plut4: {
-    name: 'Obtain Plutonium #4',
-    info: 'Mine a total of 1 Qa Plutonium',
-    status: false
+  armadium: {
+    name: 'Armadium Mining',
+    misc: `
+      Total 1 M [<span class='fgrey f16' id='armadiumOne'>✖</span>]<br>
+      Total 1 B [<span class='fgrey f16' id='armadiumTwo'>✖</span>]<br>
+      Total 1 T [<span class='fgrey f16' id='armadiumThree'>✖</span>]<br>
+      Total 1 Qa [<span class='fgrey f16' id='armadiumFour'>✖</span>]<br>
+      Total 1 Qi [<span class='fgrey f16' id='armadiumFive'>✖</span>]<br>
+      Total 1 Sx [<span class='fgrey f16' id='armadiumSix'>✖</span>]<br>
+      Total 1 Sp [<span class='fgrey f16' id='armadiumSeven'>✖</span>]<br>
+      Total 1 Oct [<span class='fgrey f16' id='armadiumEight'>✖</span>]<br>
+      Total 1 Non [<span class='fgrey f16' id='armadiumNine'>✖</span>]<br>
+      Total 1 Dec [<span class='fgrey f16' id='armadiumTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
   },
-  plut5: {
-    name: 'Obtain Plutonium #5',
-    info: 'Mine a total of 1 Qi Plutonium',
-    status: false
+  solanium: {
+    name: 'Solanium Mining',
+    misc: `
+      Total 1 M [<span class='fgrey f16' id='solaniumOne'>✖</span>]<br>
+      Total 1 B [<span class='fgrey f16' id='solaniumTwo'>✖</span>]<br>
+      Total 1 T [<span class='fgrey f16' id='solaniumThree'>✖</span>]<br>
+      Total 1 Qa [<span class='fgrey f16' id='solaniumFour'>✖</span>]<br>
+      Total 1 Qi [<span class='fgrey f16' id='solaniumFive'>✖</span>]<br>
+      Total 1 Sx [<span class='fgrey f16' id='solaniumSix'>✖</span>]<br>
+      Total 1 Sp [<span class='fgrey f16' id='solaniumSeven'>✖</span>]<br>
+      Total 1 Oct [<span class='fgrey f16' id='solaniumEight'>✖</span>]<br>
+      Total 1 Non [<span class='fgrey f16' id='solaniumNine'>✖</span>]<br>
+      Total 1 Dec [<span class='fgrey f16' id='solaniumTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
   },
-  plut6: {
-    name: 'Obtain Plutonium #6',
-    info: 'Mine a total of 1 Sx Plutonium',
-    status: false
+  hawkingRadiation: {
+    name: 'Hawking Radiation Mining',
+    misc: `
+      Total 1 M [<span class='fgrey f16' id='hawkingRadiationOne'>✖</span>]<br>
+      Total 1 B [<span class='fgrey f16' id='hawkingRadiationTwo'>✖</span>]<br>
+      Total 1 T [<span class='fgrey f16' id='hawkingRadiationThree'>✖</span>]<br>
+      Total 1 Qa [<span class='fgrey f16' id='hawkingRadiationFour'>✖</span>]<br>
+      Total 1 Qi [<span class='fgrey f16' id='hawkingRadiationFive'>✖</span>]<br>
+      Total 1 Sx [<span class='fgrey f16' id='hawkingRadiationSix'>✖</span>]<br>
+      Total 1 Sp [<span class='fgrey f16' id='hawkingRadiationSeven'>✖</span>]<br>
+      Total 1 Oct [<span class='fgrey f16' id='hawkingRadiationEight'>✖</span>]<br>
+      Total 1 Non [<span class='fgrey f16' id='hawkingRadiationNine'>✖</span>]<br>
+      Total 1 Dec [<span class='fgrey f16' id='hawkingRadiationTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
   },
-  plut7: {
-    name: 'Obtain Plutonium #7',
-    info: 'Mine a total of 1 Spt Plutonium',
-    status: false
+  antiMatter: {
+    name: 'IN DEVELOPMENT',
+    misc: `
+      Total 1 M [<span class='fgrey f16' id='antiMatterOne'>✖</span>]<br>
+      Total 1 B [<span class='fgrey f16' id='antiMatterTwo'>✖</span>]<br>
+      Total 1 T [<span class='fgrey f16' id='antiMatterThree'>✖</span>]<br>
+      Total 1 Qa [<span class='fgrey f16' id='antiMatterFour'>✖</span>]<br>
+      Total 1 Qi [<span class='fgrey f16' id='antiMatterFive'>✖</span>]<br>
+      Total 1 Sx [<span class='fgrey f16' id='antiMatterSix'>✖</span>]<br>
+      Total 1 Sp [<span class='fgrey f16' id='antiMatterSeven'>✖</span>]<br>
+      Total 1 Oct [<span class='fgrey f16' id='antiMatterEight'>✖</span>]<br>
+      Total 1 Non [<span class='fgrey f16' id='antiMatterNine'>✖</span>]<br>
+      Total 1 Dec [<span class='fgrey f16' id='antiMatterTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
   },
-  plut8: {
-    name: 'Obtain Plutonium #8',
-    info: 'Mine a total of 1 Oct Plutonium',
-    status: false
-  },
-  plut9: {
-    name: 'Obtain Plutonium #9',
-    info: 'Mine a total of 1 Non Plutonium',
-    status: false
-  },
-  plut10: {
-    name: 'Plutonium Overload',
-    info: 'Mine a total of 1 Dec Plutonium',
-    status: false
-  },
-  vir1: {
-    name: 'Obtain Viridium #1',
-    info: 'Mine a total of 1 M Viridium',
-    status: false
-  },
-  vir2: {
-    name: 'Obtain Viridium #2',
-    info: 'Mine a total of 1 B Plutonium',
-    status: false
-  },
-  vir3: {
-    name: 'Obtain Viridium #3',
-    info: 'Mine a total of 1 T Viridium',
-    status: false
-  },
-  vir4: {
-    name: 'Obtain Viridium #4',
-    info: 'Mine a total of 1 Qa Viridium',
-    status: false
-  },
-  vir5: {
-    name: 'Obtain Viridium #5',
-    info: 'Mine a total of 1 Qi Viridium',
-    status: false
-  },
-  vir6: {
-    name: 'Obtain Viridium #6',
-    info: 'Mine a total of 1 Sx Viridium',
-    status: false
-  },
-  vir7: {
-    name: 'Obtain Viridium #7',
-    info: 'Mine a total of 1 Spt Viridium',
-    status: false
-  },
-  vir8: {
-    name: 'Obtain Viridium #8',
-    info: 'Mine a total of 1 Oct Viridium',
-    status: false
-  },
-  vir9: {
-    name: 'Obtain Viridium #9',
-    info: 'Mine a total of 1 Non Viridium',
-    status: false
-  },
-  vir10: {
-    name: 'Viridium Overload',
-    info: 'Mine a total of 1 Dec Viridium',
-    status: false
-  },
-  her1: {
-    name: 'Obtain Viridium #1',
-    info: 'Mine a total of 1 M Viridium',
-    status: false
-  },
-  her2: {
-    name: 'Obtain Viridium #2',
-    info: 'Mine a total of 1 B Plutonium',
-    status: false
-  },
-  her3: {
-    name: 'Obtain Viridium #3',
-    info: 'Mine a total of 1 T Viridium',
-    status: false
-  },
-  her4: {
-    name: 'Obtain Viridium #4',
-    info: 'Mine a total of 1 Qa Viridium',
-    status: false
-  },
-  her5: {
-    name: 'Obtain Viridium #5',
-    info: 'Mine a total of 1 Qi Viridium',
-    status: false
-  },
-  her6: {
-    name: 'Obtain Viridium #6',
-    info: 'Mine a total of 1 Sx Viridium',
-    status: false
-  },
-  her7: {
-    name: 'Obtain Viridium #7',
-    info: 'Mine a total of 1 Spt Viridium',
-    status: false
-  },
-  her8: { // 27
-    name: 'Obtain Viridium #8',
-    info: 'Mine a total of 1 Oct Viridium',
-    status: false
-  },
-  her9: { // 28
-    name: 'Obtain Viridium #9',
-    info: 'Mine a total of 1 Non Viridium',
-    status: false
-  },
-  her10: { // 29
-    name: 'Viridium Overload',
-    info: 'Mine a total of 1 Dec Viridium',
-    status: false
-  },
-  dps1: { // 30
-    name: 'Tons of Damage #1',
-    info: 'Have a total of 1 M DPS',
-    status: false
-  },
-  dps2: { // 31
-    name: 'Tons of Damage #2',
-    info: 'Have a total of 1 B DPS',
-    status: false
-  },
-  dps3: { // 32
-    name: 'Tons of Damage #3',
-    info: 'Have a total of 1 T DPS',
-    status: false
-  },
-  dps4: { // 33
-    name: 'Tons of Damage #4',
-    info: 'Have a total of 1 Qa DPS',
-    status: false
-  },
-  dps5: { // 34
-    name: 'Tons of Damage #5',
-    info: 'Have a total of 1 Qi DPS',
-    status: false
-  },
-  dps6: { // 35
-    name: 'Tons of Damage #6',
-    info: 'Have a total of 1 Sx DPS',
-    status: false
-  },
-  dps7: { // 36
-    name: 'Tons of Damage #7',
-    info: 'Have a total of 1 Spt DPS',
-    status: false
-  },
-  dps8: { // 37
-    name: 'Tons of Damage #8',
-    info: 'Have a total of 1 Oct DPS',
-    status: false
-  },
-  dps9: { // 38
-    name: 'Tons of Damage #9',
-    info: 'Have a total of 1 Non DPS',
-    status: false
-  },
-  dps10: { // 39
-    name: 'Mass Destruction',
-    info: 'Have a total of 1 Dec DPS',
-    status: false
-  },
+  frostCrystal: {
+    name: 'IN DEVELOPMENT',
+    misc: `
+      Total 1 M [<span class='fgrey f16' id='frostCrystalOne'>✖</span>]<br>
+      Total 1 B [<span class='fgrey f16' id='frostCrystalTwo'>✖</span>]<br>
+      Total 1 T [<span class='fgrey f16' id='frostCrystalThree'>✖</span>]<br>
+      Total 1 Qa [<span class='fgrey f16' id='frostCrystalFour'>✖</span>]<br>
+      Total 1 Qi [<span class='fgrey f16' id='frostCrystalFive'>✖</span>]<br>
+      Total 1 Sx [<span class='fgrey f16' id='frostCrystalSix'>✖</span>]<br>
+      Total 1 Sp [<span class='fgrey f16' id='frostCrystalSeven'>✖</span>]<br>
+      Total 1 Oct [<span class='fgrey f16' id='frostCrystalEight'>✖</span>]<br>
+      Total 1 Non [<span class='fgrey f16' id='frostCrystalNine'>✖</span>]<br>
+      Total 1 Dec [<span class='fgrey f16' id='frostCrystalTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
+  }
 }
 /*===========================================================
 =         Generate Achievements                             =
 ===========================================================*/
 function generateAchievements() {
 	for(key in Game.Achievements) {
+    let item = Game.Achievements[key];
+
 		let content = `
-			<div class='achievement' id='${key}'>
-				<img src='img/achievements/locked.png' id='${key}Img'>
+			<div class='item' id='${key}Ach'>
+				<img src='img/achievements/${key}.png' id='${key}Img'/>
 				<div class='tooltip ach-tooltip'>
-					<div class='col-full fwhite' id='${key}Name'>Locked</div>
-					<div class='col-full fgrey' id='${key}Info'>Keep playing to unlock...</div>
+          <div class='tooltip-lv'>
+            <canvas id='${key}Bar' width='64' height='64'></canvas>
+          </div>
+          <div class='tooltip-content fgrey'>
+            <span class='fwhite'>${item.name}</span><hr/>
+            <span class='f10'>${item.misc}</span>
+          </div>
 				</div>
 			</div>
 		`;
@@ -225,12 +255,29 @@ function generateAchievements() {
 /*===========================================================
 =			Unlock achievement																		=
 ===========================================================*/
-function unlockAchievement(key) {
-  let src = 'img/unlkd.png';
-  let name = Game.Achievements[key].name;
-  let info = Game.Achievements[key].info;
+function unlockAchievement(key, i) {
+  elem(key + i).innerHTML = '✓';
+  elem(key + i).className = 'fgreen f16';
+  Game.Achievements[key].ach[i] = true;
+  save(key + i, Game.Achievements[key].ach[i]);
+  Game.Achievements[key].unlocked ++;
+  Game.Account.achievements.unlocked ++;
+}
+/*===========================================================
+=         Update Achievement                                =
+===========================================================*/
+function updateAchievements() {
+  for(key in Game.Achievements) {
+    for(i in Game.Achievements[key].ach) {
+      if(Game.Achievements[key].ach[i]) {
+        elem(key + i).innerHTML = '✓';
+        elem(key + i).className = 'fgreen f16';
+        Game.Achievements[key].unlocked ++;
+        Game.Account.achievements.unlocked ++;
+      }
 
-  elem(key + 'Img').src = src;
-  elem(key + 'Name').innerHTML = name;
-  elem(key + 'Info').innerHTML = info;
+      let width = Game.Achievements[key].unlocked * 100 / 10;
+      progressBar(Game.Achievements[key].unlocked, key, width);
+    }
+  }
 }

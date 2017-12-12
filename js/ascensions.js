@@ -42,11 +42,9 @@ Game.Ascensions = {
   },
   tetherus: {
     name: 'Tetherus',
-    info: `Tetherus has everything a planet needs to support
-    life, however there are no signs of any living being
-    ever forming here. Just pure, untouched nature, and
-    loads of Viridium Veins. They are tough, but also rare.
-    Having some in stash surely wont go to waste`,
+    info: `Tetherus is a Gas Giant. Nothing can ever form here except the chaotic
+    environment. But Tetherus rings asteroids contain some Chrysonite, and that's
+    what we're after.`,
     isCurrent: false,
     ascendTo: false,
     req: 500,
@@ -76,7 +74,10 @@ Game.Ascensions = {
   },
   xeln: {
     name: 'Xeln',
-    info: `Xeln is completely covered with water.`,
+    info: `Xeln is completely covered with water. Nobody was probably ever here
+    before you. Who'd want to visit a planet covered with water anyway? Well, lucky for
+    us, hiding in the endless planets ocean are Solanium ores. Solanium is very extremely
+    rare, and we're in luck nobody bothered to visit this planet before us.`,
     isCurrent: false,
     ascendTo: false,
     req: 10000,
@@ -91,9 +92,10 @@ Game.Ascensions = {
   },
   blackhole: {
     name: 'Black Hole',
-    info: `Black Holes still remain a mystery to this day. With so much
-    Concentrated Dark Matter in our pocket mining it would be do-able,
-    but would still take... a lot of time. `,
+    info: `Black Holes still remain a mystery to this day. Destroying one
+    is almost impossible, but stress it enough, and it radiates away
+    Hawkings Radiation. Nobody can yet decode it, and there are very few who
+    can even obtain it.`,
     isCurrent: false,
     ascendTo: false,
     req: 25000,
@@ -145,7 +147,9 @@ function generateOreStats() {
     Ore Max Hp: <span class='fwhite f16' id='oreMaxHp'></span><br/>
     Ore Lv: <span class='fwhite f16' id='oreLv'></span><br/>
     Ore Armor: <span class='fwhite f16' id='oreArmor'></span><br/>
-    Effective Armor: <span class='fwhite f16' id='effectiveArmor'></span><br/><br/>
+    Effective Armor: <span class='fwhite f16' id='effectiveArmor'></span><br/>
+    Chance to drop <span class='fpurple'>Dark Matter</span>: <span class='fwhite f16'>10%</span><br/>
+    XP per Lv: <span class='fwhite f16'>+1</span><hr/>
     <span class='fwhite f16' id='currentPlanet'></span> |
     <span class='fwhite f16' id='oreName'></span>
 	`;

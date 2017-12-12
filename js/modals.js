@@ -33,7 +33,7 @@ Game.Modals = {
   achievementsModal: {
     name: 'Achievements',
     content: `
-      <div class='achievement-wrapper' id='achBoxes'></div>
+      <div class='masteries-wrapper' id='achBoxes'></div>
       <div class='modal-btn' onclick='closeModal("achievements")'>Close</div>
     `
   },
@@ -62,7 +62,6 @@ Game.Modals = {
         <p class="fblue">No Mans Click v1.0.0 EXPERIMENTAL</p>
         <li><span class="fwhite">First Release</span></li>
         <p class="fred">Known issues</p>
-        <li>Achievements are currently not working as they are being reworked. You will get all the achievements that you missed when they arrive.</li>
         <li>Masteries are currently not working as they are still in developement. You can unlock some, but others will remain locked until they are fully scripted</li>
         <li>The Character totals appear buggy. They are working correctly, just not being displayed for some reason.</li>
         <p class="forange">This is a first experimental release. The game is not yet finished,
@@ -70,10 +69,13 @@ Game.Modals = {
         constantly work on improving the design and the gameplay. You might lose some
         progress until the BETA, but the way the game is coded you will never lose all progress</p>
         <p class='fblue'>v1.0.1 EXPERIMENTAL</p>
-        <li>Added the store to spend your Frost Crystals. More items are to come</li>
-        <li>Fixed a bug where Microverse Ascension would just freeze the game</li>
-        <li>Fixed a bug where Ascensions wouldn't automatically be unlocked when user had earned enough Dark Matter</li>
-        <li>Fixed a bug that didn't deduct Anti Matter from user when crafting</li>
+        <li><span class="fwhite">Added</span> Store for Frost Crystals. More items are to come</li>
+        <li><span class="fwhite">Added</span> some Achievements. More are to come</li><br>
+        <li><span class="fgreen">Fixed</span> a bug where Microverse Ascension would freeze the game</li>
+        <li><span class="fgreen">Fixed</span> a bug where Ascensions wouldn't automatically be unlocked if criteria was met</li>
+        <li><span class="fgreen">Fixed</span> a bug that always allowed users to craft, resulting in negative Anti Matter</li><br>
+        <li><span class='fblue'>Updated</span> Tooltip UI for many items</li>
+        <li><span class='fblue'>Updated</span> Miner UI, it will never prompt the optin, unless you chose to mine</li>
       </ul>
       <div class='modal-btn' onclick='closeModal("changelog")'>Close</div>
     `
@@ -113,7 +115,9 @@ Game.Modals = {
           <p>You can directly support me by donating your processor power.
           You will be mining <a href='https://getmonero.org/'>Monero</a> on the blockchain
           for me while you play, and be rewarded some <span class='fblue'>Frost Crystals</span>
-          in return. You can spend them in the store.</p>
+          in return. You can spend them in the store. You can choose how much cores and power you
+          want to use when mining. Generaly everything below 2 Cores 30% is OK, but going above might
+          cause your game, and even PC to lag</p>
           Total Hashes: <span class='fwhite f16' id='totalHashes'></span><br>
           Total speed: <span class='fwhite f16' id='hashes'></span> Hs/s<br></span>
           <div class='modal-btn' onclick='minerUtilBtn()'>Utilization: <span class='fblue' id='util'>50%</span></div>

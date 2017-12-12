@@ -103,6 +103,14 @@ function loadGame() {
     }
   }
 
+  for(key in Game.Achievements) {
+    for(i in Game.Achievements[key].ach) {
+      if(load(key + i)) {
+        Game.Achievements[key].ach[i] = load(key + i);
+      }
+    }
+  }
+
   if(load('characterLv')) {
     Game.Account.character.lv = load('characterLv');
   }
@@ -131,6 +139,7 @@ function generateContent() {
   generateStore();
 
   updateUpgrades();
+  updateAchievements();
   updateCrafting();
   updateMasteries();
   updateAscensions();
@@ -144,7 +153,6 @@ function generateContent() {
 
 	expand('upgradeItems');
 
-  minerBtn();
   updtMinerUI();
 
   timerINT = setInterval(function() {
@@ -206,15 +214,6 @@ function timer() {
 ===========================================================*/
 function loadContent() {
   muteSounds();
-
-  for(key in Game.Achievements) {
-    let status = Game.Achievements[key].status;
-
-    if(status) {
-      unlockAchievement(key);
-			Game.Account.character.achievements ++;
-    }
-  }
 
   if(Game.Inventory.darkMatter.amount >= 0)
     unlockEarth();
@@ -340,11 +339,42 @@ function oreClear(key) {
   let ore = item.ore;
 	let inv = Game.Inventory[ore.id];
   let resGain = Math.floor(10 * Math.pow(1.02, ore.lv));
+  //let resGoals = [ 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten' ];
 
 	ore.hp = 0;
   inv.amount += resGain;
   Game.Account.character.total[ore.id] += resGain;
   Game.Account.character.xp ++;
+
+  if(Game.Account.character.total[ore.id] >= 1e6 && !Game.Achievements[ore.id].ach.One)
+    unlockAchievement(ore.id, 'One');
+
+  if(Game.Account.character.total[ore.id] >= 1e9 && !Game.Achievements[ore.id].ach.Two)
+    unlockAchievement(ore.id, 'Two');
+
+  if(Game.Account.character.total[ore.id] >= 1e12 && !Game.Achievements[ore.id].ach.Three)
+    unlockAchievement(ore.id, 'Three');
+
+  if(Game.Account.character.total[ore.id] >= 1e15 && !Game.Achievements[ore.id].ach.Four)
+    unlockAchievement(ore.id, 'Four');
+
+  if(Game.Account.character.total[ore.id] >= 1e18 && !Game.Achievements[ore.id].ach.Five)
+    unlockAchievement(ore.id, 'Five');
+
+  if(Game.Account.character.total[ore.id] >= 1e21 && !Game.Achievements[ore.id].ach.Six)
+    unlockAchievement(ore.id, 'Six');
+
+  if(Game.Account.character.total[ore.id] >= 1e24 && !Game.Achievements[ore.id].ach.Seven)
+    unlockAchievement(ore.id, 'Seven');
+
+  if(Game.Account.character.total[ore.id] >= 1e27 && !Game.Achievements[ore.id].ach.Eight)
+    unlockAchievement(ore.id, 'Eight');
+
+  if(Game.Account.character.total[ore.id] >= 1e30 && !Game.Achievements[ore.id].ach.Nine)
+    unlockAchievement(ore.id, 'Nine');
+
+  if(Game.Account.character.total[ore.id] >= 1e33 && !Game.Achievements[ore.id].ach.Ten)
+    unlockAchievement(ore.id, 'Ten');
 
 	save(ore.id + 'Hp', ore.hp);
 	save(ore.id + 'Amount', inv.amount);

@@ -300,7 +300,7 @@ a:hover {
 }
 .tooltip-lv { grid-area: tooltip-lv; }
 .tooltip-content { grid-area: tooltip-content; padding: 10px; box-sizing: border-box; }
-.tooltip-misc { grid-area: tooltip-misc; margin: 10% auto; box-sizing: border-box; }
+.tooltip-misc { grid-area: tooltip-misc; }
 
 .item-tooltip {
 	top: 0;
@@ -313,9 +313,36 @@ a:hover {
 	animation: stat-tooltip-anim .3s linear;
 }
 .ach-tooltip {
-	top: 68px;
-	left: -168px;
+	top: 82px;
+	right: -93px;
 	animation: ach-tooltip-anim .3s linear;
+}
+@keyframes item-tooltip-anim {
+  from {
+		right: 104px;
+		opacity: 0;
+	} to {
+		right: 84px;
+		opacity: 1;
+	}
+}
+@keyframes stat-tooltip-anim {
+	from {
+		left: 120px;
+		opacity: 0;
+	} to {
+		left: 100px;
+		opacity: 1;
+	}
+}
+@keyframes ach-tooltip-anim {
+	from {
+		right: -73px;
+		opacity: 0;
+	} to {
+		right: -93px;
+		opacity: 1;
+	}
 }
 /*===========================================================
 =			Antimatter spawn 																			=
@@ -518,33 +545,6 @@ a:hover {
 	0% { transform: scale(1); }
 	50% { transform: scale(1.5); }
 	100% { transform: scale(1); }
-}
-@keyframes item-tooltip-anim {
-  from {
-		right: 104px;
-		opacity: 0;
-	} to {
-		right: 84px;
-		opacity: 1;
-	}
-}
-@keyframes stat-tooltip-anim {
-	from {
-		left: 120px;
-		opacity: 0;
-	} to {
-		left: 100px;
-		opacity: 1;
-	}
-}
-@keyframes ach-tooltip-anim {
-	from {
-		left: -188px;
-		opacity: 0;
-	} to {
-		left: -168px;
-		opacity: 1;
-	}
 }
 @keyframes antimatter-spawn-anim {
 	0% {

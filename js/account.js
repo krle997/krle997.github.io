@@ -6,12 +6,7 @@ Game.Account = {
 		name: 'Character',
 		info: `
 			<span class='fgrey f10'>
-				Every time you level up you have a chance of receiving multiple Chests:<br/>
-				- <span class='fgreen f12'>Common</span><br>
-				- <span class='fblue f12'>Rare</span><br>
-				- <span class='fpurple f12'>Epic</span><br>
-				- <span class='forange f12'>Legendary</span><br>
-				Open them to collect corresponding <span class='fwhite'>Masteries</span> and various other rewards
+				Every time your character levels up, you will receive one random Mastery Lv<br>
 			</span>
 		`,
 		misc: `XP: <span class='fwhite f16' id='charXp'></span>`,
@@ -25,7 +20,6 @@ Game.Account = {
 		critChance: 0,
 		critHit: false,
 		armorPen: 0,
-		achievements: 0,
 		total: {
 			clicks: 0,
 			critHits: 0,
@@ -42,22 +36,33 @@ Game.Account = {
 	achievements: {
 		name: 'Achievements',
 		info: `
-			<span class='fgrey f10'>Unlock all achievements to beat the game. Achievements are split into four groups<br>
-			Common, Rare, Epic and Legendary. Unlocking certain number if achievements gives permanent boosts</span>
+			<span class='fgrey f10'>
+				Achievements indicate a milestone that you have reached. Unlocking
+				all of the achievements in the same category also gives you a permanentl
+				boost to your stats.
+			</span>
 		`,
-		misc: `Unlocked: <span class='fwhite' id='achievementsTotal'></span>`,
+		misc: `Unlocked: <span class='fwhite f16' id='charAch'></span>`,
+		unlocked: 0,
 		onclick: 'openModal("achievements")'
 	},
 	masteries: {
 		name: 'Masteries',
 		info: `
-			<span class='fgrey f10'>Open chests to unlock random masteries. Masteries give a powerfull boost to your progression</span>
+			<span class='fgrey f10'>
+				Masteries are split into four categories:<br>
+				- <span class='fgreen f12'>Common</span><br>
+				- <span class='fblue f12'>Rare</span><br>
+				- <span class='fpurple f12'>Epic</span><br>
+				- <span class='forange f12'>Legendary</span><br>
+				Unlock them to permanently increase your stats.
+			</span>
 		`,
-		misc: `Unlocked: <span class='fwhite' id='masteriesTotal'></span>`,
+		misc: `Unlocked: <span class='fwhite' id='charMast'></span>`,
 		unlocked: 0,
 		onclick: 'openModal("masteries")'
 	}
-};
+}
 /*===========================================================
 =					Generate Account																	=
 ===========================================================*/
@@ -94,16 +99,19 @@ function generateAccount() {
 function updateAccount() {
 	let character = Game.Account.character;
 	let masteries = Game.Account.masteries;
+	let achievements = Game.Account.achievements;
 	let xpReq = Math.floor(30 * Math.pow(1.5, character.lv));
 	character.xpReq = xpReq;
 	let widthChar = character.xp / character.xpReq * 100;
-	let widthAch = character.total.achievements * 100 / 40;
+	let widthAch = achievements.unlocked * 100 / 80;
 	let widthMas = masteries.unlocked * 100 / 188;
 
 	progressBar(character.lv, 'character', widthChar);
-	progressBar('', 'achievements', widthAch);
+	progressBar(achievements.unlocked, 'achievements', widthAch);
 	progressBar('', 'masteries', widthMas);
-  //elem('charXp').innerHTML = nFormat(character.xp) + ' / ' + nFormat(character.xpReq);
+
+  elem('charXp').innerHTML = nFormat(character.xp) + ' / ' + nFormat(character.xpReq);
+	elem('charAch').innerHTML = achievements.unlocked + ' / ' + 80;
 
 	for(key in Game.total) {
     elem(key + 'Total').innerHTML = nFormat(Game.total[key]);

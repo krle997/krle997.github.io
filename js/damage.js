@@ -4,14 +4,14 @@
 Game.Damage = {
 	dps: {
 		name: 'Damage per Second',
-		info: 'Damage dealt by the game every second',
+		info: 'Damage dealt by the game every second. Can be reduced by Ores Armor',
 		misc: `
 			Armor Pen: <span class='fwhite f16' id='armorPen'></span><br/>
 		`
 	},
 	dpc: {
 		name: 'Damage per Click',
-		info: 'Damage dealt every click',
+		info: 'Damage dealt every click. Clicks can Critically Hit, dealing more damage',
 		misc: `
 			Crit Chance: <span class='fwhite f16' id='critChance'></span><br/>
 		`

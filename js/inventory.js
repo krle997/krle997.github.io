@@ -39,7 +39,7 @@ Game.Inventory = {
 	},
 	frostCrystal: {
 		name: 'Frost Crystal',
-		info: `Support the dev and earn some <span class='fblue'>Frost Crystals</span>. You can later spend them in the Premium store for some powerful upgrades. <span class='fwhite'>Right Click > Donate</span> for more info`,
+		info: `Support the dev and earn some <span class='fblue'>Frost Crystals</span>. You can later spend them in the Store for some powerful upgrades. <span class='fwhite'>Right Click > Donate</span> for more info`,
 		amount: 0
 	},
 	darkMatter: {
