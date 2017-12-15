@@ -64,7 +64,7 @@ function generateCrafting() {
           </div>
           <div class='tooltip-content fgrey f12'>
             <span class='fwhite'>${item.name}</span><hr/>
-            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/antimatter16.png'/><br/>
+            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/antimatter16.png'/><br/>
             Boost: <span class='fwhite f16' id='${key}Bonus'></span> <img class='imgFix' src='img/character/dps16.png'/><hr/>
             <span class='f10'>${item.info}</span>
           </div>

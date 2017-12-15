@@ -100,7 +100,7 @@ Game.Ascensions = {
     ascendTo: false,
     req: 25000,
     ore: {
-      id: 'hawkingradiation',
+      id: 'hawkingRadiation',
       lv: 1,
       hp: 1e12,
       baseHp: 1e12,
@@ -227,7 +227,7 @@ function unlockBlackHole() {
   unlockUpgrade('beamCharger');
   unlockUpgrade('phaseGun');
   unlockCrafting('darkRadiation');
-  unlockInventory('hawkingradiation');
+  unlockInventory('hawkingRadiation');
 }
 /*===========================================================
 =         Lock Ascensions                                   =
@@ -306,6 +306,24 @@ function canAscend() {
 =         Update Ascencions                                 =
 ===========================================================*/
 function updateAscensions() {
+  if(Game.Inventory.darkMatter.amount >= 0)
+    unlockEarth();
+
+  if(Game.Inventory.darkMatter.amount >= 100)
+    unlockGrudnock();
+
+  if(Game.Inventory.darkMatter.amount >= 500)
+    unlockTetherus();
+
+  if(Game.Inventory.darkMatter.amount >= 2500)
+    unlockGazorpazorp();
+
+  if(Game.Inventory.darkMatter.amount >= 10000)
+    unlockXeln();
+
+  if(Game.Inventory.darkMatter.amount >= 25000)
+    unlockBlackHole();
+
   for(key in Game.Ascensions) {
     let item = Game.Ascensions[key];
     let ore = item.ore;
@@ -316,6 +334,10 @@ function updateAscensions() {
       progressBar('✔', key, width);
     else
       progressBar(inv.amount, key, width);
+
+    if(item.isCurrent) {
+      ascend(key);
+    }
 
     elem(key + 'Req').innerHTML = item.req;
     elem(key + 'Lv').innerHTML = ore.lv;

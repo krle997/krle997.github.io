@@ -155,7 +155,7 @@ Game.Upgrades = {
   beamCooler: {
     name: 'Beam Cooler',
     info: 'Hi-tech cooler for your Phase Beam',
-    res: 'hawkingradiation',
+    res: 'hawkingRadiation',
     lv: 0,
     cost: 0,
     baseCost: 10,
@@ -165,7 +165,7 @@ Game.Upgrades = {
   beamCharger: {
     name: 'Beam Charger',
     info: 'Charges the beam for more damage',
-    res: 'hawkingradiation',
+    res: 'hawkingRadiation',
     lv: 0,
     cost: 0,
     baseCost: 200,
@@ -175,7 +175,7 @@ Game.Upgrades = {
   phaseGun: {
     name: 'Phase Gun',
     info: 'A combination of your plasma and laser beam guns.',
-    res: 'hawkingradiation',
+    res: 'hawkingRadiation',
     lv: 0,
     cost: 0,
     baseCost: 4000,
@@ -262,9 +262,9 @@ function buyUpgrade(key) {
     updateDamage();
     canBuyUpgrade();
 
-    /*if(!Game.muted) { // check if sound isn't muted
-      var buy = new Audio('sounds/buy.wav'); // generate audio
-      buy.play(); // play audio
+    /*if(!Game.muted) {
+      let sound = new Audio('sounds/buy.wav');
+      sound.play();
     }*/
   }
 }

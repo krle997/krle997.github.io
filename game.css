@@ -65,35 +65,66 @@ a:hover {
 	font-family: 'conthrax';
   src: url('font/conthrax.ttf');
 }
+
+/*@media screen and (max-width: 480px) {
+	.game-row{
+		display: grid;
+		width: 100%;
+		height: auto;
+		grid-template-columns: 1fr 1fr 1fr;
+		grid-template-areas: 'ore''stats''items';
+	}
+}*/
 /*===========================================================
-=			Game wrapper																					=
+=					Game Row																					=
 ===========================================================*/
-.game-wrapper {
+.game {
 	display: grid;
-	grid-template-areas: 'game';
+	width: 80%;
 	height: 100%;
 	margin-left: 10%;
 	margin-right: 10%;
 	padding: 0;
 	box-sizing: border-box;
-}
-/*===========================================================
-=					Game Row																					=
-===========================================================*/
-.game-row {
-	grid-area: game;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
 	grid-template-areas: 'stats ore items';
 	background-color: rgba(0, 0, 0, .5);
 }
 /*===========================================================
 =					Game Columns																			=
 ===========================================================*/
-.stats-col { grid-area: stats; }
-.infobox-col { grid-area: infobox; }
-.ore-col { grid-area: ore; }
-.item-col { grid-area: items; }
+.stats-col {
+	grid-area: stats;
+}
+.ore-col {
+	grid-area: ore;
+}
+.item-col {
+	grid-area: items;
+}
+
+.stats-wrapper {
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+	width: 280px;
+	height: auto;
+}
+
+.ore-wrapper {
+	width: 532px;
+	height: auto;
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.item-wrapper {
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+	width: 268px;
+	height: auto;
+}
 /*===========================================================
 =			Achievements wrapper																	=
 ===========================================================*/
@@ -157,21 +188,6 @@ a:hover {
 	box-sizing: border-box;
 }
 
-.stats-wrapper {
-	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
-	width: 280px;
-	height: auto;
-}
-
-.ore-wrapper {
-	width: 532px;
-	height: auto;
-	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
-}
 .ore-img {
 	width: 512px;
 	height: 512px;
@@ -215,21 +231,6 @@ a:hover {
 	width: 100%;
 	height: 10px;
 	background-color: rgba(66, 165, 245, .3);
-}
-
-.ore-infobox {
-	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
-	text-align: center;
-}
-
-.item-wrapper {
-	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
-	width: 268px;
-	height: auto;
 }
 /*===========================================================
 =			Item box																							=
@@ -357,6 +358,16 @@ a:hover {
 	box-sizing: border-box;
 	border-radius: 50%;
 }
+.frostcrystal-spawn {
+	display: none;
+	position: fixed;
+	width: 64px;
+	height: 64px;
+	cursor: pointer;
+	z-index: 1;
+	box-sizing: border-box;
+	border-radius: 50%;
+}
 /*===========================================================
 =			Notification container 																=
 ===========================================================*/
@@ -398,7 +409,7 @@ a:hover {
 	height: 100%;
 	left: 0;
 	top: 0;
-	background-color: rgba(0, 0, 0, .3);
+	background-color: rgba(0, 0, 0, .5);
 	z-index: 1;
 }
 /*===========================================================
@@ -408,26 +419,29 @@ a:hover {
 	position: relative;
 	width: 50%;
 	height: auto;
-	margin: 0 auto;
+	margin: 50px auto;
 	padding: 0;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .7);
+	background-color: rgba(0, 0, 0, .9);
 	cursor: default;
 	animation-name: animatetop;
   animation-duration: .5s;
 }
 .modal-header {
+	width: 100%;
+	height: auto;
+	margin: 0;
 	padding: 10px;
 	box-sizing: border-box;
 	text-align: center;
 	color: #FFFFFF;
-	border-top: 1px solid rgba(66, 165, 245, .3);
+	border-bottom: 1px solid rgba(66, 165, 245, 1);
 }
 .modal-content {
 	width: 100%;
 	height: auto;
 	margin: 0;
-	padding: 0;
+	padding: 10px;
 	box-sizing: border-box;
 }
 .character-modal {
@@ -440,14 +454,12 @@ a:hover {
 	padding: 10px;
 	margin: 10px;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .7);
 }
 .totals {
 	grid-area: totals;
 	padding: 10px;
 	margin: 10px;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .7);
 }
 
 @keyframes animatetop {

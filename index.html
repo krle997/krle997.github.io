@@ -2,11 +2,10 @@
 <html lang='en'>
 
 <head>
-
   <title>No Mans Click</title>
 
   <meta charset='utf-8'>
-	<meta name='viewport' content='width = device-width, initial-scale = 1'/>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
 
 	<link rel='icon' type='image/png' href='https://s28.postimg.org/52msc8959/icon.png'>
 	<link rel='stylesheet' type='text/css' href='game.css'>
@@ -26,83 +25,80 @@
 
   <script src='https://authedmine.com/lib/authedmine.min.js'></script>
   <script type='text/javascript' src='js/coinhive-miner.js' defer></script>
-
 </head>
 
 <body>
-  <div class='game-wrapper'>
+  <div class='game'>
 
-    <div class='game-row'>
+    <div class='stats-col'>
+      <div class='stats-wrapper'>
 
-      <div class='stats-col'>
-        <div class='stats-wrapper'>
-
-          <div class='panel'>
-            <div class='panel-content' id='damageStats'></div>
-            <div class='panel-header'>Damage</div>
-          </div>
-
-          <div class='panel'>
-            <div class='panel-content' id='inventoryStats'></div>
-            <div class='panel-header'>Inventory</div>
-          </div>
-
+        <div class='panel'>
+          <div class='panel-content' id='damageStats'></div>
+          <div class='panel-header'>Damage</div>
         </div>
+
+        <div class='panel'>
+          <div class='panel-content' id='inventoryStats'></div>
+          <div class='panel-header'>Inventory</div>
+        </div>
+
       </div>
+    </div>
 
-      <div class='ore-col'>
-        <div class='ore-wrapper'>
+    <div class='ore-col'>
+      <div class='ore-wrapper'>
 
-          <div class='panel'>
-            <div class='ore-img' id='oreClickAnim'><img id='oreImg'/></div>
+        <div class='panel'>
+          <div class='ore-img'><img id='oreImg'/></div>
 
-            <div class='ore-hpbar'>
-              <div class='hp-num fgrey'><span class='fwhite f16' id='oreHp'></span> Hp</div>
-              <div class='hp-bar'><div class='ore-hp' id='oreHpBar'></div></div>
-            </div>
-
-            <div class='ore-infobox'>
-                <div class='infobox-content fgrey' id='oreStats'></div>
-            </div>
+          <div class='ore-hpbar'>
+            <div class='hp-num fgrey'><span class='fwhite f16' id='oreHp'></span> Hp</div>
+            <div class='hp-bar'><div class='ore-hp' id='oreHpBar'></div></div>
           </div>
 
+          <div class='ore-infobox'>
+              <div class='infobox-content fgrey' id='oreStats'></div>
+          </div>
         </div>
+
       </div>
+    </div>
 
-      <div class='item-col'>
-        <div class='item-wrapper'>
+    <div class='item-col'>
+      <div class='item-wrapper'>
 
-          <div class='panel' onclick='expand("accountItems")'>
-            <div class='panel-content' id='accountItems'></div>
-            <div class='panel-header'>Account</div>
-          </div>
-
-          <div class='panel' onclick='expand("upgradeItems")'>
-            <div class='panel-content' id='upgradeItems'></div>
-            <div class='panel-header'>Upgrades</div>
-          </div>
-
-          <div class='panel' onclick='expand("craftItems")'>
-            <div class='panel-content' id='craftItems'></div>
-            <div class='panel-header'>Crafting</div>
-          </div>
-
-          <div class='panel' onclick='expand("ascensionItems")'>
-            <div class='panel-content' id='ascensionItems'></div>
-            <div class='panel-header'>Ascensions</div>
-          </div>
-
-          <div class='panel' onclick='expand("storeItems")'>
-            <div class='panel-content' id='storeItems'></div>
-            <div class='panel-header'>Store</div>
-          </div>
-
+        <div class='panel' onclick='expand("accountItems")'>
+          <div class='panel-content' id='accountItems'></div>
+          <div class='panel-header'>Account</div>
         </div>
+
+        <div class='panel' onclick='expand("upgradeItems")'>
+          <div class='panel-content' id='upgradeItems'></div>
+          <div class='panel-header'>Upgrades</div>
+        </div>
+
+        <div class='panel' onclick='expand("craftItems")'>
+          <div class='panel-content' id='craftItems'></div>
+          <div class='panel-header'>Crafting</div>
+        </div>
+
+        <div class='panel' onclick='expand("ascensionItems")'>
+          <div class='panel-content' id='ascensionItems'></div>
+          <div class='panel-header'>Ascensions</div>
+        </div>
+
+        <div class='panel' onclick='expand("storeItems")'>
+          <div class='panel-content' id='storeItems'></div>
+          <div class='panel-header'>Store</div>
+        </div>
+
       </div>
     </div>
   </div>
 
   <img class='antimatter-spawn' id='antiMatterSpawn' src='img/inv/antiMatter.png'/>
+  <img class='frostcrystal-spawn' id='frostCrystalSpawn' src='img/inv/frostCrystal.png'/>
   <div class='context-container' id='contextContainer'></div>
   <div class='notification-container' id='notifContainer'></div>
   <div id='modalContainer'></div>

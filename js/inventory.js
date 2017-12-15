@@ -27,8 +27,8 @@ Game.Inventory = {
 		info: `<span class='fgreen'>Solanium</span> is an exotic element. It can be mined on planet Xeln`,
 		amount: 0
 	},
-	hawkingradiation: {
-		name: 'Hawkings Radiation',
+	hawkingRadiation: {
+		name: 'Hawking Radiation',
 		info: `<span class='fgreen'>Hawking Radiation</span> holds secrets burried throughout billions of Black Holes existence. It can be mined in a Black Hole`,
 		amount: 0
 	},
@@ -100,4 +100,6 @@ function updateInventory() {
 
     elem(key + 'Amount').innerHTML = nFormat(item.amount);
   }
+
+	elem('frostCrystalAmount').innerHTML = Game.Inventory.frostCrystal.amount.toFixed(3);
 }

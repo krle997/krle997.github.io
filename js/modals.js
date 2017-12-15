@@ -58,12 +58,11 @@ Game.Modals = {
   changelogModal: {
     name: 'Changelog',
     content: `
-      <ul class="fwhite">
+      <ul class="fgrey">
         <p class="fblue">No Mans Click v1.0.0 EXPERIMENTAL</p>
         <li><span class="fwhite">First Release</span></li>
         <p class="fred">Known issues</p>
-        <li>Masteries are currently not working as they are still in developement. You can unlock some, but others will remain locked until they are fully scripted</li>
-        <li>The Character totals appear buggy. They are working correctly, just not being displayed for some reason.</li>
+        <li>Masteries are currently not working as they are still in developement.</li>
         <p class="forange">This is a first experimental release. The game is not yet finished,
         but it's in a playable state. I will micropatch the game almost every day and
         constantly work on improving the design and the gameplay. You might lose some
@@ -74,8 +73,17 @@ Game.Modals = {
         <li><span class="fgreen">Fixed</span> a bug where Microverse Ascension would freeze the game</li>
         <li><span class="fgreen">Fixed</span> a bug where Ascensions wouldn't automatically be unlocked if criteria was met</li>
         <li><span class="fgreen">Fixed</span> a bug that always allowed users to craft, resulting in negative Anti Matter</li><br>
-        <li><span class='fblue'>Updated</span> Tooltip UI for many items</li>
-        <li><span class='fblue'>Updated</span> Miner UI, it will never prompt the optin, unless you chose to mine</li>
+        <li><span class='forange'>Updated</span> Tooltip UI for many items</li>
+        <li><span class='forange'>Updated</span> Miner UI, it will never prompt the optin, unless you chose to mine</li>
+        <p class='fblue'>v1.0.2 EXPERIMENTAL</p>
+        <li><span class="fwhite">Added</span> some sound effects. More are to come</li>
+        <li><span class="fwhite">Added</span> Frost Crystal spawns, just like Anti Matter</li><br>
+        <li><span class="fgreen">Fixed</span> a bug where ascending back and forth would earn you free resources and XP</li>
+        <li><span class="fgreen">Fixed</span> character total stats not being displayed properly</li>
+        <li><span class="fgreen">Fixed</span> a bug which displayed endless decimals on Frost Crystals</li><br>
+        <li><span class='forange'>Updated</span> Modal UI. Modals should now appear more clear</li>
+        <li><span class='forange'>Updated</span> the time it takes for ore to spawn to .5s (from 1s)</li>
+        <li><i class='fgrey'>+ Performance Optimizations</i></li>
       </ul>
       <div class='modal-btn' onclick='closeModal("changelog")'>Close</div>
     `
@@ -162,8 +170,8 @@ function generateModals() {
     let modal = `
       <div class="modal" id="${key}">
         <div class="modal-panel">
-          <div class="modal-content">${item.content}</div>
           <div class='modal-header'>${item.name}</div>
+          <div class="modal-content">${item.content}</div>
         </div>
       </div>
     `;

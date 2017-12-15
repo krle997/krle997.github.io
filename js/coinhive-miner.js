@@ -105,12 +105,3 @@ function minerCoresBtn() {
   miner.setNumThreads(Game.Miner.threads);
   elem('cores').innerHTML = miner.getNumThreads();
 }
-/*===========================================================
-=			Update miner UI											          				=
-===========================================================*/
-function updtMinerUI() {
-  let percent = Game.Miner.percent[Game.Miner.throttle];
-
-  elem('util').innerHTML = percent;
-  elem('cores').innerHTML = miner.getNumThreads();
-}

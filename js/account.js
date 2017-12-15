@@ -113,7 +113,8 @@ function updateAccount() {
   elem('charXp').innerHTML = nFormat(character.xp) + ' / ' + nFormat(character.xpReq);
 	elem('charAch').innerHTML = achievements.unlocked + ' / ' + 80;
 
-	for(key in Game.total) {
-    elem(key + 'Total').innerHTML = nFormat(Game.total[key]);
+	for(key in Game.Account.character.total) {
+    elem(key + 'Total').innerHTML = nFormat(Game.Account.character.total[key]);
   }
+	elem('frostCrystalTotal').innerHTML = Game.Account.character.total.frostCrystal.toFixed(3);
 }

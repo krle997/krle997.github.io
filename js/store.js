@@ -33,34 +33,37 @@ function generateStore() {
 }
 
 function buyStore(key) {
-  if(key === 'advancedMicroverseAscension') {
-    let item = Game.Store[key];
+  let item = Game.Store[key];
+  let inv = Game.Inventory;
 
-    if(Game.Inventory.frostCrystal.amount < item.cost) {
+  if(key === 'advancedMicroverseAscension') {
+    if(inv.frostCrystal.amount < item.cost) {
       return;
     } else {
-      Game.Inventory.frostCrystal.amount -= 20;
-      Game.Inventory.concentratedDarkMatter.amount += Game.Inventory.darkMatter.amount;
-      elem('frostCrystalAmount').innerHTML = Game.Inventory.frostCrystal.amount;
-      save('frostCrystalAmount', Game.Inventory.frostCrystal.amount);
-      elem('concentratedDarkMatterAmount').innerHTML = Game.Inventory.concentratedDarkMatter.amount;
-      save('concentratedDarkMatterAmount', Game.Inventory.concentratedDarkMatter.amount);
+      inv.frostCrystal.amount -= 20;
+      inv.concentratedDarkMatter.amount += inv.darkMatter.amount;
+      elem('frostCrystalAmount').innerHTML = inv.frostCrystal.amount.toFixed(3);
+      save('frostCrystalAmount', inv.frostCrystal.amount);
+      elem('concentratedDarkMatterAmount').innerHTML = nFormat(inv.concentratedDarkMatter.amount);
+      save('concentratedDarkMatterAmount', inv.concentratedDarkMatter.amount);
       updateDamage();
     }
   }
 
   if(key === 'antiMatterConverter') {
-    let item = Game.Store[key];
-
-    if(Game.Inventory.frostCrystal.amount < item.cost) {
+    if(inv.frostCrystal.amount < item.cost) {
       return;
     } else {
-      Game.Inventory.frostCrystal.amount -= 1;
-      Game.Inventory.antiMatter.amount += 1;
-      elem('frostCrystalAmount').innerHTML = Game.Inventory.frostCrystal.amount;
-      save('frostCrystalAmount', Game.Inventory.frostCrystal.amount);
-      elem('antiMatterAmount').innerHTML = Game.Inventory.antiMatter.amount;
-      save('antiMatterAmount', Game.Inventory.antiMatter.amount);
+      inv.frostCrystal.amount -= 1;
+      inv.antiMatter.amount += 1;
+      Game.Account.character.total.antiMatter += 1;
+      elem('frostCrystalAmount').innerHTML = inv.frostCrystal.amount.toFixed(3);
+      elem('antiMatterAmount').innerHTML = nFormat(inv.antiMatter.amount);
+      elem('antiMatterTotal').innerHTML = nFormat(inv.antiMatter.amount);
+
+      save('frostCrystalAmount', inv.frostCrystal.amount);
+      save('antiMatterAmount', inv.antiMatter.amount);
+      save('antiMatterTotal', Game.Account.character.total.antiMatter);
     }
   }
 }

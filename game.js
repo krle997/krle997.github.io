@@ -5,7 +5,7 @@ var Game = {
   version: 'v0.9.9',
   author: 'Krle',
   fps: 60,
-  muted: false,
+  muted: true,
 
   time: {
     seconds: 0,
@@ -14,15 +14,12 @@ var Game = {
   }
 }
 
-var timerINT;
-var spawnINT;
 var doDpsINT;
 var saveINT;
 var spwnAnimINT;
 
 var oreLvUpTO;
 var spawnAntimatterTO;
-var oreClickAnimTO;
 
 var connected = false;
 /*===========================================================
@@ -126,47 +123,48 @@ function generateContent() {
   loadGame();
 
   generateModals();
+  generateAccount();
   generateAchievements();
-  generateContextMenu();
+  generateMasteries();
   generateUpgrades();
   generateCrafting();
-  generateMasteries();
   generateAscensions();
+  generateStore();
   generateOreStats();
-  generateAccount();
   generateDamage();
   generateInventory();
-  generateStore();
+  generateContextMenu();
 
-  updateUpgrades();
+  updateAccount();
   updateAchievements();
-  updateCrafting();
   updateMasteries();
+  updateUpgrades();
+  updateCrafting();
   updateAscensions();
+  updateStore();
   updateOreStats();
   updateInventory();
-	updateAccount();
-  updateStore();
   updateDamage();
 
-  loadContent();
-
+  muteSounds();
 	expand('upgradeItems');
 
-  updtMinerUI();
+  let gameLoopInt = setInterval(function() {
+    gameLoop();
+  }, 1000);
 
-  timerINT = setInterval(function() {
-    timer();
-  }, 1000)
-
-	spawnINT = setInterval(function() {
+	let spawnAntiMatterInt = setInterval(function() {
     spawnAntiMatter();
-  }, 60000)
+  }, 60000);
+
+  let spawnFrostCrystalInt = setInterval(function() {
+    spawnFrostCrystal();
+  }, 150000);
 }
 /*===========================================================
 =					Game Loop																					=
 ===========================================================*/
-function timer() {
+function gameLoop() {
   Game.time.seconds ++;
 
   if(Game.time.seconds > 59) {
@@ -210,52 +208,15 @@ function timer() {
   elem('timePlayed').innerHTML = Game.time.hours + 'h ' + Game.time.minutes + 'm';
 }
 /*===========================================================
-=			Update entire hud																			=
-===========================================================*/
-function loadContent() {
-  muteSounds();
-
-  if(Game.Inventory.darkMatter.amount >= 0)
-    unlockEarth();
-
-  if(Game.Inventory.darkMatter.amount >= 100)
-    unlockGrudnock();
-
-  if(Game.Inventory.darkMatter.amount >= 500)
-    unlockTetherus();
-
-  if(Game.Inventory.darkMatter.amount >= 2500)
-    unlockGazorpazorp();
-
-  if(Game.Inventory.darkMatter.amount >= 10000)
-    unlockXeln();
-
-  if(Game.Inventory.darkMatter.amount >= 25000)
-    unlockBlackHole();
-
-  for(key in Game.Ascensions) {
-    let item = Game.Ascensions[key];
-
-    if(item.isCurrent) {
-      ascend(key);
-      return;
-    }
-  }
-
-  for(key in Game.Account.character.total){
-    elem(key + 'Total').innerHTML = Game.Account.character.total[key];
-  }
-}
-/*===========================================================
 =         Damage per Second                                 =
 ===========================================================*/
 function doDps(key) {
   let ore = Game.Ascensions[key].ore;
+  let acc = Game.Account;
+  let penetrate = ore.armor / 100 * acc.character.armorPen;
+  let damage = (acc.character.dps - (ore.armor - penetrate)) / Game.fps;
 
-  let penetrate = ore.armor / 100 * Game.Account.character.armorPen;
-  let damage = (Game.Account.character.dps - (ore.armor - penetrate)) / Game.fps;
-
-  if(ore.armor - penetrate >= Game.Account.character.dps || Game.Account.character.dps <= 0)
+  if(ore.armor - penetrate >= acc.character.dps || acc.character.dps <= 0)
     return;
 
   ore.hp -= damage;
@@ -271,55 +232,52 @@ function doDps(key) {
 ===========================================================*/
 function doDpc(key) {
   let ore = Game.Ascensions[key].ore;
+  let acc = Game.Account;
 
-  if(Game.Account.character.critChance > 0)
+  if(acc.character.critChance > 0)
     checkCrit();
 
-  ore.hp -= Game.Account.character.dpc;
-	save(ore.id + 'Hp', ore.hp);
+  ore.hp -= acc.character.dpc;
+  acc.character.total.clicks ++;
 
-  if(Game.Account.character.critHit) {
-    ore.hp -= Game.Account.character.dpc;
-    Game.Account.character.critHit = false;
+  save(ore.id + 'Hp', ore.hp);
+	save('clicksTotal', acc.character.total.clicks);
+
+  if(acc.character.critHit) {
+    ore.hp -= acc.character.dpc;
+    acc.character.total.critHits ++;
+    acc.character.critHit = false;
+
+		save('critHitsTotal', acc.character.total.critHits);
+    elem('critHitsTotal').innerHTML = nFormat(acc.character.total.critHits);
   }
 
   if(ore.hp <= 0)
     oreClear(key);
 
   healthBar(key);
+  elem('clicksTotal').innerHTML = nFormat(acc.character.total.clicks);
+  elem('oreImg').style.animation = 'ore-click-animation .1s';
 
-  Game.Account.character.total.clicks ++;
-  elem('clicksTotal').innerHTML = nFormat(Game.Account.character.total.clicks);
-	save('clicksTotal', Game.Account.character.total.clicks);
+  let oreClickAnimTO = setTimeout(function() {
+    elem('oreImg').style.animation = '';
+  }, 10);
 
-  oreClickAnimTO = '';
-  elem('oreClickAnim').style.animation = 'ore-click-animation .1s';
-
-  oreClickAnimTO = setTimeout(function() {
-    elem('oreClickAnim').style.animation = '';
-  }, 1000 / Game.fps);
-
-  /*if (!Game.muted) { // Check if the sounds are muted
-    var ss = new Audio('sounds/fire.wav'); // Generate audio
-    ss.play(); // Play audio
-  }*/
+  if(!Game.muted) {
+    let sound = new Audio('sounds/dpc.wav');
+    sound.play();
+  }
 }
 /*===========================================================
 =         Check Critical Hit                                =
 ===========================================================*/
 function checkCrit() {
-  let number = Math.random() * 100 + 1;
-  let req = 100 - Game.Account.character.critChance;
+  let acc = Game.Account;
+  let rand = Math.floor(Math.random() * (100 - 1) + 1);
+  let req = 100 - acc.character.critChance;
 
-  if(number > req) {
-    Game.Account.character.critHit = true;
-
-    Game.Account.character.total.critHits ++;
-    elem('critHitsTotal').innerHTML = nFormat(Game.Account.character.total.critHits);
-		save('critHitsTotal', Game.Account.character.total.critHits);
-  }
-  else
-    return;
+  if(rand > req)
+    acc.character.critHit = true;
 }
 /*===========================================================
 =         Update Health Bar                                 =
@@ -335,130 +293,68 @@ function healthBar(key) {
 =         Ore Clear                                         =
 ===========================================================*/
 function oreClear(key) {
-	let item = Game.Ascensions[key];
-  let ore = item.ore;
-	let inv = Game.Inventory[ore.id];
-  let resGain = Math.floor(10 * Math.pow(1.02, ore.lv));
-  //let resGoals = [ 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten' ];
+  let ore = Game.Ascensions[key].ore;
 
-	ore.hp = 0;
-  inv.amount += resGain;
-  Game.Account.character.total[ore.id] += resGain;
-  Game.Account.character.xp ++;
-
-  if(Game.Account.character.total[ore.id] >= 1e6 && !Game.Achievements[ore.id].ach.One)
-    unlockAchievement(ore.id, 'One');
-
-  if(Game.Account.character.total[ore.id] >= 1e9 && !Game.Achievements[ore.id].ach.Two)
-    unlockAchievement(ore.id, 'Two');
-
-  if(Game.Account.character.total[ore.id] >= 1e12 && !Game.Achievements[ore.id].ach.Three)
-    unlockAchievement(ore.id, 'Three');
-
-  if(Game.Account.character.total[ore.id] >= 1e15 && !Game.Achievements[ore.id].ach.Four)
-    unlockAchievement(ore.id, 'Four');
-
-  if(Game.Account.character.total[ore.id] >= 1e18 && !Game.Achievements[ore.id].ach.Five)
-    unlockAchievement(ore.id, 'Five');
-
-  if(Game.Account.character.total[ore.id] >= 1e21 && !Game.Achievements[ore.id].ach.Six)
-    unlockAchievement(ore.id, 'Six');
-
-  if(Game.Account.character.total[ore.id] >= 1e24 && !Game.Achievements[ore.id].ach.Seven)
-    unlockAchievement(ore.id, 'Seven');
-
-  if(Game.Account.character.total[ore.id] >= 1e27 && !Game.Achievements[ore.id].ach.Eight)
-    unlockAchievement(ore.id, 'Eight');
-
-  if(Game.Account.character.total[ore.id] >= 1e30 && !Game.Achievements[ore.id].ach.Nine)
-    unlockAchievement(ore.id, 'Nine');
-
-  if(Game.Account.character.total[ore.id] >= 1e33 && !Game.Achievements[ore.id].ach.Ten)
-    unlockAchievement(ore.id, 'Ten');
-
-	save(ore.id + 'Hp', ore.hp);
-	save(ore.id + 'Amount', inv.amount);
-	save(ore.id + 'Total', Game.Account.character.total[ore.id]);
-	save('characterXp', Game.Account.character.xp);
-
-  let width = Game.Account.character.xp / Game.Account.character.xpReq * 100;
-  progressBar(Game.Account.character.lv, 'character', width);
-
-  if(Game.Account.character.xp > Game.Account.character.xpReq)
-    charLvUp();
-
-  checkDarkMatter();
-  canBuyUpgrade();
-
-  oreLvUpTO = setTimeout(function() {
-    oreLvUp(key);
-  }, 1000);
+  ore.hp = 0;
 
   clearInterval(doDpsINT);
 
   elem('oreImg').onclick = function () {};
-  elem(key + 'Lv').innerHTML = ore.lv;
-  elem('charXp').innerHTML = nFormat(Game.Account.character.xp) + ' / ' + nFormat(Game.Account.character.xpReq);
-  elem(ore.id + 'Amount').innerHTML = nFormat(inv.amount);
-  elem(ore.id + 'Total').innerHTML = nFormat(Game.Account.character.total[ore.id]);
-  //elem(ore.id + 'Anim').style.animation = 'antimatter-anim .5s ease-in-out';
+  save(ore.id + 'Hp', ore.hp);
+
+  oreLvUpTO = setTimeout(function() {
+    oreLvUp(key);
+  }, 500);
 }
 /*===========================================================
 =         Check Dark Matter                                 =
 ===========================================================*/
 function checkDarkMatter() {
+  let inv = Game.Inventory;
   let number = Math.random() * 100 + 1;
   let req = 90;
-  let inv = Game.Inventory.darkMatter;
 
   if(number > req) {
-    inv.amount += 1;
-		save('darkMatterAmount', inv.amount);
+    inv.darkMatter.amount += 1;
 
-    for(key in Game.Ascensions) {
-      let item = Game.Ascensions[key];
-
-      let width = inv.amount * 100 / item.req;
-      if(item.req <= inv.amount) {
-        progressBar('✔', key, width);
-      } else {
-        progressBar(inv.amount, key, width);
-      }
-    }
-
-    if(Game.Inventory.darkMatter.amount >= 0)
-      unlockEarth();
-
-    if(Game.Inventory.darkMatter.amount >= 100)
-      unlockGrudnock();
-
-    if(Game.Inventory.darkMatter.amount >= 500)
-      unlockTetherus();
-
-    if(Game.Inventory.darkMatter.amount >= 2500)
-      unlockGazorpazorp();
-
-    if(Game.Inventory.darkMatter.amount >= 10000)
-      unlockXeln();
-
-    if(Game.Inventory.darkMatter.amount >= 25000)
-      unlockBlackHole();
-
-
-    canAscend();
-
-    elem('darkMatterAmount').innerHTML = nFormat(inv.amount);
-  } else {
-    return;
-	}
+    updateAscensions();
+    save('darkMatterAmount', inv.darkMatter.amount);
+    elem('darkMatterAmount').innerHTML = nFormat(inv.darkMatter.amount);
+  }
 }
 /*===========================================================
 =         Ore Level Up                                      =
 ===========================================================*/
 function oreLvUp(key) {
-  let ore = Game.Ascensions[key].ore;
+  let item = Game.Ascensions[key];
+  let ore = item.ore;
+  let inv = Game.Inventory[ore.id];
+  let acc = Game.Account;
 
+  let resGoals = {
+    One: 1e6,
+    Two: 1e9,
+    Three: 1e12,
+    Four: 1e15,
+    Five: 1e18,
+    Six: 1e21,
+    Seven: 1e24,
+    Eight: 1e27,
+    Nine: 1e30,
+    Ten: 1e33
+  }
+
+  let resGain = Math.floor(10 * Math.pow(1.02, ore.lv));
+  inv.amount += resGain;
+  acc.character.total[ore.id] += resGain;
 	ore.lv ++;
+  acc.character.xp ++;
+
+  if(acc.character.xp > acc.character.xpReq)
+    charLvUp();
+
+  let width = acc.character.xp / acc.character.xpReq * 100;
+  progressBar(acc.character.lv, 'character', width);
 
   let oreMaxHp = Math.floor(ore.baseHp * Math.pow(1.03, ore.lv));
   let totalPlut = Game.Account.character.total.plutonium;
@@ -466,10 +362,26 @@ function oreLvUp(key) {
   ore.maxHp = oreMaxHp;
   ore.hp = oreMaxHp;
 
-	save(ore.id + 'Lv', ore.lv);
-	elem('oreLv').innerHTML = ore.lv;
+	save(ore.id + 'Amount', inv.amount);
+	save(ore.id + 'Total', acc.character.total[ore.id]);
+  save(ore.id + 'Lv', ore.lv);
+	save('characterXp', acc.character.xp);
 
+  checkDarkMatter();
+  canBuyUpgrade();
   healthBar(key);
+
+  elem(key + 'Lv').innerHTML = ore.lv;
+  elem('charXp').innerHTML = nFormat(acc.character.xp) + ' / ' + nFormat(acc.character.xpReq);
+  elem(ore.id + 'Amount').innerHTML = nFormat(inv.amount);
+  elem(ore.id + 'Total').innerHTML = nFormat(acc.character.total[ore.id]);
+	elem('oreLv').innerHTML = ore.lv;
+  elem('oreMaxHp').innerHTML = nFormat(ore.maxHp);
+
+  for(i in resGoals) {
+    if(acc.character.total[ore.id] >= resGoals[i] && !Game.Achievements[ore.id].ach[i])
+      unlockAchievement(ore.id, i);
+  }
 
   elem('oreImg').onclick = function() {
     doDpc(key);
@@ -478,26 +390,24 @@ function oreLvUp(key) {
   doDpsINT = setInterval(function() {
     doDps(key);
   }, 1000 / Game.fps);
-
-  elem('oreMaxHp').innerHTML = nFormat(ore.maxHp);
-  //elem(ore.id + 'Anim').style.animation = '';
-  //elem('oreLvAnim').style.animation = '';
 }
 /*===========================================================
 =					Character Level Up																=
 ===========================================================*/
 function charLvUp() {
-    Game.Account.character.lv ++;
-    Game.Account.character.xp = 0;
-    Game.Account.character.xpReq = 30 * Math.pow(1.5, Game.Account.character.lv);
+  let acc = Game.Account;
 
-    let width = Game.Account.character.xp / Game.Account.character.xpReq * 100;
-    progressBar(Game.Account.character.lv, 'character', width);
+  acc.character.lv ++;
+  acc.character.xp = 0;
+  acc.character.xpReq = 30 * Math.pow(1.5, acc.character.lv);
 
-    giveMastery();
+  let width = acc.character.xp / acc.character.xpReq * 100;
+  progressBar(acc.character.lv, 'character', width);
 
-		save('characterLv', Game.Account.character.lv);
-		save('characterXp', Game.Account.character.xp);
+  giveMastery();
+
+	save('characterLv', acc.character.lv);
+	save('characterXp', acc.character.xp);
 }
 /*===========================================================
 =					Microverse Ascension															=
@@ -507,7 +417,6 @@ function microverseAscension() {
 
   clearTimeout(oreLvUpTO);
   clearInterval(doDpsINT);
-
   elem('oreImg').onclick = function () {};
 
   inv.concentratedDarkMatter.amount += inv.darkMatter.amount;
@@ -517,44 +426,41 @@ function microverseAscension() {
   inv.chrysonite.amount = 0;
   inv.armadium.amount = 0;
   inv.solanium.amount = 0;
-  inv.hawkingradiation.amount = 0;
+  inv.hawkingRadiation.amount = 0;
 
-	for(key in inv) {
+	for(key in inv)
 		save(key + 'Amount', inv[key].amount);
-	}
 
   for(key in Game.Upgrades) {
-		let item = Game.Upgrades[key];
+		let upg = Game.Upgrades[key];
 
-    item.lv = 0;
+    upg.lv = 0;
 
-		save(key + 'Lv', item.lv);
+		save(key + 'Lv', upg.lv);
   }
 
   for(key in Game.Crafting) {
-    let item = Game.Crafting[key];
+    let craft = Game.Crafting[key];
 
-    item.status = false;
-    item.remaining = 600000;
+    craft.status = false;
+    craft.remaining = 600000;
 
-		save(key + 'Remaining', item.remaining);
-		save(key + 'Status', item.status);
+		save(key + 'Remaining', craft.remaining);
+		save(key + 'Status', craft.status);
   }
 
   for(key in Game.Ascensions) {
-    let item = Game.Ascensions[key];
-    let ore = item.ore;
+    let asc = Game.Ascensions[key];
+    let ore = asc.ore;
 
-    item.ascendTo = false;
-    item.isCurrent = false;
+    asc.ascendTo = false;
+    asc.isCurrent = false;
     ore.lv = 1;
     ore.hp = ore.baseHp;
 
 		save(ore.id + 'Lv', ore.lv);
 		save(ore.id + 'Hp', ore.hp);
   }
-
-  Game.Ascensions.earth.ascendTo = true;
 
   lockUpgrades();
   lockCrafting();
@@ -592,6 +498,11 @@ function spawnAntiMatter() {
   spawnAntimatterTO = setTimeout(function() {
     elem('antiMatterSpawn').style.display = 'none';
   }, 10000);
+
+  if(!Game.muted) {
+    let sound = new Audio('sounds/spawn.wav');
+    sound.play();
+  }
 }
 /*===========================================================
 =			Collect antimatter																		=
@@ -644,6 +555,93 @@ function collectAntiMatter() {
       elem('antiMatterAnim').style.animation = 'antimatter-anim .5s ease-in-out';
       canCraft();
     }
+  }
+
+  if(!Game.muted) {
+    let sound = new Audio('sounds/collect.wav');
+    sound.play();
+  }
+}
+var spawnFrostCrystalTo;
+var frostCrystalAnimInt;
+
+function spawnFrostCrystal() {
+  let spawnX = Math.floor(Math.random() * (80 - 20 + 1)) + 20;
+  let spawnY = Math.floor(Math.random() * (80 - 20 + 1)) + 20;
+
+  elem('frostCrystalSpawn').onclick = function () {
+    collectFrostCrystal();
+  }
+
+  elem('frostCrystalSpawn').style.left = spawnX + '%';
+  elem('frostCrystalSpawn').style.top = spawnY + '%';
+  elem('frostCrystalSpawn').style.animation = 'antimatter-spawn-anim 10s forwards';
+  elem('frostCrystalSpawn').style.display = 'initial';
+
+  spawnFrostCrystalTo = setTimeout(function() {
+    elem('frostCrystalSpawn').style.display = 'none';
+  }, 10000);
+
+  if(!Game.muted) {
+    let sound = new Audio('sounds/spawn.wav');
+    sound.play();
+  }
+}
+function collectFrostCrystal() {
+  clearTimeout(spawnFrostCrystalTo);
+
+  elem('frostCrystalSpawn').onclick = function() {};
+  elem('frostCrystalSpawn').style.animation = '';
+
+  frostCrystalAnimInt = setInterval(function() {
+    frostCrystalAnim();
+  }, 1000 / Game.fps);
+
+  let startX = elem('frostCrystalSpawn').getBoundingClientRect().left;
+  let startY = elem('frostCrystalSpawn').getBoundingClientRect().top;
+
+  let endX = elem('frostCrystalLoc').getBoundingClientRect().left;
+  let endY = elem('frostCrystalLoc').getBoundingClientRect().top;
+
+  let moveToX = 0;
+  let moveToY = 0;
+
+  let curFrame = 0;
+
+  function frostCrystalAnim() {
+
+
+    curFrame ++;
+
+    if(curFrame <= Game.fps) {
+      moveToX += (endX - startX) / 100 * (100 / Game.fps);
+      moveToY += (endY - startY) / 100 * (100 / Game.fps);
+
+      elem('frostCrystalSpawn').style.left = startX + moveToX + 'px';
+      elem('frostCrystalSpawn').style.top = startY + moveToY + 'px';
+    }
+    else if(curFrame > Game.fps) {
+			let inv = Game.Inventory;
+      let acc = Game.Account;
+      let reward = Math.random() * (5 - 1) + 1
+      clearInterval(frostCrystalAnimInt);
+
+      inv.frostCrystal.amount += reward;
+      acc.character.total.frostCrystal += reward;
+
+			save('frostCrystalAmount', inv.frostCrystal.amount);
+			save('frostCrystalTotal', acc.character.total.frostCrystal);
+
+      elem('frostCrystalAmount').innerHTML = inv.frostCrystal.amount.toFixed(3);
+      elem('frostCrystalTotal').innerHTML = acc.character.total.frostCrystal.toFixed(3);
+      elem('frostCrystalSpawn').style.display = 'none';
+      elem('frostCrystalAnim').style.animation = 'antimatter-anim .5s ease-in-out';
+    }
+  }
+
+  if(!Game.muted) {
+    let sound = new Audio('sounds/collect.wav');
+    sound.play();
   }
 }
 /*===========================================================
