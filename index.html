@@ -4,11 +4,12 @@
 <head>
   <title>No Mans Click</title>
 
-  <meta charset='utf-8'>
-	<meta name='viewport' content='width=device-width, initial-scale=1.0'/>
+  <meta charset='utf-8'/>
+  <meta name='description' content='Lightweight browser idling RPG'/>
+	<meta name='viewport' content='width=device-width, initial-scale=1'/>
 
-	<link rel='icon' type='image/png' href='https://s28.postimg.org/52msc8959/icon.png'>
-	<link rel='stylesheet' type='text/css' href='game.css'>
+	<link rel='icon' type='image/png' href='https://s28.postimg.org/52msc8959/icon.png'/>
+	<link rel='stylesheet' type='text/css' href='game.css'/>
 
   <script type='text/javascript' src='game.js' defer></script>
   <script type='text/javascript' src='js/account.js' defer></script>
@@ -22,9 +23,6 @@
   <script type='text/javascript' src='js/store.js' defer></script>
   <script type='text/javascript' src='js/modals.js' defer></script>
   <script type='text/javascript' src='js/HackTimer.js'></script>
-
-  <script src='https://authedmine.com/lib/authedmine.min.js'></script>
-  <script type='text/javascript' src='js/coinhive-miner.js' defer></script>
 </head>
 
 <body>
@@ -43,6 +41,11 @@
           <div class='panel-header'>Inventory</div>
         </div>
 
+        <div class='panel'>
+          <div class='notificationS' id='staticNotifications'></div>
+          <div class='panel-header'>Notifications</div>
+        </div>
+
       </div>
     </div>
 
@@ -50,7 +53,9 @@
       <div class='ore-wrapper'>
 
         <div class='panel'>
-          <div class='ore-img'><img id='oreImg'/></div>
+          <div class='ore-img' id='resourceContainer'>
+            <img draggable="false" id='oreImg'/>
+          </div>
 
           <div class='ore-hpbar'>
             <div class='hp-num fgrey'><span class='fwhite f16' id='oreHp'></span> Hp</div>
@@ -88,17 +93,10 @@
           <div class='panel-header'>Ascensions</div>
         </div>
 
-        <div class='panel' onclick='expand("storeItems")'>
-          <div class='panel-content' id='storeItems'></div>
-          <div class='panel-header'>Store</div>
-        </div>
-
       </div>
     </div>
   </div>
 
-  <img class='antimatter-spawn' id='antiMatterSpawn' src='img/inv/antiMatter.png'/>
-  <img class='frostcrystal-spawn' id='frostCrystalSpawn' src='img/inv/frostCrystal.png'/>
   <div class='context-container' id='contextContainer'></div>
   <div class='notification-container' id='notifContainer'></div>
   <div id='modalContainer'></div>

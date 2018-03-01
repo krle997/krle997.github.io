@@ -34,12 +34,12 @@ Game.Inventory = {
 	},
 	antiMatter: {
 		name: 'Anti Matter',
-		info: `Collect <span class='fblue'>Anti Matter</span> to craft various items and speed up your progress`,
+		info: `Collect <span class='fblue'>Anti Matter</span> to craft various items and boost your progress`,
 		amount: 0
 	},
 	frostCrystal: {
 		name: 'Frost Crystal',
-		info: `Support the dev and earn some <span class='fblue'>Frost Crystals</span>. You can later spend them in the Store for some powerful upgrades. <span class='fwhite'>Right Click > Donate</span> for more info`,
+		info: `Collect <span class='fblue'>Frost Crystals</span> to craft special items during <span class='fwhite'>multiplayer</span> events (Multiplayer is yet to be scripted)`,
 		amount: 0
 	},
 	darkMatter: {
@@ -64,7 +64,7 @@ function generateInventory() {
 		let inventory = `
 			<div class='hidden' id='${key}'>
 				<div class='stat-img'><img src='img/inv/${key}.png' id='${key}Loc'/></div>
-				<div class='stat-num' id='${key}Anim'><span id='${key}Amount'></span></div>
+				<div class='stat-num' id='${key}Num'><span id='${key}Amount'></span></div>
 				<div class='tooltip stat-tooltip'>
 					<div class='tooltip-content'>
 						<span class='fwhite'>${item.name}</span><hr/>

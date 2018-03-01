@@ -248,10 +248,13 @@ function ascend(key) {
   } else {
     let effArmor = ore.armor - (ore.armor / 100 * Game.Account.character.armorPen);
 
-    for(i in Game.Ascensions)
+    for(i in Game.Ascensions) {
       Game.Ascensions[i].isCurrent = false;
+      save(i + 'isCurrent', Game.Ascensions[i].isCurrent);
+    }
 
     item.isCurrent = true;
+    save(key + 'isCurrent', item.isCurrent);
 
     canAscend();
     healthBar(key);
@@ -268,7 +271,7 @@ function ascend(key) {
     connected = true;
 
     elem('oreImg').src = `img/${ore.id}Ore.png`;
-    elem('currentPlanet').innerHTML = item.name
+    elem('currentPlanet').innerHTML = item.name;
     elem('oreName').innerHTML = ore.id;
     elem('oreLv').innerHTML = ore.lv;
     elem('oreArmor').innerHTML = nFormat(ore.armor);

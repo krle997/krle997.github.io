@@ -2,7 +2,7 @@
 =					Game																							=
 ===========================================================*/
 var Game = {
-  version: 'v0.9.9',
+  version: 'v1.0.2',
   author: 'Krle',
   fps: 60,
   muted: true,
@@ -11,7 +11,10 @@ var Game = {
     seconds: 0,
 		minutes: 0,
 		hours: 0
-  }
+  },
+
+  staticNotifications: {},
+  resources: {}
 }
 
 var doDpsINT;
@@ -74,12 +77,13 @@ function loadGame() {
 	for(key in Game.Ascensions) {
 		let item = Game.Ascensions[key];
 		let ore = item.ore;
-		let inv = Game.Inventory[ore.id];
 
 		if(load(ore.id + 'Lv'))
 			ore.lv = load(ore.id + 'Lv');
 		if(load(ore.id + 'Hp'))
 			ore.hp = load(ore.id + 'Hp');
+    if(load(key + 'isCurrent'))
+      item.isCurrent = load(key + 'isCurrent');
 	}
 
 	for(key in Game.Inventory) {
@@ -115,6 +119,13 @@ function loadGame() {
   if(load('characterXp')) {
     Game.Account.character.xp = load('characterXp');
   }
+
+  if(load('staticNotifications')) {
+    Game.staticNotifications = load('staticNotifications');
+    for(key in Game.staticNotifications)
+      elem('staticNotifications').insertAdjacentHTML('beforeend', Game.staticNotifications[key].content);
+  }
+
 }
 /*===========================================================
 =					Generate Game																			=
@@ -129,7 +140,6 @@ function generateContent() {
   generateUpgrades();
   generateCrafting();
   generateAscensions();
-  generateStore();
   generateOreStats();
   generateDamage();
   generateInventory();
@@ -141,7 +151,6 @@ function generateContent() {
   updateUpgrades();
   updateCrafting();
   updateAscensions();
-  updateStore();
   updateOreStats();
   updateInventory();
   updateDamage();
@@ -153,12 +162,12 @@ function generateContent() {
     gameLoop();
   }, 1000);
 
-	let spawnAntiMatterInt = setInterval(function() {
-    spawnAntiMatter();
+  let spawnAntiMatterTo = setTimeout(function() {
+    generateCollectable('antiMatter');
   }, 60000);
 
-  let spawnFrostCrystalInt = setInterval(function() {
-    spawnFrostCrystal();
+  let spawnFrostCrystalTo = setTimeout(function() {
+    generateCollectable('frostCrystal');
   }, 150000);
 }
 /*===========================================================
@@ -237,28 +246,32 @@ function doDpc(key) {
   if(acc.character.critChance > 0)
     checkCrit();
 
-  ore.hp -= acc.character.dpc;
-  acc.character.total.clicks ++;
-
-  save(ore.id + 'Hp', ore.hp);
-	save('clicksTotal', acc.character.total.clicks);
-
   if(acc.character.critHit) {
-    ore.hp -= acc.character.dpc;
+    ore.hp -= acc.character.dpc * 2;
     acc.character.total.critHits ++;
     acc.character.critHit = false;
 
+    generateFloatingText(`- ${nFormat(acc.character.dpc * 2)} <img class='imgFix' src='img/character/dps16.png'/>`, event.clientX, event.clientY - 20);
+
+    save(ore.id + 'Hp', ore.hp);
 		save('critHitsTotal', acc.character.total.critHits);
     elem('critHitsTotal').innerHTML = nFormat(acc.character.total.critHits);
+  } else {
+    ore.hp -= acc.character.dpc;
+    acc.character.total.clicks ++;
+
+    generateFloatingText(`- ${nFormat(acc.character.dpc)} <img class='imgFix' src='img/character/dps16.png'/>`, event.clientX, event.clientY - 20);
+
+    save(ore.id + 'Hp', ore.hp);
+  	save('clicksTotal', acc.character.total.clicks);
+    elem('clicksTotal').innerHTML = nFormat(acc.character.total.clicks);
   }
 
   if(ore.hp <= 0)
     oreClear(key);
 
   healthBar(key);
-  elem('clicksTotal').innerHTML = nFormat(acc.character.total.clicks);
   elem('oreImg').style.animation = 'ore-click-animation .1s';
-
   let oreClickAnimTO = setTimeout(function() {
     elem('oreImg').style.animation = '';
   }, 10);
@@ -280,6 +293,40 @@ function checkCrit() {
     acc.character.critHit = true;
 }
 /*===========================================================
+=         Generate Floating Text                            =
+===========================================================*/
+function generateFloatingText(text, x, y) {
+  let id = Math.random();
+  let content = `<div class='floating-text fwhite' id='floatingText${id}'>${text}</div>`;
+
+  elem('resourceContainer').insertAdjacentHTML('beforeend', content);
+  elem('floatingText' + id).style.left = x + 'px';
+  elem('floatingText' + id).style.top = y + 'px';
+  animateFloatingText(id, y);
+}
+/*===========================================================
+=         Animate Floating Text                             =
+===========================================================*/
+function animateFloatingText(id, y) {
+  let frame = 0;
+  let opacity = 1;
+  let distance = 0;
+
+  let interval = setInterval(function() {
+    frame ++;
+    opacity -= 1 / Game.fps;
+    distance ++;
+
+    elem('floatingText' + id).style.top = y - distance + 'px';
+    elem('floatingText' + id).style.opacity = opacity;
+
+    if(frame >= Game.fps) {
+      clearInterval(interval);
+      elem('floatingText' + id).parentNode.removeChild(elem('floatingText' + id));
+    }
+  }, 1000 / Game.fps);
+}
+/*===========================================================
 =         Update Health Bar                                 =
 ===========================================================*/
 function healthBar(key) {
@@ -288,6 +335,139 @@ function healthBar(key) {
 
   elem('oreHpBar').style.width = width + '%';
   elem('oreHp').innerHTML = nFormat(ore.hp);
+}
+/*===========================================================
+=         Generate Collectable                              =
+===========================================================*/
+function generateCollectable(key) {
+  let id = Math.random();
+  let x = Math.floor(Math.random() * (448 - 0) + 0);
+  let y = Math.floor(Math.random() * (384 - 256) + 256);
+  let content = `<img class='ress' id='res${id}' src='img/inv/${key}.png'/>`;
+
+  elem('resourceContainer').insertAdjacentHTML('beforeend', content);
+  elem('res' + id).style.left = x + 'px';
+  elem('res' + id).style.top = y + 'px';
+  elem('res' + id).style.opacity = 0;
+  resourceFadeIn(id);
+
+  let pos = elem('res' + id).getBoundingClientRect();
+
+  elem('res' + id).onclick = function() {
+    elem('res' + id).onclick = function() {};
+    collect(key);
+    animateResource(id, x, y);
+    generateFloatingText(`+ 1 <img class='imgFix' src='img/inv/${key}16.png'/>`, pos.left, pos.top);
+
+    let timeout = setTimeout(function() {
+      generateCollectable(key);
+    }, 60000);
+  }
+
+  if(!Game.muted) {
+    let sound = new Audio('sounds/spawn.wav');
+    sound.play();
+  }
+}
+/*===========================================================
+=         Collect                                           =
+===========================================================*/
+function collect(key) {
+  let inv = Game.Inventory[key];
+  let acc = Game.Account;
+
+  inv.amount ++;
+  acc.character.total[key] ++;
+
+  save(key + 'Amount', inv.amount);
+  save(key + 'Total', acc.character.total[key]);
+  elem(key + 'Amount').innerHTML = nFormat(inv.amount);
+  elem(key + 'Total').innerHTML = nFormat(acc.character.total[key]);
+  elem(key + 'Num').style.animation = 'breathe .5s ease-in-out';
+  canCraft();
+
+  if(!Game.muted) {
+    let sound = new Audio('sounds/collect.wav');
+    sound.play();
+  }
+}
+/*===========================================================
+=         Generate Resources                                =
+===========================================================*/
+function generateResource(ore, amount) {
+  let id = Math.random();
+  let x = 224;
+  let y = Math.floor(Math.random() * (384 - 256) + 256);
+  let content = `<img class='ress' id='res${id}' src='img/inv/${ore}.png'/>`;
+
+  elem('resourceContainer').insertAdjacentHTML('beforeend', content);
+  elem('res' + id).style.left = x + 'px';
+  elem('res' + id).style.top = y + 'px';
+
+  let pos = elem('res' + id).getBoundingClientRect();
+
+  animateResource(id, x, y);
+  generateFloatingText(`+ ${nFormat(amount)} <img class='imgFix' src='img/inv/${ore}16.png'/>`, pos.left, pos.top);
+}
+/*===========================================================
+=         Resource Fade In                                  =
+===========================================================*/
+function resourceFadeIn(id) {
+  let frame = 0;
+  let opacity = 0;
+
+  let interval = setInterval(function() {
+    frame ++;
+    opacity += 1 / Game.fps;
+    elem('res' + id).style.opacity = opacity;
+
+    if(frame >= Game.fps) {
+      clearInterval(interval);
+      elem('res' + id).style.opacity = 1;
+    }
+  }, 1000 / Game.fps);
+}
+/*===========================================================
+=         Animate Resources                                 =
+===========================================================*/
+function animateResource(id, x, y) {
+  let pos = elem('resourceContainer').getBoundingClientRect();
+  let gravityPull = 0;
+  let bounce = 0.7;
+  let bounced = false;
+  let opacity = 1;
+  let side = Math.random();
+
+  let interval = setInterval(function() {
+    gravityPull += 0.1;
+
+    if(side > 0.5)
+      x -= 0.5;
+    else
+      x += 0.5;
+
+    y += gravityPull;
+
+    elem('res' + id).style.left = x + 'px';
+    elem('res' + id).style.top = y + 'px';
+
+    if(y >= pos.bottom - 64) {
+      y = pos.bottom - 64;
+      gravityPull = -(gravityPull * bounce);
+      bounced = true;
+    }
+
+    if(bounced) {
+      opacity -= (1 / Game.fps) / 2;
+      elem('res' + id).style.opacity = opacity;
+    }
+
+    if(opacity <= 0) {
+      clearInterval(interval);
+      elem('res' + id).style.opacity = 0;
+      elem('res' + id).parentNode.removeChild(elem('res' + id));
+    }
+  }, 1000 / Game.fps);
 }
 /*===========================================================
 =         Ore Clear                                         =
@@ -300,27 +480,12 @@ function oreClear(key) {
   clearInterval(doDpsINT);
 
   elem('oreImg').onclick = function () {};
+  elem(ore.id + 'Num').style.animation = '';
   save(ore.id + 'Hp', ore.hp);
 
   oreLvUpTO = setTimeout(function() {
     oreLvUp(key);
   }, 500);
-}
-/*===========================================================
-=         Check Dark Matter                                 =
-===========================================================*/
-function checkDarkMatter() {
-  let inv = Game.Inventory;
-  let number = Math.random() * 100 + 1;
-  let req = 90;
-
-  if(number > req) {
-    inv.darkMatter.amount += 1;
-
-    updateAscensions();
-    save('darkMatterAmount', inv.darkMatter.amount);
-    elem('darkMatterAmount').innerHTML = nFormat(inv.darkMatter.amount);
-  }
 }
 /*===========================================================
 =         Ore Level Up                                      =
@@ -350,6 +515,8 @@ function oreLvUp(key) {
 	ore.lv ++;
   acc.character.xp ++;
 
+  generateResource(ore.id, resGain);
+
   if(acc.character.xp > acc.character.xpReq)
     charLvUp();
 
@@ -375,6 +542,7 @@ function oreLvUp(key) {
   elem('charXp').innerHTML = nFormat(acc.character.xp) + ' / ' + nFormat(acc.character.xpReq);
   elem(ore.id + 'Amount').innerHTML = nFormat(inv.amount);
   elem(ore.id + 'Total').innerHTML = nFormat(acc.character.total[ore.id]);
+  elem(ore.id + 'Num').style.animation = 'breathe .5s linear';
 	elem('oreLv').innerHTML = ore.lv;
   elem('oreMaxHp').innerHTML = nFormat(ore.maxHp);
 
@@ -390,6 +558,24 @@ function oreLvUp(key) {
   doDpsINT = setInterval(function() {
     doDps(key);
   }, 1000 / Game.fps);
+}
+/*===========================================================
+=         Check Dark Matter                                 =
+===========================================================*/
+function checkDarkMatter() {
+  let inv = Game.Inventory;
+  let rand = Math.floor(Math.random() * 100 + 1);
+  let req = 90;
+
+  if(rand > req) {
+    inv.darkMatter.amount += 1;
+
+    generateResource('darkMatter', 1);
+
+    updateAscensions();
+    save('darkMatterAmount', inv.darkMatter.amount);
+    elem('darkMatterAmount').innerHTML = nFormat(inv.darkMatter.amount);
+  }
 }
 /*===========================================================
 =					Character Level Up																=
@@ -478,171 +664,6 @@ function microverseAscension() {
 
   connected = false;
   ascend('earth');
-}
-/*===========================================================
-=			Spawn antimatter																			=
-===========================================================*/
-function spawnAntiMatter() {
-  let spawnX = Math.floor(Math.random() * (80 - 20 + 1)) + 20;
-  let spawnY = Math.floor(Math.random() * (80 - 20 + 1)) + 20;
-
-  elem('antiMatterSpawn').onclick = function () {
-    collectAntiMatter();
-  }
-
-  elem('antiMatterSpawn').style.left = spawnX + '%';
-  elem('antiMatterSpawn').style.top = spawnY + '%';
-  elem('antiMatterSpawn').style.animation = 'antimatter-spawn-anim 10s forwards';
-  elem('antiMatterSpawn').style.display = 'initial';
-
-  spawnAntimatterTO = setTimeout(function() {
-    elem('antiMatterSpawn').style.display = 'none';
-  }, 10000);
-
-  if(!Game.muted) {
-    let sound = new Audio('sounds/spawn.wav');
-    sound.play();
-  }
-}
-/*===========================================================
-=			Collect antimatter																		=
-===========================================================*/
-function collectAntiMatter() {
-  clearTimeout(spawnAntimatterTO);
-
-  elem('antiMatterSpawn').onclick = function() {};
-  elem('antiMatterSpawn').style.animation = '';
-  elem('antiMatterAnim').style.animation = '';
-
-  let startX = elem('antiMatterSpawn').getBoundingClientRect().left;
-  let startY = elem('antiMatterSpawn').getBoundingClientRect().top;
-
-  let endX = elem('antiMatterLoc').getBoundingClientRect().left;
-  let endY = elem('antiMatterLoc').getBoundingClientRect().top;
-
-  let moveToX = 0;
-  let moveToY = 0;
-
-  let curFrame = 0;
-
-  spwnAnimINT = setInterval(function() {
-    antiMatterAnim();
-  }, 1000 / Game.fps);
-
-  function antiMatterAnim() {
-    curFrame ++;
-
-    if(curFrame <= Game.fps) {
-      moveToX += (endX - startX) / 100 * (100 / Game.fps);
-      moveToY += (endY - startY) / 100 * (100 / Game.fps);
-
-      elem('antiMatterSpawn').style.left = startX + moveToX + 'px';
-      elem('antiMatterSpawn').style.top = startY + moveToY + 'px';
-    }
-    else if(curFrame > Game.fps) {
-			let inv = Game.Inventory;
-      clearInterval(spwnAnimINT);
-
-      inv.antiMatter.amount ++;
-      Game.Account.character.total.antiMatter ++;
-
-			save('antiMatterAmount', inv.antiMatter.amount);
-			save('antiMatterTotal', Game.Account.character.total.antiMatter);
-
-      elem('antiMatterAmount').innerHTML = nFormat(inv.antiMatter.amount);
-      elem('antiMatterTotal').innerHTML = nFormat(Game.Account.character.total.antiMatter);
-      elem('antiMatterSpawn').style.display = 'none';
-      elem('antiMatterAnim').style.animation = 'antimatter-anim .5s ease-in-out';
-      canCraft();
-    }
-  }
-
-  if(!Game.muted) {
-    let sound = new Audio('sounds/collect.wav');
-    sound.play();
-  }
-}
-var spawnFrostCrystalTo;
-var frostCrystalAnimInt;
-
-function spawnFrostCrystal() {
-  let spawnX = Math.floor(Math.random() * (80 - 20 + 1)) + 20;
-  let spawnY = Math.floor(Math.random() * (80 - 20 + 1)) + 20;
-
-  elem('frostCrystalSpawn').onclick = function () {
-    collectFrostCrystal();
-  }
-
-  elem('frostCrystalSpawn').style.left = spawnX + '%';
-  elem('frostCrystalSpawn').style.top = spawnY + '%';
-  elem('frostCrystalSpawn').style.animation = 'antimatter-spawn-anim 10s forwards';
-  elem('frostCrystalSpawn').style.display = 'initial';
-
-  spawnFrostCrystalTo = setTimeout(function() {
-    elem('frostCrystalSpawn').style.display = 'none';
-  }, 10000);
-
-  if(!Game.muted) {
-    let sound = new Audio('sounds/spawn.wav');
-    sound.play();
-  }
-}
-function collectFrostCrystal() {
-  clearTimeout(spawnFrostCrystalTo);
-
-  elem('frostCrystalSpawn').onclick = function() {};
-  elem('frostCrystalSpawn').style.animation = '';
-
-  frostCrystalAnimInt = setInterval(function() {
-    frostCrystalAnim();
-  }, 1000 / Game.fps);
-
-  let startX = elem('frostCrystalSpawn').getBoundingClientRect().left;
-  let startY = elem('frostCrystalSpawn').getBoundingClientRect().top;
-
-  let endX = elem('frostCrystalLoc').getBoundingClientRect().left;
-  let endY = elem('frostCrystalLoc').getBoundingClientRect().top;
-
-  let moveToX = 0;
-  let moveToY = 0;
-
-  let curFrame = 0;
-
-  function frostCrystalAnim() {
-
-
-    curFrame ++;
-
-    if(curFrame <= Game.fps) {
-      moveToX += (endX - startX) / 100 * (100 / Game.fps);
-      moveToY += (endY - startY) / 100 * (100 / Game.fps);
-
-      elem('frostCrystalSpawn').style.left = startX + moveToX + 'px';
-      elem('frostCrystalSpawn').style.top = startY + moveToY + 'px';
-    }
-    else if(curFrame > Game.fps) {
-			let inv = Game.Inventory;
-      let acc = Game.Account;
-      let reward = Math.random() * (5 - 1) + 1
-      clearInterval(frostCrystalAnimInt);
-
-      inv.frostCrystal.amount += reward;
-      acc.character.total.frostCrystal += reward;
-
-			save('frostCrystalAmount', inv.frostCrystal.amount);
-			save('frostCrystalTotal', acc.character.total.frostCrystal);
-
-      elem('frostCrystalAmount').innerHTML = inv.frostCrystal.amount.toFixed(3);
-      elem('frostCrystalTotal').innerHTML = acc.character.total.frostCrystal.toFixed(3);
-      elem('frostCrystalSpawn').style.display = 'none';
-      elem('frostCrystalAnim').style.animation = 'antimatter-anim .5s ease-in-out';
-    }
-  }
-
-  if(!Game.muted) {
-    let sound = new Audio('sounds/collect.wav');
-    sound.play();
-  }
 }
 /*===========================================================
 =					Update Progress Bar																=
@@ -784,23 +805,53 @@ function closeModal(which) {
 =			Expand Items																					=
 ===========================================================*/
 function expand(which) {
-	let MINIMIZE = [
+	let panels = [
 		'accountItems',
 		'upgradeItems',
 		'craftItems',
-		'ascensionItems',
-    'storeItems'
+		'ascensionItems'
 	]
-	for(i = 0; i < MINIMIZE.length; i ++) {
-    let id = MINIMIZE[i];
+
+	for(i = 0; i < panels.length; i ++) {
+    let id = panels[i];
 		elem(id).style.display = 'none';
 	}
 
 	elem(which).style.display = 'grid';
 }
 /*===========================================================
-=			Display notification ! FIX !													=
+=         Generate Static Notification                      =
 ===========================================================*/
+function generateStaticNotification(id, text) {
+	return {
+    content: `<div class='static-notification' id='static${id}' onclick='discardStaticNotification(${id})'>${text}</div>`
+  }
+}
+/*===========================================================
+=         Create Static Notification                        =
+===========================================================*/
+function staticNotification(text) {
+  let id = Math.random();
+  Game.staticNotifications[id] = generateStaticNotification(id, text);
+
+  elem('staticNotifications').insertAdjacentHTML('beforeend', Game.staticNotifications[id].content);
+  save('staticNotifications', Game.staticNotifications);
+}
+/*===========================================================
+=         Discard Static Notification                       =
+===========================================================*/
+function discardStaticNotification(id) {
+  elem('static' + id).parentNode.removeChild(elem('static' + id));
+  delete Game.staticNotifications[id];
+  save('staticNotifications', Game.staticNotifications);
+
+  if(!Game.muted) {
+    let sound = new Audio('sounds/click.mp3');
+    sound.play();
+  }
+}
+
+
 var notifCount = 0;
 var letMe;
 

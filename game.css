@@ -65,16 +65,6 @@ a:hover {
 	font-family: 'conthrax';
   src: url('font/conthrax.ttf');
 }
-
-/*@media screen and (max-width: 480px) {
-	.game-row{
-		display: grid;
-		width: 100%;
-		height: auto;
-		grid-template-columns: 1fr 1fr 1fr;
-		grid-template-areas: 'ore''stats''items';
-	}
-}*/
 /*===========================================================
 =					Game Row																					=
 ===========================================================*/
@@ -88,6 +78,18 @@ a:hover {
 	box-sizing: border-box;
 	grid-template-areas: 'stats ore items';
 	background-color: rgba(0, 0, 0, .5);
+}
+@media (max-width: 512px) {
+  .game {
+		display: grid;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+		grid-template-areas: 'ore''stats''items';
+		background-color: rgba(0, 0, 0, .5);
+  }
 }
 /*===========================================================
 =					Game Columns																			=
@@ -189,8 +191,24 @@ a:hover {
 }
 
 .ore-img {
+	position: relative;
 	width: 512px;
 	height: 512px;
+}
+
+#oreImg:hover {
+	cursor: pointer;
+}
+.ress {
+	position: absolute;
+	
+}
+
+.floating-text {
+	position: fixed;
+	font-size: 16px;
+	font-weight: bold;
+	pointer-events: none;
 }
 /*===========================================================
 =			Health bar																						=
@@ -245,8 +263,6 @@ a:hover {
 	border-bottom: 1px solid rgba(66, 165, 245, .3);
 	transition: background-color .3s;
 }
-
-/*.item:hover { box-shadow: inset 0 0 0 3px #00CCFF; }*/
 .item:hover {
 	background-color: rgba(189, 189, 189, .3);
 	border-bottom: 1px solid rgba(66, 165, 245, 1);
@@ -399,6 +415,25 @@ a:hover {
 		opacity: 0;
 	}
 }
+.notificationS {
+	width: 100%;
+	height: auto;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+.static-notification {
+	width: 100%;
+	height: auto;
+	padding: 10px;
+	margin: 0;
+	color: #FFFFFF;
+	box-sizing: border-box;
+}
+.static-notification:hover {
+	background-color: rgba(128, 128, 128, .2);
+	cursor: pointer;
+}
 /*===========================================================
 =			Modal  																								=
 ===========================================================*/
@@ -535,7 +570,7 @@ a:hover {
 }
 .context-item:hover { color: #00CCFF; background-color: rgba(0, 0, 0, 1); }
 /*===========================================================
-=			HUD flash animation (REWORK)													=
+=					Animations																				=
 ===========================================================*/
 @keyframes flash {
 	0% { background-color: linear-gradient(180deg, rgba(0, 204, 255, 0), rgba(0, 204, 255, 1), rgba(0, 204, 255, 0)); }
@@ -553,23 +588,8 @@ a:hover {
 	100% { transform: scale(1); }
 }
 
-@keyframes antimatter-anim {
+@keyframes breathe {
 	0% { transform: scale(1); }
-	50% { transform: scale(1.5); }
+	50% { transform: scale(1.25); color: #66BB6A; }
 	100% { transform: scale(1); }
-}
-@keyframes antimatter-spawn-anim {
-	0% {
-		opacity: 0;
-		transform: scale(0);
-	} 10%	{
-		opacity: 1;
-		transform: scale(1);
-	} 90% {
-		opacity: 1;
-		transform: scale(1);
-	} 100% {
-		opacity: 0;
-		transform: scale(0);
-	}
 }

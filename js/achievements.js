@@ -30,6 +30,34 @@ Game.Achievements = {
       Ten: false
     }
   },
+  titaniumLv: {
+    name: 'Titanium Clearing',
+    misc: `
+      Reach Lv 10 [<span class='fgrey f16' id='titaniumLvOne'>✖</span>]<br>
+      Reach Lv 25 [<span class='fgrey f16' id='titaniumLvTwo'>✖</span>]<br>
+      Reach Lv 50 [<span class='fgrey f16' id='titaniumLvThree'>✖</span>]<br>
+      Reach Lv 100 [<span class='fgrey f16' id='titaniumLvFour'>✖</span>]<br>
+      Reach Lv 250 [<span class='fgrey f16' id='titaniumLvFive'>✖</span>]<br>
+      Reach Lv 500 [<span class='fgrey f16' id='titaniumLvSix'>✖</span>]<br>
+      Reach Lv 1 K [<span class='fgrey f16' id='titaniumLvSeven'>✖</span>]<br>
+      Reach Lv 2.5 K [<span class='fgrey f16' id='titaniumLvEight'>✖</span>]<br>
+      Reach Lv 5 K [<span class='fgrey f16' id='titaniumLvNine'>✖</span>]<br>
+      Reach Lv 10 K [<span class='fgrey f16' id='titaniumLvTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
+  },
   plutonium: {
     name: 'Plutonium Mining',
     misc: `
@@ -58,6 +86,34 @@ Game.Achievements = {
       Ten: false
     }
   },
+  plutoniumLv: {
+    name: 'Plutonium Clearing',
+    misc: `
+    Reach Lv 10 [<span class='fgrey f16' id='plutoniumLvOne'>✖</span>]<br>
+    Reach Lv 25 [<span class='fgrey f16' id='plutoniumLvTwo'>✖</span>]<br>
+    Reach Lv 50 [<span class='fgrey f16' id='plutoniumLvThree'>✖</span>]<br>
+    Reach Lv 100 [<span class='fgrey f16' id='plutoniumLvFour'>✖</span>]<br>
+    Reach Lv 250 [<span class='fgrey f16' id='plutoniumLvFive'>✖</span>]<br>
+    Reach Lv 500 [<span class='fgrey f16' id='plutoniumLvSix'>✖</span>]<br>
+    Reach Lv 1 K [<span class='fgrey f16' id='plutoniumLvSeven'>✖</span>]<br>
+    Reach Lv 2.5 K [<span class='fgrey f16' id='plutoniumLvEight'>✖</span>]<br>
+    Reach Lv 5 K [<span class='fgrey f16' id='plutoniumLvNine'>✖</span>]<br>
+    Reach Lv 10 K [<span class='fgrey f16' id='plutoniumLvTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
+  },
   chrysonite: {
     name: 'Chrysonite Mining',
     misc: `
@@ -71,6 +127,34 @@ Game.Achievements = {
       Total 1 Oct [<span class='fgrey f16' id='chrysoniteEight'>✖</span>]<br>
       Total 1 Non [<span class='fgrey f16' id='chrysoniteNine'>✖</span>]<br>
       Total 1 Dec [<span class='fgrey f16' id='chrysoniteTen'>✖</span>]
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
+  },
+  chrysoniteLv: {
+    name: 'Chrysonite Clearing',
+    misc: `
+    Reach Lv 10 [<span class='fgrey f16' id='chrysoniteLvOne'>✖</span>]<br>
+    Reach Lv 25 [<span class='fgrey f16' id='chrysoniteLvTwo'>✖</span>]<br>
+    Reach Lv 50 [<span class='fgrey f16' id='chrysoniteLvThree'>✖</span>]<br>
+    Reach Lv 100 [<span class='fgrey f16' id='chrysoniteLvFour'>✖</span>]<br>
+    Reach Lv 250 [<span class='fgrey f16' id='chrysoniteLvFive'>✖</span>]<br>
+    Reach Lv 500 [<span class='fgrey f16' id='chrysoniteLvSix'>✖</span>]<br>
+    Reach Lv 1 K [<span class='fgrey f16' id='chrysoniteLvSeven'>✖</span>]<br>
+    Reach Lv 2.5 K [<span class='fgrey f16' id='chrysoniteLvEight'>✖</span>]<br>
+    Reach Lv 5 K [<span class='fgrey f16' id='chrysoniteLvNine'>✖</span>]<br>
+    Reach Lv 10 K [<span class='fgrey f16' id='chrysoniteLvTen'>✖</span>]
     `,
     unlocked: 0,
     ach: {
@@ -171,18 +255,18 @@ Game.Achievements = {
     }
   },
   antiMatter: {
-    name: 'IN DEVELOPMENT',
+    name: 'Anti Matter Collecting',
     misc: `
-      Total 1 M [<span class='fgrey f16' id='antiMatterOne'>✖</span>]<br>
-      Total 1 B [<span class='fgrey f16' id='antiMatterTwo'>✖</span>]<br>
-      Total 1 T [<span class='fgrey f16' id='antiMatterThree'>✖</span>]<br>
-      Total 1 Qa [<span class='fgrey f16' id='antiMatterFour'>✖</span>]<br>
-      Total 1 Qi [<span class='fgrey f16' id='antiMatterFive'>✖</span>]<br>
-      Total 1 Sx [<span class='fgrey f16' id='antiMatterSix'>✖</span>]<br>
-      Total 1 Sp [<span class='fgrey f16' id='antiMatterSeven'>✖</span>]<br>
-      Total 1 Oct [<span class='fgrey f16' id='antiMatterEight'>✖</span>]<br>
-      Total 1 Non [<span class='fgrey f16' id='antiMatterNine'>✖</span>]<br>
-      Total 1 Dec [<span class='fgrey f16' id='antiMatterTen'>✖</span>]
+      Total 10 [<span class='fgrey f16' id='antiMatterOne'>✖</span>]<br>
+      Total 25 [<span class='fgrey f16' id='antiMatterTwo'>✖</span>]<br>
+      Total 50 [<span class='fgrey f16' id='antiMatterThree'>✖</span>]<br>
+      Total 100 [<span class='fgrey f16' id='antiMatterFour'>✖</span>]<br>
+      Total 250 [<span class='fgrey f16' id='antiMatterFive'>✖</span>]<br>
+      Total 500 [<span class='fgrey f16' id='antiMatterSix'>✖</span>]<br>
+      Total 1 K [<span class='fgrey f16' id='antiMatterSeven'>✖</span>]<br>
+      Total 2.5 K [<span class='fgrey f16' id='antiMatterEight'>✖</span>]<br>
+      Total 5 K [<span class='fgrey f16' id='antiMatterNine'>✖</span>]<br>
+      Total 10 K [<span class='fgrey f16' id='antiMatterTen'>✖</span>]
     `,
     unlocked: 0,
     ach: {
@@ -199,18 +283,18 @@ Game.Achievements = {
     }
   },
   frostCrystal: {
-    name: 'IN DEVELOPMENT',
+    name: 'Frost Crystal Collecting',
     misc: `
-      Total 1 M [<span class='fgrey f16' id='frostCrystalOne'>✖</span>]<br>
-      Total 1 B [<span class='fgrey f16' id='frostCrystalTwo'>✖</span>]<br>
-      Total 1 T [<span class='fgrey f16' id='frostCrystalThree'>✖</span>]<br>
-      Total 1 Qa [<span class='fgrey f16' id='frostCrystalFour'>✖</span>]<br>
-      Total 1 Qi [<span class='fgrey f16' id='frostCrystalFive'>✖</span>]<br>
-      Total 1 Sx [<span class='fgrey f16' id='frostCrystalSix'>✖</span>]<br>
-      Total 1 Sp [<span class='fgrey f16' id='frostCrystalSeven'>✖</span>]<br>
-      Total 1 Oct [<span class='fgrey f16' id='frostCrystalEight'>✖</span>]<br>
-      Total 1 Non [<span class='fgrey f16' id='frostCrystalNine'>✖</span>]<br>
-      Total 1 Dec [<span class='fgrey f16' id='frostCrystalTen'>✖</span>]
+    Total 10 [<span class='fgrey f16' id='antiMatterOne'>✖</span>]<br>
+    Total 25 [<span class='fgrey f16' id='antiMatterTwo'>✖</span>]<br>
+    Total 50 [<span class='fgrey f16' id='antiMatterThree'>✖</span>]<br>
+    Total 100 [<span class='fgrey f16' id='antiMatterFour'>✖</span>]<br>
+    Total 250 [<span class='fgrey f16' id='antiMatterFive'>✖</span>]<br>
+    Total 500 [<span class='fgrey f16' id='antiMatterSix'>✖</span>]<br>
+    Total 1 K [<span class='fgrey f16' id='antiMatterSeven'>✖</span>]<br>
+    Total 2.5 K [<span class='fgrey f16' id='antiMatterEight'>✖</span>]<br>
+    Total 5 K [<span class='fgrey f16' id='antiMatterNine'>✖</span>]<br>
+    Total 10 K [<span class='fgrey f16' id='antiMatterTen'>✖</span>]
     `,
     unlocked: 0,
     ach: {

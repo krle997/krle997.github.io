@@ -47,11 +47,9 @@ Game.Modals = {
   settingsModal: {
     name: `Settings`,
     content: `
-      <div class='miner-container'>
         <p class='fwhite'>Game</p>
         <div class='modal-btn' onclick='muteSounds()'>Sounds: <span class='fblue' id='sounds'></span></div>
         <div class='modal-btn' onclick='changeFps()'>FPS: <span class='fblue' id='fps'></span></div>
-      </div>
       <div class='modal-btn' onclick='closeModal("settings")'>Close</div>
     `
   },
@@ -119,44 +117,31 @@ Game.Modals = {
     name: 'Donate',
     content: `
       <div class='character-modal'>
-        <div class='microverse fgrey'>
-          <p>You can directly support me by donating your processor power.
-          You will be mining <a href='https://getmonero.org/'>Monero</a> on the blockchain
-          for me while you play, and be rewarded some <span class='fblue'>Frost Crystals</span>
-          in return. You can spend them in the store. You can choose how much cores and power you
-          want to use when mining. Generaly everything below 2 Cores 30% is OK, but going above might
-          cause your game, and even PC to lag</p>
-          Total Hashes: <span class='fwhite f16' id='totalHashes'></span><br>
-          Total speed: <span class='fwhite f16' id='hashes'></span> Hs/s<br></span>
-          <div class='modal-btn' onclick='minerUtilBtn()'>Utilization: <span class='fblue' id='util'>50%</span></div>
-          <div class='modal-btn' onclick='minerCoresBtn()'>Cores: <span class='fblue' id='cores'>1</span></div>
-          <div class='modal-btn' onclick='minerBtn()'><span id='minerBtn'>Start</span></div>
-        </div>
-        <div class='totals fgrey'>
+        <span class='fgrey'>
           <p>You can also donate any crypto-currency listed below. Just click on the image
           to get the crypto address copied to your clipboard!</p>
 
           <div class='donate-wrapper'>
             <div class='donate-img'>
-              <img src='img/donate/bitcoin.png' onclick='setClipboard("1PMTd3ZXwZNBVynUErSxNgYReeLePKMumz")'/>
+              <img src='img/donate/bitcoin.png' onclick='setClipboard("1CqcXyy56y69HMuCrxKm9mi2Nr8PA7CCjN")'/>
             </div>
             <div class='donate-img'>
-              <img src='img/donate/ethereum.png' onclick='setClipboard("0xF83888B5E136BA8a85356bD4B2F302B1570F78EB")'/>
+              <img src='img/donate/ethereum.png' onclick='setClipboard("0x819BAD37E98c5Ba3bFDc53391C35384D27Cf1aFE")'/>
             </div>
             <div class='donate-img'>
-              <img src='img/donate/litecoin.png' onclick='setClipboard("LdHiktKyw8JmQZaw1Kn7Cvm9hsQmjbrz3o")'/>
+              <img src='img/donate/litecoin.png' onclick='setClipboard("LTd9CvqSpzb84oXBAEq1VdCchCoA772YKp")'/>
             </div>
             <div class='donate-img'>
-              <img src='img/donate/dash.png' onclick='setClipboard("XiTFStfgr1mLyrshAP6GGjSqaDdnK2Ynwk")'/>
+              <img src='img/donate/dash.png' onclick='setClipboard("XuHh2fNLJnCfMgVJCc74NLrthyf8vg9F5R")'/>
             </div>
             <div class='donate-img'>
-              <img src='img/donate/ethereumClassic.png' onclick='setClipboard("0xfaD02f6A4d6188B9BC877C7D344743CF5C5f160E")'/>
+              <img src='img/donate/ethereumClassic.png' onclick='setClipboard("0x566f35939De713e03FCB01F6D38945290c86F3c6")'/>
             </div>
             <div class='donate-img'>
-              <img src='img/donate/decred.png' onclick='setClipboard("DsbRFuGeqnjZLmB7LN74VoVnc53Xbb8s5Yj")'/>
+              <img src='img/donate/decred.png' onclick='setClipboard("DsgzXGSdsv4dSHaYTPF4FsdopjFCXzbJD18")'/>
             </div>
           </div>
-        </div>
+        </span>
       </div>
       <div class='modal-btn' onclick='closeModal("donate")'>Close</div>
     `
