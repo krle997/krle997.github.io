@@ -15,6 +15,7 @@ Game.Ascensions = {
     ore: {
       id: 'titanium',
       lv: 1,
+      prog: 0,
       hp: 10,
       baseHp: 10,
       maxHp: 0,
@@ -30,10 +31,11 @@ Game.Ascensions = {
     Having some in stash surely wont go to waste`,
     isCurrent: false,
     ascendTo: false,
-    req: 100,
+    req: 50,
     ore: {
       id: 'plutonium',
       lv: 1,
+      prog: 0,
       hp: 1e6,
       baseHp: 1e6,
       maxHp: 0,
@@ -51,6 +53,7 @@ Game.Ascensions = {
     ore: {
       id: 'chrysonite',
       lv: 1,
+      prog: 0,
       hp: 1e6,
       baseHp: 1e6,
       maxHp: 0,
@@ -66,6 +69,7 @@ Game.Ascensions = {
     ore: {
       id: 'armadium',
       lv: 1,
+      prog: 0,
       hp: 1e12,
       baseHp: 1e12,
       maxHp: 0,
@@ -84,6 +88,7 @@ Game.Ascensions = {
     ore: {
       id: 'solanium',
       lv: 1,
+      prog: 0,
       hp: 1e12,
       baseHp: 1e12,
       maxHp: 0,
@@ -102,6 +107,7 @@ Game.Ascensions = {
     ore: {
       id: 'hawkingRadiation',
       lv: 1,
+      prog: 0,
       hp: 1e12,
       baseHp: 1e12,
       maxHp: 0,
@@ -117,7 +123,7 @@ function generateAscensions() {
     let item = Game.Ascensions[key];
     let ore = item.ore;
     let content = `
-      <div class='item' id='${key}'>
+      <div class='sidebar-item' id='${key}'>
         <img src='img/ascencion/${key}.png' id='${key}Img'/>
         <div class='tooltip item-tooltip'>
           <div class='tooltip-lv'>
@@ -145,13 +151,8 @@ function generateAscensions() {
 function generateOreStats() {
 	let content = `
     Ore Max Hp: <span class='fwhite f16' id='oreMaxHp'></span><br/>
-    Ore Lv: <span class='fwhite f16' id='oreLv'></span><br/>
     Ore Armor: <span class='fwhite f16' id='oreArmor'></span><br/>
-    Effective Armor: <span class='fwhite f16' id='effectiveArmor'></span><br/>
-    Chance to drop <span class='fpurple'>Dark Matter</span>: <span class='fwhite f16'>10%</span><br/>
-    XP per Lv: <span class='fwhite f16'>+1</span><hr/>
-    <span class='fwhite f16' id='currentPlanet'></span> |
-    <span class='fwhite f16' id='oreName'></span>
+    Effective Armor: <span class='fwhite f16' id='effectiveArmor'></span>
 	`;
 
 	elem('oreStats').innerHTML = content;
@@ -271,8 +272,6 @@ function ascend(key) {
     connected = true;
 
     elem('oreImg').src = `img/${ore.id}Ore.png`;
-    elem('currentPlanet').innerHTML = item.name;
-    elem('oreName').innerHTML = ore.id;
     elem('oreLv').innerHTML = ore.lv;
     elem('oreArmor').innerHTML = nFormat(ore.armor);
     elem('effectiveArmor').innerHTML = nFormat(effArmor);
@@ -312,7 +311,7 @@ function updateAscensions() {
   if(Game.Inventory.darkMatter.amount >= 0)
     unlockEarth();
 
-  if(Game.Inventory.darkMatter.amount >= 100)
+  if(Game.Inventory.darkMatter.amount >= 50)
     unlockGrudnock();
 
   if(Game.Inventory.darkMatter.amount >= 500)

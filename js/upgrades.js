@@ -197,12 +197,17 @@ function generateUpgrades() {
   				<div class='tooltip-lv'>
   					<canvas id='${key}Bar' width='64' height='64'></canvas>
   				</div>
-          <div class='tooltip-content fgrey f12'>
-            <span class='fwhite'>${item.name}</span><hr/>
-            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'/><br/>
-            DPS: <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'/><br/>
-            Per Lv: <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'/><br/>
-            Total: <span class='fwhite f16' id='${key}ofTotal'></span><hr/>
+          <div class='tooltip-header fgrey'>
+            <span class='fwhite'>${item.name}</span><br/>
+            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'/><hr/>
+          </div>
+          <div class='tooltip-content fgrey fcenter f12'>
+            <div class='fcenter'>
+              DPS: <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'/><br/>
+              Per Lv: <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'/><br/>
+              % of total: <span class='fwhite f16' id='${key}ofTotal'></span>
+              <span id='${key}Avb'></span>
+            </div><br>
             <span class='f10'>${item.info}</span>
   				</div>
         </div>

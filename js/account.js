@@ -5,9 +5,19 @@ Game.Account = {
 	character: {
 		name: 'Character',
 		info: `
-			<span class='fgrey f10'>
-				Every time your character levels up, you will receive one random Mastery Lv<br>
-			</span>
+			<div class='fgrey f10'>
+				Time Played: <span class='fwhite f12' id='timePlayed'></span><br/>
+				Total Clicks: <span class='fwhite f12' id='clicksTotal'></span><br/>
+				Total Critical Hits: <span class='fwhite f12' id='critHitsTotal'></span><br/>
+				Total Titanium: <span class='fwhite f12' id='titaniumTotal'></span><br/>
+				Total Plutonium: <span class='fwhite f12' id='plutoniumTotal'></span><br/>
+				Total Chrysonite: <span class='fwhite f12' id='chrysoniteTotal'></span><br/>
+				Total Armadium: <span class='fwhite f12' id='armadiumTotal'></span><br/>
+				Total Solanium: <span class='fwhite f12' id='solaniumTotal'></span><br/>
+				Total Singularity: <span class='fwhite f12' id='hawkingradiationTotal'></span><br/>
+				Total Anti Matter: <span class='fwhite f12' id='antiMatterTotal'></span><br/>
+				Total Frost Crystal: <span class='fwhite f12' id='frostCrystalTotal'></span>
+			</div>
 		`,
 		misc: `XP: <span class='fwhite f16' id='charXp'></span>`,
 		onclick: 'openModal("character")',
@@ -74,15 +84,14 @@ function generateAccount() {
 		let misc = Game.Account[key].misc;
 
 		let content = `
-	    <div class='item' id='${key}' onclick='${acc.onclick}'>
-	      <img src='img/character/${key}.png'/>
-	      <div class='tooltip item-tooltip'>
+	    <div class='sidebar-item' id='${key}'>
+	      <img src='img/character/${key}.png' onclick='${acc.onclick}'/>
+	      <div class='tooltip stat-tooltip'>
 					<div class='tooltip-lv'>
-						<img class='hidden' src='img/character/${key}.png'/ id='${key}Canvas'>
 						<canvas id='${key}Bar' width='64' height='64'></canvas>
 					</div>
 	        <div class='tooltip-content fgrey'>
-						<span class='fwhite'>${name}</span><hr/>
+						<span class='fwhite'>${name}</span><br>
 						${misc}<hr/>
 						${info}
 					</div>
@@ -90,7 +99,44 @@ function generateAccount() {
 	    </div>
 	  `;
 
-		elem('accountItems').innerHTML += content;
+		elem('accountBoxes').innerHTML += content;
+	}
+}
+
+Game.Donate = {
+	bitcoin: {
+		name: 'Donate Bitcoin',
+		addr: '1CqcXyy56y69HMuCrxKm9mi2Nr8PA7CCjN'
+	},
+	ethereum: {
+		name: 'Donate Ethereum',
+		addr: '0x819BAD37E98c5Ba3bFDc53391C35384D27Cf1aFE'
+	},
+	litecoin: {
+		name: 'Donate Litecoin',
+		addr: 'LTd9CvqSpzb84oXBAEq1VdCchCoA772YKp'
+	}
+}
+
+function generateDonate() {
+	for(key in Game.Donate) {
+		let name = Game.Donate[key].name;
+		let addr = Game.Donate[key].addr;
+
+		let content = `
+			<div class='sidebar-item'>
+				<img src='img/donate/${key}.png' onclick='setClipboard("${addr}")'/>
+				<div class='tooltip stat-tooltip'>
+					<div class='tooltip-content'>
+						<span class='fwhite f12'>${name}</span><hr>
+						<span class='fgrey f10'>Click on the image to get my address copied to your clipboard</span><br>
+						<span class='fwhite f16'>Thank You!</span>
+					</div>
+				</div>
+			</div>
+		`;
+
+		elem('donateBoxes').innerHTML += content;
 	}
 }
 /*===========================================================

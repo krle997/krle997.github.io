@@ -27,77 +27,93 @@
 
 <body>
   <div class='game'>
-
-    <div class='stats-col'>
-      <div class='stats-wrapper'>
+    <div class='sidebar-left'>
+      <div class='sidebar-wrapper'>
 
         <div class='panel'>
-          <div class='panel-content' id='damageStats'></div>
-          <div class='panel-header'>Damage</div>
+          <div class='sidebar-content' id='accountBoxes'></div>
+          <div class='panel-header fwhite'>Account</div>
         </div>
 
         <div class='panel'>
-          <div class='panel-content' id='inventoryStats'></div>
-          <div class='panel-header'>Inventory</div>
-        </div>
-
-        <div class='panel'>
-          <div class='notificationS' id='staticNotifications'></div>
-          <div class='panel-header'>Notifications</div>
+          <div class='sidebar-content' id='donateBoxes'></div>
+          <div class='panel-header fwhite'>Donate</div>
         </div>
 
       </div>
     </div>
 
-    <div class='ore-col'>
-      <div class='ore-wrapper'>
+    <div class='game-left'>
+      <div class='stat-wrapper'>
+
+        <div class='panel'>
+          <div class='stat-content' id='damageStats'></div>
+          <div class='panel-header fwhite'>Damage</div>
+        </div>
+
+        <div class='panel'>
+          <div class='stat-content' id='inventoryStats'></div>
+          <div class='panel-header fwhite'>Inventory</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class='game-mid'>
+      <div class='game-mid-wrapper'>
 
         <div class='panel'>
           <div class='ore-img' id='resourceContainer'>
             <img draggable="false" id='oreImg'/>
           </div>
+        </div>
 
-          <div class='ore-hpbar'>
-            <div class='hp-num fgrey'><span class='fwhite f16' id='oreHp'></span> Hp</div>
-            <div class='hp-bar'><div class='ore-hp' id='oreHpBar'></div></div>
-          </div>
+        <div class='panel'>
+          <div class='display'>
+            <div class='display-lv fgrey'>Lv <span class='fwhite f16' id='oreLv'></span></div>
+            <div class='display-hp fgrey'><span class='fwhite f16' id='oreHp'></span> Hp</div>
+            <div class='display-hpbar'><div class='ore-hp' id='oreHpBar'></div></div>
+            <div class='lv-progress-bar'><div class='lv-progress' id='lvProgress'></div></div>
 
-          <div class='ore-infobox'>
-              <div class='infobox-content fgrey' id='oreStats'></div>
+            <div class='tooltip hp-tooltip'>
+              <div class='tooltip-content fgrey f12'>
+                <div class='infobox-content fgrey fcenter' id='oreStats'></div>
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
     </div>
 
-    <div class='item-col'>
+    <div class='game-right'>
       <div class='item-wrapper'>
 
-        <div class='panel' onclick='expand("accountItems")'>
-          <div class='panel-content' id='accountItems'></div>
-          <div class='panel-header'>Account</div>
+        <div class='panel'>
+          <div class='item-content' id='upgradeItems'></div>
+          <div class='panel-header fwhite'>Upgrades</div>
         </div>
 
-        <div class='panel' onclick='expand("upgradeItems")'>
-          <div class='panel-content' id='upgradeItems'></div>
-          <div class='panel-header'>Upgrades</div>
+        <div class='panel'>
+          <div class='item-content' id='craftItems'></div>
+          <div class='panel-header fwhite'>Crafting</div>
         </div>
 
-        <div class='panel' onclick='expand("craftItems")'>
-          <div class='panel-content' id='craftItems'></div>
-          <div class='panel-header'>Crafting</div>
-        </div>
+      </div>
+    </div>
 
-        <div class='panel' onclick='expand("ascensionItems")'>
-          <div class='panel-content' id='ascensionItems'></div>
-          <div class='panel-header'>Ascensions</div>
+    <div class='sidebar-right'>
+      <div class='sidebar-wrapper'>
+
+        <div class='panel'>
+          <div class='sidebar-content' id='ascensionItems'></div>
+          <div class='panel-header fwhite'>Ascend</div>
         </div>
 
       </div>
     </div>
   </div>
 
-  <div class='context-container' id='contextContainer'></div>
   <div class='notification-container' id='notifContainer'></div>
   <div id='modalContainer'></div>
 

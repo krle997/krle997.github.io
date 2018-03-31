@@ -1,5 +1,5 @@
 /*===========================================================
-=			Edit HTML body																				=
+=			HTML, BODY																						=
 ===========================================================*/
 html, body {
 	position: relative;
@@ -10,38 +10,24 @@ html, body {
 	overflow: hidden;
 	width: 100%;
 	height: 100%;
-	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 	background-repeat: no-repeat;
 	background-position: center;
 	background-attachment: fixed;
 }
+@font-face{
+	font-family: 'conthrax';
+  src: url('font/conthrax.ttf');
+}
 /*===========================================================
-=			Edit horizontal line																	=
+=			Horizontal Line																				=
 ===========================================================*/
 hr {
 	width: 100%;
 	height: 1px;
 	border: 0;
-	background: linear-gradient(
-		90deg,
-		rgba(128, 128, 128, 1),
-		rgba(128, 128, 128, 0)
-	)
-}
-
-a {
-	text-decoration: none;
-	color: #FFFFFF;
-}
-
-a:after {
-	color: #FFFFFF;
-}
-
-a:hover {
-	color: #42A5F5;
+	background: linear-gradient(90deg, rgba(128, 128, 128, 1), rgba(128, 128, 128, 0));
 }
 /*===========================================================
 =			Misc																									=
@@ -54,65 +40,113 @@ a:hover {
 .fgreen{ color: #66BB6A; }
 .forange{ color: #FFA726; }
 .fpurple { color: #AB47BC; }
+.fcenter { text-align: center; }
 .f8 { font-size: 8px; }
 .f10 { font-size: 10px; }
 .f12 { font-size: 12px; }
 .f14 { font-size: 14px; }
 .f16 { font-size: 16px; }
 .imgFix { vertical-align: text-bottom; }
-
-@font-face{
-	font-family: 'conthrax';
-  src: url('font/conthrax.ttf');
-}
 /*===========================================================
 =					Game Row																					=
 ===========================================================*/
 .game {
 	display: grid;
+	grid-template-areas: 'sidebar-left game-left game-mid game-right sidebar-right';
 	width: 80%;
 	height: 100%;
 	margin-left: 10%;
 	margin-right: 10%;
 	padding: 0;
 	box-sizing: border-box;
-	grid-template-areas: 'stats ore items';
-	background-color: rgba(0, 0, 0, .5);
-}
-@media (max-width: 512px) {
-  .game {
-		display: grid;
-		width: 100%;
-		height: 100%;
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-		grid-template-areas: 'ore''stats''items';
-		background-color: rgba(0, 0, 0, .5);
-  }
+	background-color: rgba(0, 0, 0, .2);
 }
 /*===========================================================
 =					Game Columns																			=
 ===========================================================*/
-.stats-col {
-	grid-area: stats;
-}
-.ore-col {
-	grid-area: ore;
-}
-.item-col {
-	grid-area: items;
-}
-
-.stats-wrapper {
+.sidebar-left { grid-area: sidebar-left; }
+.game-left { grid-area: game-left; }
+.game-mid { grid-area: game-mid; }
+.game-right { grid-area: game-right; }
+.sidebar-right { grid-area: sidebar-right; }
+/*===========================================================
+=					Sidebar Left																			=
+===========================================================*/
+.sidebar-wrapper {
+	width: 124px;
+	height: auto;
 	margin: 0 auto;
 	padding: 0;
 	box-sizing: border-box;
+}
+.sidebar-content {
+	display: grid;
+	grid-template-columns: repeat(1, 1fr);
+	margin: 5px auto;
+	padding: 10px;
+	box-sizing: border-box;
+}
+.sidebar-item {
+	position: relative;
+	width: 64px;
+	height: 64px;
+	margin: 5px auto;
+	padding: 0;
+	box-sizing: border-box;
+	cursor: pointer;
+	opacity: .5;
+	transition: opacity .3s;
+}
+.sidebar-item:hover { opacity: 1; }
+.sidebar-item:hover .tooltip { display: grid; }
+/*===========================================================
+=					Game Left																					=
+===========================================================*/
+.stat-wrapper {
 	width: 280px;
 	height: auto;
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+}
+.stat-content {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	margin: 0 auto;
+	padding: 10px;
+	box-sizing: border-box;
+}
+.stat {
+	position: relative;
+	width: 80px;
+	height: 90px;
+	cursor: pointer;
+	transition: background-color .3s;
+}
+.stat:hover { background-color: rgba(128, 128, 128, .2); }
+.stat:hover .stat-num { color: #FFFFFF; }
+.stat:hover .tooltip { display: initial; }
+
+.stat-img {
+	width: 64px;
+	height: 64px;
+	margin: 0 auto;
+	box-sizing: border-box;
 }
 
-.ore-wrapper {
+.stat-num {
+	width: 80px;
+	height: 16px;
+	padding: 5px;
+	box-sizing: border-box;
+	text-align: center;
+	color: #808080;
+	transition: color .3s;
+}
+/*===========================================================
+=					Game Mid																					=
+===========================================================*/
+.game-mid-wrapper {
 	width: 532px;
 	height: auto;
 	margin: 0 auto;
@@ -120,12 +154,77 @@ a:hover {
 	box-sizing: border-box;
 }
 
+.infobox-content {
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.ore-img {
+	position: relative;
+	width: 512px;
+	height: 512px;
+}
+
+#oreImg:hover {
+	cursor: pointer;
+}
+.ress {
+	position: absolute;
+}
+
+.floating-text {
+	position: fixed;
+	font-size: 16px;
+	font-weight: bold;
+	pointer-events: none;
+}
+/*===========================================================
+=					Game Right																				=
+===========================================================*/
 .item-wrapper {
+	width: 268px;
+	height: auto;
 	margin: 0 auto;
 	padding: 0;
 	box-sizing: border-box;
-	width: 268px;
-	height: auto;
+}
+.item-content {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	margin: 0 auto;
+	padding: 10px;
+	box-sizing: border-box;
+}
+.item {
+	position: relative;
+	width: 64px;
+	height: 64px;
+	margin: 6px;
+	box-sizing: border-box;
+	cursor: pointer;
+	border-bottom: 1px solid rgba(66, 165, 245, .3);
+	transition: background-color .3s, border-bottom .3s;
+}
+.item:hover {
+	background-color: rgba(189, 189, 189, .3);
+	border-bottom: 1px solid rgba(66, 165, 245, 1);
+}
+.item:hover .tooltip { display: grid; }
+/*===========================================================
+=			Panel																									=
+===========================================================*/
+.panel {
+	margin: 10px;
+	padding: 0;
+	border-radius: 5px;
+	box-sizing: border-box;
+	background-color: rgba(0, 0, 0, .4);
+}
+.panel-header {
+	margin: 0 auto;
+	padding: 5px;
+	box-sizing: border-box;
+	text-align: center;
 }
 /*===========================================================
 =			Achievements wrapper																	=
@@ -159,71 +258,52 @@ a:hover {
 
 .achievement:hover { box-shadow: inset 0 0 0 3px #00CCFF; }
 .achievement:hover .tooltip { display: initial; }
-
 /*===========================================================
-=			Panel																									=
+=			Health bar																						=
 ===========================================================*/
-.panel {
-	margin: 10px;
-	padding: 0;
-	border-radius: 3px;
-	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .5);
-}
-.panel-header {
+.display {
+	position: relative;
+	display: grid;
+	grid-template-areas:
+		'display-lv display-hp'
+		'display-hpbar display-hpbar'
+		'display-lv-prog display-lv-prog';
+	width: 256px;
+	height: auto;
+	margin: 0 auto;
 	padding: 10px;
 	box-sizing: border-box;
-	text-align: center;
 	cursor: pointer;
-	color: #FFFFFF;
-	border-top: 1px solid rgba(66, 165, 245, .3);
+	transition: background-color .3s ease-in-out;
 }
-.panel-content {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+.display:hover { background-color: rgba(128, 128, 128, .1); }
+.display:hover .tooltip { display: grid; }
+
+.display-lv {
+	grid-area: display-lv;
+	margin: 0;
+	padding: 10px;
+	box-sizing: border-box;
+}
+.display-hp {
+	grid-area: display-hp;
 	margin: 0 auto;
 	padding: 10px;
 	box-sizing: border-box;
 }
-.infobox-content {
-	padding: 10px;
-	box-sizing: border-box;
-}
-
-.ore-img {
-	position: relative;
-	width: 512px;
-	height: 512px;
-}
-
-#oreImg:hover {
-	cursor: pointer;
-}
-.ress {
-	position: absolute;
-	
-}
-
-.floating-text {
-	position: fixed;
-	font-size: 16px;
-	font-weight: bold;
-	pointer-events: none;
-}
-/*===========================================================
-=			Health bar																						=
-===========================================================*/
-.ore-hpbar {
-	display: grid;
-	grid-template-areas:
-		'num'
-		'bar';
-	width: 256px;
+.hp-num {
+	grid-area: num;
+	width: 100%;
 	height: auto;
-	margin: 5px auto;
+	text-align: center;
 	padding: 10px;
 	box-sizing: border-box;
-	border-bottom: 2px solid rgba(66, 165, 245, .3);
+}
+.display-hpbar {
+	grid-area: display-hpbar;
+	width: 100%;
+	height: 10px;
+	background-color: rgba(66, 165, 245, .3);
 }
 .ore-hp {
 	height: 10px;
@@ -236,66 +316,20 @@ a:hover {
 		hsl(207, 90%, 81%)
 	)
 }
-.hp-num {
-	grid-area: num;
-	width: 100%;
-	height: auto;
-	text-align: center;
-	padding: 10px;
-	box-sizing: border-box;
-}
-.hp-bar {
-	grid-area: bar;
-	width: 100%;
-	height: 10px;
-	background-color: rgba(66, 165, 245, .3);
-}
-/*===========================================================
-=			Item box																							=
-===========================================================*/
-.item {
-	position: relative;
-	width: 64px;
-	height: 64px;
-	margin: 6px;
-	box-sizing: border-box;
-	cursor: pointer;
-	border-bottom: 1px solid rgba(66, 165, 245, .3);
-	transition: background-color .3s;
-}
-.item:hover {
-	background-color: rgba(189, 189, 189, .3);
-	border-bottom: 1px solid rgba(66, 165, 245, 1);
-}
-.item:hover .tooltip { display: grid; }
-/*===========================================================
-=			Stat box																							=
-===========================================================*/
-.stat {
-	position: relative;
-	width: 80px;
-	height: 90px;
-	cursor: pointer;
-	transition: background-color .3s;
-}
 
-.stat:hover { background-color: rgba(128, 128, 128, .3); }
-.stat:hover .tooltip { display: initial; }
-
-.stat-img {
-	width: 64px;
-	height: 64px;
-	margin: 0 auto;
+.lv-progress-bar {
+	grid-area: display-lv-prog;
+	width: 90%;
+	height: 5px;
+	margin: 10px auto;
+	padding: 0;
 	box-sizing: border-box;
+	background-color: rgba(128, 128, 128, .3);
 }
-
-.stat-num {
-	width: 80px;
-	height: 16px;
-	padding: 5px;
-	box-sizing: border-box;
-	text-align: center;
-	color: #FFFFFF;
+.lv-progress {
+	height: 5px;
+	background-color: rgba(128, 128, 128, 1);
+	transition: width .3s ease-in-out;
 }
 /*===========================================================
 =			Tooltip																								=
@@ -305,19 +339,20 @@ a:hover {
 	position: absolute;
 	grid-template-columns: 64px 192px;
 	grid-template-areas:
-		'tooltip-lv tooltip-content'
-		'tooltip-misc tooltip-content';
+		'tooltip-lv tooltip-header'
+		'tooltip-content tooltip-content';
 	width: 276px;
 	height: auto;
 	margin: 0;
 	padding: 10px;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .9);
+	background-color: rgba(0, 0, 0, .8);
+	border-radius: 3px;
 	z-index: 1;
 }
 .tooltip-lv { grid-area: tooltip-lv; }
-.tooltip-content { grid-area: tooltip-content; padding: 10px; box-sizing: border-box; }
-.tooltip-misc { grid-area: tooltip-misc; }
+.tooltip-content { grid-area: tooltip-content; }
+.tooltip-header { grid-area: tooltip-header; padding: 5px; box-sizing: border-box; }
 
 .item-tooltip {
 	top: 0;
@@ -334,14 +369,13 @@ a:hover {
 	right: -93px;
 	animation: ach-tooltip-anim .3s linear;
 }
+.hp-tooltip {
+	top: 0;
+	left: 266px;
+}
 @keyframes item-tooltip-anim {
-  from {
-		right: 104px;
-		opacity: 0;
-	} to {
-		right: 84px;
-		opacity: 1;
-	}
+  from { right: 104px; opacity: 0; }
+	to { right: 84px; opacity: 1; }
 }
 @keyframes stat-tooltip-anim {
 	from {
@@ -415,25 +449,6 @@ a:hover {
 		opacity: 0;
 	}
 }
-.notificationS {
-	width: 100%;
-	height: auto;
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-}
-.static-notification {
-	width: 100%;
-	height: auto;
-	padding: 10px;
-	margin: 0;
-	color: #FFFFFF;
-	box-sizing: border-box;
-}
-.static-notification:hover {
-	background-color: rgba(128, 128, 128, .2);
-	cursor: pointer;
-}
 /*===========================================================
 =			Modal  																								=
 ===========================================================*/
@@ -479,23 +494,6 @@ a:hover {
 	padding: 10px;
 	box-sizing: border-box;
 }
-.character-modal {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-areas: 'microverse totals';
-}
-.microverse {
-	grid-area: microverse;
-	padding: 10px;
-	margin: 10px;
-	box-sizing: border-box;
-}
-.totals {
-	grid-area: totals;
-	padding: 10px;
-	margin: 10px;
-	box-sizing: border-box;
-}
 
 @keyframes animatetop {
   from { top: -100%; opacity: 0; }
@@ -521,54 +519,6 @@ a:hover {
 	border-bottom: 1px solid rgba(66, 165, 245, 1);
 	color: rgb(250, 250, 250);
 }
-
-.donate-wrapper {
-	width: 232px;
-	height: auto;
-	margin: 0 auto;
-	padding: 10px;
-	box-sizing: border-box;
-	display: grid;
-	grid-template-columns: 1fr 1fr 1fr;
-}
-.donate-img {
-	width: 64px;
-	height: 64px;
-	margin: 6px;
-	transition: all .3s;
-}
-.donate-img:hover {
-	transform: scale(1.2);
-	cursor: pointer;
-}
-
-.context-container {
-	width: 200px;
-	height: auto;
-	display: none;
-	position: fixed;
-	top: 0;
-	left: 0;
-	box-shadow: inset 0 0 0 1px #808080;
-	z-index: 1;
-	animation-name: context-animation;
-	animation-duration: .5s;
-}
-@keyframes context-animation {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-.context-item {
-	width: 100%;
-	height: 32px;
-	padding: 8px;
-	box-sizing: border-box;
-	color: #808080;
-	background-color: rgba(0, 0, 0, .7);
-	cursor: pointer;
-	transition: color .3s;
-}
-.context-item:hover { color: #00CCFF; background-color: rgba(0, 0, 0, 1); }
 /*===========================================================
 =					Animations																				=
 ===========================================================*/

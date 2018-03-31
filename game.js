@@ -13,7 +13,6 @@ var Game = {
 		hours: 0
   },
 
-  staticNotifications: {},
   resources: {}
 }
 
@@ -120,12 +119,6 @@ function loadGame() {
     Game.Account.character.xp = load('characterXp');
   }
 
-  if(load('staticNotifications')) {
-    Game.staticNotifications = load('staticNotifications');
-    for(key in Game.staticNotifications)
-      elem('staticNotifications').insertAdjacentHTML('beforeend', Game.staticNotifications[key].content);
-  }
-
 }
 /*===========================================================
 =					Generate Game																			=
@@ -135,6 +128,7 @@ function generateContent() {
 
   generateModals();
   generateAccount();
+  generateDonate();
   generateAchievements();
   generateMasteries();
   generateUpgrades();
@@ -143,7 +137,6 @@ function generateContent() {
   generateOreStats();
   generateDamage();
   generateInventory();
-  generateContextMenu();
 
   updateAccount();
   updateAchievements();
@@ -156,7 +149,6 @@ function generateContent() {
   updateDamage();
 
   muteSounds();
-	expand('upgradeItems');
 
   let gameLoopInt = setInterval(function() {
     gameLoop();
@@ -476,12 +468,21 @@ function oreClear(key) {
   let ore = Game.Ascensions[key].ore;
 
   ore.hp = 0;
+  ore.prog ++;
 
   clearInterval(doDpsINT);
 
   elem('oreImg').onclick = function () {};
   elem(ore.id + 'Num').style.animation = '';
+  elem('lvProgress').style.width = ore.prog * 10 + '%';
   save(ore.id + 'Hp', ore.hp);
+  save(ore.id + 'Prog', ore.prog);
+
+  if(ore.prog >= 10) {
+    ore.prog = 0;
+    elem('lvProgress').style.width = ore.prog * 10 + '%';
+    save(ore.id + 'Prog', ore.prog);
+  }
 
   oreLvUpTO = setTimeout(function() {
     oreLvUp(key);
@@ -692,66 +693,6 @@ function progressBar(num, key, width) {
   ctx.stroke();
 }
 /*===========================================================
-=			Generate context menu																	=
-===========================================================*/
-function generateContextMenu() {
-	let contextMenu = {
-		name: [
-			'Changelog',
-			'Wiki',
-	    'Settings',
-			'Donate'
-		],
-		onclick: [
-			'openModal("changelog")',
-			'openModal("wiki")',
-	    'openModal("settings")',
-			'openModal("donate")'
-		]
-	}
-
-	for(i = 0; i < contextMenu.name.length; i ++) {
-    let name = contextMenu.name[i];
-    let onclick = contextMenu.onclick[i];
-
-		let content = `<div class='context-item' onclick='${onclick}'>${name}</div>`;
-
-		elem('contextContainer').innerHTML += content;
-	}
-}
-/*===========================================================
-=			Open context menu							    										=
-===========================================================*/
-function contextMenu() {
-	let cursorX = event.clientX;
-	let cursorY = event.clientY;
-
-  let documentHeight = document.documentElement.getBoundingClientRect().height;
-  let documentWidth = document.documentElement.getBoundingClientRect().width;
-
-  if(documentHeight <= cursorY + 128) {
-    elem('contextContainer').style.top = cursorY - 128 + 'px';
-  } else {
-    elem('contextContainer').style.top = cursorY + 'px';
-  }
-
-  if(documentWidth <= cursorX + 200) {
-    elem('contextContainer').style.left = cursorX - 200 + 'px';
-  } else {
-    elem('contextContainer').style.left = cursorX + 'px';
-  }
-
-	elem('contextContainer').style.display = 'initial';
-
-	return false;
-}
-/*===========================================================
-=			Close context menu							    									=
-===========================================================*/
-function closeContextMenu() {
-  elem('contextContainer').style.display = 'none';
-}
-/*===========================================================
 =			Mute / unmute settings																=
 ===========================================================*/
 function muteSounds() {
@@ -801,56 +742,6 @@ function openModal(which) {
 function closeModal(which) {
   elem(which + 'Modal').style.display = 'none';
 }
-/*===========================================================
-=			Expand Items																					=
-===========================================================*/
-function expand(which) {
-	let panels = [
-		'accountItems',
-		'upgradeItems',
-		'craftItems',
-		'ascensionItems'
-	]
-
-	for(i = 0; i < panels.length; i ++) {
-    let id = panels[i];
-		elem(id).style.display = 'none';
-	}
-
-	elem(which).style.display = 'grid';
-}
-/*===========================================================
-=         Generate Static Notification                      =
-===========================================================*/
-function generateStaticNotification(id, text) {
-	return {
-    content: `<div class='static-notification' id='static${id}' onclick='discardStaticNotification(${id})'>${text}</div>`
-  }
-}
-/*===========================================================
-=         Create Static Notification                        =
-===========================================================*/
-function staticNotification(text) {
-  let id = Math.random();
-  Game.staticNotifications[id] = generateStaticNotification(id, text);
-
-  elem('staticNotifications').insertAdjacentHTML('beforeend', Game.staticNotifications[id].content);
-  save('staticNotifications', Game.staticNotifications);
-}
-/*===========================================================
-=         Discard Static Notification                       =
-===========================================================*/
-function discardStaticNotification(id) {
-  elem('static' + id).parentNode.removeChild(elem('static' + id));
-  delete Game.staticNotifications[id];
-  save('staticNotifications', Game.staticNotifications);
-
-  if(!Game.muted) {
-    let sound = new Audio('sounds/click.mp3');
-    sound.play();
-  }
-}
-
 
 var notifCount = 0;
 var letMe;
@@ -919,17 +810,6 @@ function setUsername() {
 
 	document.getElementById("displayuser").innerHTML = "Welcome back, <span class=\"fblue\">" + game.userName + "</span>";
 }
-/*===========================================================
-=			Context menu event listener      		             			=
-===========================================================*/
-window.addEventListener('contextmenu', function(i) {
-    i.preventDefault();
-    contextMenu();
-}, false)
-/*===========================================================
-=			HTML onclick?      						                  			=
-===========================================================*/
-window.onclick = function() { closeContextMenu(); }
 /*===========================================================
 =			HTML onload?      					       	             			=
 ===========================================================*/

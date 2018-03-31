@@ -33,17 +33,27 @@ Game.Inventory = {
 		amount: 0
 	},
 	antiMatter: {
-		name: 'Anti Matter',
+		name: `
+						Anti Matter<br>
+						<span class='fgrey f12'>Drop Rate:</span> <span class='fwhite f14'>5%</span>
+					`,
 		info: `Collect <span class='fblue'>Anti Matter</span> to craft various items and boost your progress`,
 		amount: 0
 	},
 	frostCrystal: {
-		name: 'Frost Crystal',
-		info: `Collect <span class='fblue'>Frost Crystals</span> to craft special items during <span class='fwhite'>multiplayer</span> events (Multiplayer is yet to be scripted)`,
+		name: `
+						Frost Crystal<br>
+						<span class='fgrey f12'>Drop Rate:</span> <span class='fwhite f14'>0.1%</span>
+					`,
+		info: `Collect <span class='fblue'>Frost Crystals</span> to craft special items during
+					<span class='fwhite'>multiplayer</span> events (Multiplayer is yet to be scripted)`,
 		amount: 0
 	},
 	darkMatter: {
-		name: 'Dark Matter',
+		name: `
+						Dark Matter<br>
+						<span class='fgrey f12'>Drop Rate:</span> <span class='fwhite f14'>10%</span>
+					`,
 		info: `<span class='fpurple'>Dark Matter</span> is a very powerful element.
 					It can bend space-time, alowing you to travel to distant planets faster than the speed of light`,
 		amount: 0
@@ -100,6 +110,4 @@ function updateInventory() {
 
     elem(key + 'Amount').innerHTML = nFormat(item.amount);
   }
-
-	elem('frostCrystalAmount').innerHTML = Game.Inventory.frostCrystal.amount.toFixed(3);
 }

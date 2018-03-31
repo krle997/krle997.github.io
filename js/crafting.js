@@ -54,18 +54,21 @@ function generateCrafting() {
 
     let craft = `
       <div class='hidden' id='${key}' onclick='craft("${key}")'>
-        <img src='img/crafting/${key}.png' id='${key}Img'/>
+        <img src='img/crafting/${key}.png' id='${key}Img'>
         <div class='tooltip item-tooltip'>
           <div class='tooltip-lv'>
             <canvas id='${key}Bar' width='64' height='64'></canvas>
           </div>
-          <div class='tooltip-misc'>
-            <span id='${key}Avb'></span>
+          <div class='tooltip-header fgrey f10'>
+            <span class='fwhite f12'>${item.name}</span><br>
+            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/antimatter16.png'><br>
+            <span id='${key}Avb'></span><hr>
           </div>
           <div class='tooltip-content fgrey f12'>
-            <span class='fwhite'>${item.name}</span><hr/>
-            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/antimatter16.png'/><br/>
-            Boost: <span class='fwhite f16' id='${key}Bonus'></span> <img class='imgFix' src='img/character/dps16.png'/><hr/>
+            <div class='fcenter'>
+              Boost: <span class='fwhite f16' id='${key}Bonus'></span> <img class='imgFix' src='img/character/dps16.png'/><br>
+
+            </div><br>
             <span class='f10'>${item.info}</span>
           </div>
         </div>
@@ -136,7 +139,7 @@ function canCraft() {
       elem(key + 'Img').style.opacity = '1';
       elem(key).style.cursor = 'pointer';
     } else if(!item.status && inv.antiMatter.amount <= item.cost) {
-      elem(key + 'Avb').innerHTML = 'Unavailable';
+      elem(key + 'Avb').innerHTML = 'Not enough resources';
       elem(key + 'Avb').className = 'f8 fred';
       elem(key + 'Img').style.opacity = '.2';
       elem(key).style.cursor = 'not-allowed';
