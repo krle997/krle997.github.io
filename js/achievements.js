@@ -361,7 +361,7 @@ function updateAchievements() {
       }
 
       let width = Game.Achievements[key].unlocked * 100 / 10;
-      progressBar(Game.Achievements[key].unlocked, key, width);
+      progressBar(key, width);
     }
   }
 }

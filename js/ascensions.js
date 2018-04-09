@@ -4,7 +4,7 @@
 Game.Ascensions = {
   earth: {
     name: 'Earth',
-    info: `Earth was inhabited by humans, who went extinct
+    info: `Earth was inhabited by humans, who were extinct
     millions of years ago. The planet has been abbandoned
     ever since, and there are very little leftovers of the
     unfortunate civilization. But there are lots of Titanium
@@ -13,13 +13,16 @@ Game.Ascensions = {
     ascendTo: true,
     req: 0,
     ore: {
+      name: 'Titanium',
       id: 'titanium',
       lv: 1,
       prog: 0,
       hp: 10,
       baseHp: 10,
       maxHp: 0,
-      armor: 0
+      armor: 0,
+      antiMatterRate: 50,
+      darkMatterRate: 10
     }
   },
   grudnock: {
@@ -27,91 +30,106 @@ Game.Ascensions = {
     info: `Grudnock has everything a planet needs to support
     life, however there are no signs of any living being
     ever forming here. Just pure, untouched nature, and
-    loads of Plutonium Veins. They are tough, but also rare.
+    loads of Plutonium ores. They are tough, but also rare.
     Having some in stash surely wont go to waste`,
     isCurrent: false,
     ascendTo: false,
     req: 50,
     ore: {
+      name: 'Plutonium',
       id: 'plutonium',
       lv: 1,
       prog: 0,
       hp: 1e6,
       baseHp: 1e6,
       maxHp: 0,
-      armor: 10000
+      armor: 10000,
+      antiMatterRate: 55,
+      darkMatterRate: 12
     }
   },
   tetherus: {
     name: 'Tetherus',
     info: `Tetherus is a Gas Giant. Nothing can ever form here except the chaotic
-    environment. But Tetherus rings asteroids contain some Chrysonite, and that's
-    what we're after.`,
+    environment. But Tetherus ring asteroids contain some Chrysonite, and that's
+    what you're after`,
     isCurrent: false,
     ascendTo: false,
     req: 500,
     ore: {
+      name: 'Chrysonite',
       id: 'chrysonite',
       lv: 1,
       prog: 0,
       hp: 1e6,
       baseHp: 1e6,
       maxHp: 0,
-      armor: 10000
+      armor: 10000,
+      antiMatterRate: 60,
+      darkMatterRate: 14
     }
   },
   gazorpazorp: {
     name: 'Gazorpazorp',
-    info: `Gazorpazorp Info`,
+    info: `1 year of coding, Morty! Only 11 more years to go Moooor*buuuurp*ty!!`,
     isCurrent: false,
     ascendTo: false,
     req: 2500,
     ore: {
+      name: 'Armadium',
       id: 'armadium',
       lv: 1,
       prog: 0,
       hp: 1e12,
       baseHp: 1e12,
       maxHp: 0,
-      armor: 1e6
+      armor: 1e6,
+      antiMatterRate: 65,
+      darkMatterRate: 16
     }
   },
   xeln: {
     name: 'Xeln',
-    info: `Xeln is completely covered with water. Nobody was probably ever here
+    info: `Xeln is completely covered in water. Nobody ever visited here
     before you. Who'd want to visit a planet covered with water anyway? Well, lucky for
-    us, hiding in the endless planets ocean are Solanium ores. Solanium is very extremely
-    rare, and we're in luck nobody bothered to visit this planet before us.`,
+    you, there are Solanium ores burried deep in the bottom of the ocean. Solanium is very extremely
+    rare, and we're in luck nobody bothered to visit this planet before us`,
     isCurrent: false,
     ascendTo: false,
     req: 10000,
     ore: {
+      name: 'Solanium',
       id: 'solanium',
       lv: 1,
       prog: 0,
       hp: 1e12,
       baseHp: 1e12,
       maxHp: 0,
-      armor: 1e6
+      armor: 1e6,
+      antiMatterRate: 70,
+      darkMatterRate: 18
     }
   },
   blackhole: {
     name: 'Black Hole',
     info: `Black Holes still remain a mystery to this day. Destroying one
-    is almost impossible, but stress it enough, and it radiates away
-    Hawkings Radiation. Nobody can yet decode it, and there are very few who
-    can even obtain it.`,
+    is almost impossible. If you manage to break it, you will find
+    Singularity in it's core. Nobody can yet decode it, and there are
+    very few who can obtain it`,
     isCurrent: false,
     ascendTo: false,
     req: 25000,
     ore: {
+      name: 'Singularity',
       id: 'hawkingRadiation',
       lv: 1,
       prog: 0,
       hp: 1e12,
       baseHp: 1e12,
       maxHp: 0,
-      armor: 1e6
+      armor: 1e6,
+      antiMatterRate: 75,
+      darkMatterRate: 20
     }
   }
 }
@@ -122,21 +140,30 @@ function generateAscensions() {
 	for(key in Game.Ascensions) {
     let item = Game.Ascensions[key];
     let ore = item.ore;
+
     let content = `
       <div class='sidebar-item' id='${key}'>
         <img src='img/ascencion/${key}.png' id='${key}Img'/>
-        <div class='tooltip item-tooltip'>
+        <div class='tooltip item-tooltip fgrey f10'>
           <div class='tooltip-lv'>
             <canvas id='${key}Bar' width='64' height='64'></canvas>
           </div>
-          <div class='tooltip-misc'>
-            <div class='col-full f10' id='${key}Avb'></div>
+          <div class='tooltip-header'>
+            <span class='fwhite f12'>${item.name}</span><hr>
           </div>
-          <div class='tooltip-content fgrey'>
-            <span class='fwhite'>${item.name}</span><hr/>
-            Req: <span class='fwhite f16' id='${key}Req'></span> <img class='imgFix' src='img/inv/darkMatter16.png'/><br/>
-            Lv: <span class='fwhite f16' id='${key}Lv'></span> <img class='imgFix' src='img/inv/${ore.id}16.png'/><hr/>
-            <span class='f10'>${item.info}</span>
+          <div class='tooltip-content'>
+            <div class='fcenter'>
+              Requires: <span class='fwhite f16' id='${key}Req'></span> <img class='imgFix' src='img/inv/darkMatter16.png'><br><br>
+              Ore:<br>
+              <span class='fgreen'>${ore.name}</span> <img class='imgFix' src='img/inv/${ore.id}16.png'> Lv <span class='fwhite f16' id='${key}Lv'></span><br><br>
+              Drop rates per Lv:<br>
+              <span class='fblue'>Anti Matter</span> <img src='img/inv/antiMatter16.png' class='imgFix'> <span class='fwhite f16'>${ore.antiMatterRate}%</span><br>
+              <span class='fpurple'>Dark Matter</span> <img src='img/inv/darkMatter16.png' class='imgFix'> <span class='fwhite f16'>${ore.darkMatterRate}%</span>
+            </div><br>
+            <div>${item.info}</div><br>
+            <div class='fcenter'>
+              <span id='${key}Avb'></span>
+            </div>
           </div>
         </div>
       </div>
@@ -150,9 +177,10 @@ function generateAscensions() {
 ===========================================================*/
 function generateOreStats() {
 	let content = `
-    Ore Max Hp: <span class='fwhite f16' id='oreMaxHp'></span><br/>
-    Ore Armor: <span class='fwhite f16' id='oreArmor'></span><br/>
-    Effective Armor: <span class='fwhite f16' id='effectiveArmor'></span>
+    Ore Max Hp: <span class='fwhite f16' id='oreMaxHp'></span><br>
+    Ore Armor: <span class='fwhite f16' id='oreArmor'></span><br>
+    Effective Armor: <span class='fwhite f16' id='effectiveArmor'></span><hr>
+    Mine ores to receive loot. Clearing the entire Lv sometimes drops special loot.
 	`;
 
 	elem('oreStats').innerHTML = content;
@@ -259,15 +287,12 @@ function ascend(key) {
 
     canAscend();
     healthBar(key);
+    oreProgressBar(key);
 
-    clearTimeout(oreLvUpTO);
-    clearInterval(doDpsINT);
+    clearTimeout(oreClearTO);
 
-    doDpsINT = setInterval(function() {
-      doDps(key);
-    }, 1000 / Game.fps)
-
-    elem('oreImg').onclick = function() { doDpc(key); }
+    stopDamage();
+    startDamage(key);
 
     connected = true;
 
@@ -288,18 +313,18 @@ function canAscend() {
 
     if(item.req > inv.amount) {
       elem(key + 'Avb').innerHTML = 'Locked';
-      elem(key + 'Avb').className = 'col-full f10 fred';
-      elem(key + 'Img').style.opacity = '.5';
+      elem(key + 'Avb').className = 'fred f10';
+      elem(key + 'Req').className = 'fred f16';
       elem(key).style.cursor = 'not-allowed';
     } else if(!item.isCurrent && item.req <= inv.amount) {
       elem(key + 'Avb').innerHTML = 'Click to ascend';
-      elem(key + 'Avb').className = 'col-full f10 fwhite';
-      elem(key + 'Img').style.opacity = '1';
+      elem(key + 'Avb').className = 'fwhite f10';
+      elem(key + 'Req').className = 'fwhite f16';
       elem(key).style.cursor = 'pointer';
     } else if(item.isCurrent && item.req <= inv.amount) {
       elem(key + 'Avb').innerHTML = 'You are here';
-      elem(key + 'Avb').className = 'col-full f10 fblue';
-      elem(key + 'Img').style.opacity = '1';
+      elem(key + 'Avb').className = 'fblue f10';
+      elem(key + 'Req').className = 'fwhite f16';
       elem(key).style.cursor = 'not-allowed';
     }
   }
@@ -329,13 +354,13 @@ function updateAscensions() {
   for(key in Game.Ascensions) {
     let item = Game.Ascensions[key];
     let ore = item.ore;
-    let inv = Game.Inventory.darkMatter;
+    let inv = Game.Inventory;
 
-    let width = inv.amount * 100 / item.req;
-    if(item.req <= inv.amount)
-      progressBar('✔', key, width);
+    let width = inv.darkMatter.amount * 100 / item.req;
+    if(item.req <= inv.darkMatter.amount)
+      progressBar(key, width);
     else
-      progressBar(inv.amount, key, width);
+      progressBar(key, width);
 
     if(item.isCurrent) {
       ascend(key);
@@ -345,5 +370,6 @@ function updateAscensions() {
     elem(key + 'Lv').innerHTML = ore.lv;
   }
 
+  progressBar('earth', 100);
   canAscend();
 }

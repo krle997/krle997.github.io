@@ -3,33 +3,30 @@
 ===========================================================*/
 Game.Account = {
 	character: {
-		name: 'Character',
-		info: `
-			<div class='fgrey f10'>
-				Time Played: <span class='fwhite f12' id='timePlayed'></span><br/>
-				Total Clicks: <span class='fwhite f12' id='clicksTotal'></span><br/>
-				Total Critical Hits: <span class='fwhite f12' id='critHitsTotal'></span><br/>
-				Total Titanium: <span class='fwhite f12' id='titaniumTotal'></span><br/>
-				Total Plutonium: <span class='fwhite f12' id='plutoniumTotal'></span><br/>
-				Total Chrysonite: <span class='fwhite f12' id='chrysoniteTotal'></span><br/>
-				Total Armadium: <span class='fwhite f12' id='armadiumTotal'></span><br/>
-				Total Solanium: <span class='fwhite f12' id='solaniumTotal'></span><br/>
-				Total Singularity: <span class='fwhite f12' id='hawkingradiationTotal'></span><br/>
-				Total Anti Matter: <span class='fwhite f12' id='antiMatterTotal'></span><br/>
-				Total Frost Crystal: <span class='fwhite f12' id='frostCrystalTotal'></span>
+		name: `<span class='fwhite f12'>Character</span> Lv <span class='fwhite f16' id='charLv'></span>`,
+		tooltipContent: `
+			<div class='fcenter'>
+				XP: <span class='fwhite f16' id='charXp'></span><br>
+				Time Played: <span class='fwhite f16' id='timePlayed'></span><br>
+				Total Clicks: <span class='fwhite f16' id='clicksTotal'></span><br>
+				Total Critical Hits: <span class='fwhite f16' id='critHitsTotal'></span>
+			</div><br>
+			<div class='fcenter'>
+				<span class='fwhite'>Click to view profile</span>
 			</div>
 		`,
-		misc: `XP: <span class='fwhite f16' id='charXp'></span>`,
 		onclick: 'openModal("character")',
-		lv: 0,
-		xp: 0,
-		xpReq: 30,
-		dps: 0,
-		dpc: 0,
-		increment: 0,
-		critChance: 0,
-		critHit: false,
-		armorPen: 0,
+		stats: {
+			lv: 0,
+			xp: 0,
+			xpReq: 30,
+			dps: 0,
+			dpc: 0,
+			increment: 0,
+			critChance: 0,
+			critHit: false,
+			armorPen: 0
+		},
 		total: {
 			clicks: 0,
 			critHits: 0,
@@ -44,33 +41,49 @@ Game.Account = {
 	  }
 	},
 	achievements: {
-		name: 'Achievements',
-		info: `
-			<span class='fgrey f10'>
-				Achievements indicate a milestone that you have reached. Unlocking
-				all of the achievements in the same category also gives you a permanentl
-				boost to your stats.
-			</span>
+		name: `<span class='fwhite f12'>Achievements</span>`,
+		tooltipContent: `
+			<div class='fcenter'>
+				Unlocked: <span class='fwhite f16' id='charAch'></span>
+			</div><br>
+			<div>
+				Achievements indicate a milestone that you have completed.
+				Completing the entire achievement tree unlocks new avatars
+				for your character
+			</div><br>
+			<div class='fcenter'>
+				<span class='fwhite'>Click to view achievements</span>
+			</div>
 		`,
-		misc: `Unlocked: <span class='fwhite f16' id='charAch'></span>`,
-		unlocked: 0,
-		onclick: 'openModal("achievements")'
+		onclick: 'openModal("achievements")',
+		unlocked: 0
 	},
 	masteries: {
-		name: 'Masteries',
-		info: `
-			<span class='fgrey f10'>
-				Masteries are split into four categories:<br>
-				- <span class='fgreen f12'>Common</span><br>
-				- <span class='fblue f12'>Rare</span><br>
-				- <span class='fpurple f12'>Epic</span><br>
-				- <span class='forange f12'>Legendary</span><br>
-				Unlock them to permanently increase your stats.
-			</span>
+		name: `<span class='fwhite f12'>Masteries</span>`,
+		tooltipContent: `
+			<div class='fcenter'>
+				Unlocked:<br>
+				<span class='fgreen'>Common</span>: <span class='fwhite f16'>0 / 105</span><br>
+				<span class='fblue'>Rare</span>: <span class='fwhite f16'>0 / 50</span><br>
+				<span class='fpurple'>Epic</span>: <span class='fwhite f16'>0 / 15</span><br>
+				<span class='forange'>Legendary</span>: <span class='fwhite f16'>0 / 3</span><br>
+			</div><br>
+			<div>
+				Masteries are divided into four categories. You will receive
+				1 random Mastery Point each time your Character levels up. Masteries
+				are permanent and last through Microverses
+			</div><br>
+			<div class='fcenter'>
+				<span class='fwhite'>Click to view masteries</span>
+			</div>
 		`,
-		misc: `Unlocked: <span class='fwhite' id='charMast'></span>`,
-		unlocked: 0,
-		onclick: 'openModal("masteries")'
+		onclick: 'openModal("masteries")',
+		total: {
+			common: 0,
+			rare: 0,
+			epic: 0,
+			legendary: 0
+		}
 	}
 }
 /*===========================================================
@@ -78,89 +91,54 @@ Game.Account = {
 ===========================================================*/
 function generateAccount() {
 	for(key in Game.Account) {
-		let acc = Game.Account[key];
-		let name = Game.Account[key].name;
-    let info = Game.Account[key].info;
-		let misc = Game.Account[key].misc;
+		let item = Game.Account[key];
 
 		let content = `
 	    <div class='sidebar-item' id='${key}'>
-	      <img src='img/character/${key}.png' onclick='${acc.onclick}'/>
-	      <div class='tooltip stat-tooltip'>
+	      <img src='img/character/${key}.png' onclick='${item.onclick}'>
+	      <div class='tooltip stat-tooltip fgrey f10'>
 					<div class='tooltip-lv'>
 						<canvas id='${key}Bar' width='64' height='64'></canvas>
 					</div>
+					<div class='tooltip-header'>
+            ${item.name}<hr>
+          </div>
 	        <div class='tooltip-content fgrey'>
-						<span class='fwhite'>${name}</span><br>
-						${misc}<hr/>
-						${info}
+						${item.tooltipContent}
 					</div>
 	      </div>
 	    </div>
 	  `;
 
-		elem('accountBoxes').innerHTML += content;
-	}
-}
-
-Game.Donate = {
-	bitcoin: {
-		name: 'Donate Bitcoin',
-		addr: '1CqcXyy56y69HMuCrxKm9mi2Nr8PA7CCjN'
-	},
-	ethereum: {
-		name: 'Donate Ethereum',
-		addr: '0x819BAD37E98c5Ba3bFDc53391C35384D27Cf1aFE'
-	},
-	litecoin: {
-		name: 'Donate Litecoin',
-		addr: 'LTd9CvqSpzb84oXBAEq1VdCchCoA772YKp'
-	}
-}
-
-function generateDonate() {
-	for(key in Game.Donate) {
-		let name = Game.Donate[key].name;
-		let addr = Game.Donate[key].addr;
-
-		let content = `
-			<div class='sidebar-item'>
-				<img src='img/donate/${key}.png' onclick='setClipboard("${addr}")'/>
-				<div class='tooltip stat-tooltip'>
-					<div class='tooltip-content'>
-						<span class='fwhite f12'>${name}</span><hr>
-						<span class='fgrey f10'>Click on the image to get my address copied to your clipboard</span><br>
-						<span class='fwhite f16'>Thank You!</span>
-					</div>
-				</div>
-			</div>
-		`;
-
-		elem('donateBoxes').innerHTML += content;
+		elem('accountBoxes').insertAdjacentHTML('beforeend', content);
 	}
 }
 /*===========================================================
 =					Update Account																		=
 ===========================================================*/
 function updateAccount() {
-	let character = Game.Account.character;
-	let masteries = Game.Account.masteries;
-	let achievements = Game.Account.achievements;
-	let xpReq = Math.floor(30 * Math.pow(1.5, character.lv));
-	character.xpReq = xpReq;
-	let widthChar = character.xp / character.xpReq * 100;
-	let widthAch = achievements.unlocked * 100 / 80;
-	let widthMas = masteries.unlocked * 100 / 188;
+	let item = Game.Account;
+	let char = item.character;
+	let mast = item.masteries;
+	let achi = item.achievements;
 
-	progressBar(character.lv, 'character', widthChar);
-	progressBar(achievements.unlocked, 'achievements', widthAch);
-	progressBar('', 'masteries', widthMas);
+	let xpReq = Math.floor(30 * Math.pow(1.5, char.stats.lv));
+	char.stats.xpReq = xpReq;
 
-  elem('charXp').innerHTML = nFormat(character.xp) + ' / ' + nFormat(character.xpReq);
-	elem('charAch').innerHTML = achievements.unlocked + ' / ' + 80;
+	let widthChar = char.stats.xp / char.stats.xpReq * 100;
+	let widthAchi = achi.unlocked * 100 / 80;
+	let widthMast = mast.unlocked * 100 / 188;
 
-	for(key in Game.Account.character.total) {
-    elem(key + 'Total').innerHTML = nFormat(Game.Account.character.total[key]);
+	progressBar('character', widthChar);
+	progressBar('achievements', widthAchi);
+	progressBar('masteries', widthMast);
+
+	for(key in char.total) {
+    elem(key + 'Total').innerHTML = nFormat(char.total[key]);
   }
-	elem('frostCrystalTotal').innerHTML = Game.Account.character.total.frostCrystal.toFixed(3);
+
+  elem('charXp').innerHTML = nFormat(char.stats.xp) + ' / ' + nFormat(char.stats.xpReq);
+	elem('charLv').innerHTML = char.stats.lv;
+	elem('charAch').innerHTML = achi.unlocked + ' / ' + 80;
+	//elem('charMast').innerHTML = mast.unlocked + ' / ' + 123;
 }

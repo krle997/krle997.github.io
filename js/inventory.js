@@ -33,27 +33,18 @@ Game.Inventory = {
 		amount: 0
 	},
 	antiMatter: {
-		name: `
-						Anti Matter<br>
-						<span class='fgrey f12'>Drop Rate:</span> <span class='fwhite f14'>5%</span>
-					`,
+		name: `Anti Matter`,
 		info: `Collect <span class='fblue'>Anti Matter</span> to craft various items and boost your progress`,
 		amount: 0
 	},
 	frostCrystal: {
-		name: `
-						Frost Crystal<br>
-						<span class='fgrey f12'>Drop Rate:</span> <span class='fwhite f14'>0.1%</span>
-					`,
+		name: `Frost Crystal`,
 		info: `Collect <span class='fblue'>Frost Crystals</span> to craft special items during
 					<span class='fwhite'>multiplayer</span> events (Multiplayer is yet to be scripted)`,
 		amount: 0
 	},
 	darkMatter: {
-		name: `
-						Dark Matter<br>
-						<span class='fgrey f12'>Drop Rate:</span> <span class='fwhite f14'>10%</span>
-					`,
+		name: `Dark Matter`,
 		info: `<span class='fpurple'>Dark Matter</span> is a very powerful element.
 					It can bend space-time, alowing you to travel to distant planets faster than the speed of light`,
 		amount: 0
@@ -74,7 +65,7 @@ function generateInventory() {
 		let inventory = `
 			<div class='hidden' id='${key}'>
 				<div class='stat-img'><img src='img/inv/${key}.png' id='${key}Loc'/></div>
-				<div class='stat-num' id='${key}Num'><span id='${key}Amount'></span></div>
+				<div class='stat-num fgrey' id='${key}Num'><span id='${key}Amount'></span></div>
 				<div class='tooltip stat-tooltip'>
 					<div class='tooltip-content'>
 						<span class='fwhite'>${item.name}</span><hr/>

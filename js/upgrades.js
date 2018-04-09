@@ -190,31 +190,35 @@ function generateUpgrades() {
   for(key in Game.Upgrades) {
     let item = Game.Upgrades[key];
 
-    let upgrade = `
+    let content = `
       <div class='hidden' id='${key}' onclick='buyUpgrade("${key}")'>
-        <img src='img/upgrades/${key}.png' id='${key}Img'/>
-        <div class='tooltip item-tooltip'>
-  				<div class='tooltip-lv'>
-  					<canvas id='${key}Bar' width='64' height='64'></canvas>
-  				</div>
-          <div class='tooltip-header fgrey'>
-            <span class='fwhite'>${item.name}</span><br/>
-            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'/><hr/>
+        <div class='item-img'>
+          <img src='img/upgrades/${key}.png' class='item-img' id='${key}Img'>
+        </div>
+        <div class='item-progressbar'>
+          <div class='item-bar'>
+            <div class='item-prog' id='${key}ItemProg'></div>
           </div>
-          <div class='tooltip-content fgrey fcenter f12'>
+        </div>
+        <div class='tooltip item-tooltip fgrey f10'>
+          <div class='tooltip-content'>
+            <span class='fwhite f12'>${item.name}</span> Lv <span class='fwhite f16' id='${key}Lv'></span><hr>
             <div class='fcenter'>
-              DPS: <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'/><br/>
-              Per Lv: <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'/><br/>
-              % of total: <span class='fwhite f16' id='${key}ofTotal'></span>
-              <span id='${key}Avb'></span>
+              Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'><br>
+              DPS: <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'><br>
+              Per Lv: <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'><br>
+              % of total DPS: <span class='fwhite f16' id='${key}ofTotal'></span>
             </div><br>
-            <span class='f10'>${item.info}</span>
+            <div>${item.info}</div><br>
+            <div class='fcenter'>
+              <span id='${key}Avb'></span>
+            </div>
   				</div>
         </div>
       </div>
     `;
 
-    elem('upgradeItems').innerHTML += upgrade;
+    elem('upgradeItems').insertAdjacentHTML('beforeend', content);
   }
 }
 /*===========================================================
@@ -256,13 +260,14 @@ function buyUpgrade(key) {
     save(res + 'Amount', inv.amount);
     save(key + 'Lv', item.lv);
 
+    elem(key + 'Lv').innerHTML = item.lv;
     elem(res + 'Amount').innerHTML = nFormat(Game.Inventory[res].amount);
     elem(key + 'Dps').innerHTML = nFormat(item.dps);
     elem(key + 'DpsPerLv').innerHTML = '+' + nFormat(dpsPerLv);
     elem(key + 'Cost').innerHTML = nFormat(item.cost);
 
     let width = (20 - (nextLv - item.lv)) * 5;
-    progressBar(item.lv, key, width);
+    progBar(item.lv, key, width);
 
     updateDamage();
     canBuyUpgrade();
@@ -283,12 +288,16 @@ function canBuyUpgrade() {
     let inv = Game.Inventory[res];
 
     if(inv.amount >= item.cost) {
-      elem(key + 'Cost').className = 'f16 fwhite';
+      elem(key + 'Avb').innerHTML = 'Click to buy';
+      elem(key + 'Avb').className = 'fwhite f10';
+      elem(key + 'Cost').className = 'fwhite f16';
       elem(key + 'Img').style.opacity = '1';
       elem(key).style.cursor = 'pointer';
     }
     else if(inv.amount <= item.cost) {
-      elem(key + 'Cost').className = 'f16 fred';
+      elem(key + 'Avb').innerHTML = 'Not enough resources';
+      elem(key + 'Avb').className = 'fred f10';
+      elem(key + 'Cost').className = 'fred f16';
       elem(key + 'Img').style.opacity = '.2';
       elem(key).style.cursor = 'not-allowed';
     }
@@ -309,7 +318,8 @@ function updateUpgrades() {
     item.dps = dps;
     item.cost = cost;
 
-    progressBar(item.lv, key, width);
+    progBar(item.lv, key, width);
+    elem(key + 'Lv').innerHTML = item.lv;
     elem(key + 'Cost').innerHTML = nFormat(item.cost);
     elem(key + 'Dps').innerHTML = nFormat(item.dps);
     elem(key + 'DpsPerLv').innerHTML = '+' + nFormat(dpsPerLv);

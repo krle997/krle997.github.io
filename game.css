@@ -33,20 +33,23 @@ hr {
 =			Misc																									=
 ===========================================================*/
 .hidden{ display: none; }
-.fgrey{ color: #757575; }
-.fwhite{ color: #FFFFFF; }
-.fblue{ color: #42A5F5; }
-.fred{ color: #FF3300; }
-.fgreen{ color: #66BB6A; }
-.forange{ color: #FFA726; }
-.fpurple { color: #AB47BC; }
+.imgFix { vertical-align: text-bottom; }
+
+.fgrey{ color: rgb(102, 102, 102); }
+.fwhite{ color: rgb(230, 230, 230); }
+.fblue{ color: rgb(0, 204, 255); }
+.fred{ color: rgb(255, 51, 0); }
+.fgreen{ color: rgb(102, 255, 102); }
+.forange{ color: rgb(255, 153, 51); }
+.fpurple { color: rgb(204, 102, 255); }
+
 .fcenter { text-align: center; }
+
 .f8 { font-size: 8px; }
 .f10 { font-size: 10px; }
 .f12 { font-size: 12px; }
 .f14 { font-size: 14px; }
 .f16 { font-size: 16px; }
-.imgFix { vertical-align: text-bottom; }
 /*===========================================================
 =					Game Row																					=
 ===========================================================*/
@@ -59,7 +62,7 @@ hr {
 	margin-right: 10%;
 	padding: 0;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .2);
+	background-color: rgba(0, 0, 0, 0);
 }
 /*===========================================================
 =					Game Columns																			=
@@ -121,16 +124,17 @@ hr {
 	width: 80px;
 	height: 90px;
 	cursor: pointer;
-	transition: background-color .3s;
+	transition: background-color .3s ease-in-out;
 }
-.stat:hover { background-color: rgba(128, 128, 128, .2); }
-.stat:hover .stat-num { color: #FFFFFF; }
-.stat:hover .tooltip { display: initial; }
+.stat:hover { background-color: rgba(102, 102, 102, .2); }
+.stat:hover .stat-num { color: rgb(230, 230, 230); }
+.stat:hover .tooltip { display: grid; }
 
 .stat-img {
 	width: 64px;
 	height: 64px;
 	margin: 0 auto;
+	padding: 0;
 	box-sizing: border-box;
 }
 
@@ -140,8 +144,7 @@ hr {
 	padding: 5px;
 	box-sizing: border-box;
 	text-align: center;
-	color: #808080;
-	transition: color .3s;
+	transition: color .3s ease-in-out;
 }
 /*===========================================================
 =					Game Mid																					=
@@ -198,18 +201,42 @@ hr {
 .item {
 	position: relative;
 	width: 64px;
-	height: 64px;
+	height: 72px;
 	margin: 6px;
 	box-sizing: border-box;
 	cursor: pointer;
-	border-bottom: 1px solid rgba(66, 165, 245, .3);
-	transition: background-color .3s, border-bottom .3s;
+
 }
-.item:hover {
-	background-color: rgba(189, 189, 189, .3);
-	border-bottom: 1px solid rgba(66, 165, 245, 1);
-}
+.item:hover .item-img { background-color: rgba(102, 102, 102, .2); }
 .item:hover .tooltip { display: grid; }
+
+.item-img {
+	width: 64px;
+	height: 64px;
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+	transition: background-color .3s ease-in-out;
+}
+.item-progressbar {
+	width: 64px;
+	height: 6px;
+	margin: 0 auto;
+	padding: 0;
+	box-sizing: border-box;
+}
+.item-bar {
+	width: 100%;
+	height: 6px;
+	background-color: rgba(102, 102, 102, 0);
+	border: 1px solid rgba(102, 102, 102, 1);
+	border-radius: 1px;
+	box-sizing: border-box;
+}
+.item-prog {
+	height: 4px;
+	background-color: rgba(0, 204, 255, 1);
+}
 /*===========================================================
 =			Panel																									=
 ===========================================================*/
@@ -218,13 +245,7 @@ hr {
 	padding: 0;
 	border-radius: 5px;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .4);
-}
-.panel-header {
-	margin: 0 auto;
-	padding: 5px;
-	box-sizing: border-box;
-	text-align: center;
+	background-color: rgba(0, 0, 0, .5);
 }
 /*===========================================================
 =			Achievements wrapper																	=
@@ -352,7 +373,7 @@ hr {
 }
 .tooltip-lv { grid-area: tooltip-lv; }
 .tooltip-content { grid-area: tooltip-content; }
-.tooltip-header { grid-area: tooltip-header; padding: 5px; box-sizing: border-box; }
+.tooltip-header { grid-area: tooltip-header; padding: 20px; box-sizing: border-box; }
 
 .item-tooltip {
 	top: 0;
@@ -394,29 +415,6 @@ hr {
 		right: -93px;
 		opacity: 1;
 	}
-}
-/*===========================================================
-=			Antimatter spawn 																			=
-===========================================================*/
-.antimatter-spawn {
-	display: none;
-	position: fixed;
-	width: 64px;
-	height: 64px;
-	cursor: pointer;
-	z-index: 1;
-	box-sizing: border-box;
-	border-radius: 50%;
-}
-.frostcrystal-spawn {
-	display: none;
-	position: fixed;
-	width: 64px;
-	height: 64px;
-	cursor: pointer;
-	z-index: 1;
-	box-sizing: border-box;
-	border-radius: 50%;
 }
 /*===========================================================
 =			Notification container 																=
@@ -484,7 +482,6 @@ hr {
 	padding: 10px;
 	box-sizing: border-box;
 	text-align: center;
-	color: #FFFFFF;
 	border-bottom: 1px solid rgba(66, 165, 245, 1);
 }
 .modal-content {
@@ -509,7 +506,6 @@ hr {
 	text-align: center;
 	background-color: rgba(189, 189, 189, 0);
 	border-bottom: 1px solid rgba(189, 189, 189, 1);
-	color: rgb(189, 189, 189);
 	cursor: pointer;
 	transition: border .3s, background-color .3s, color .3s;
 }
@@ -517,7 +513,7 @@ hr {
 .modal-btn:hover {
 	background-color: rgba(189, 189, 189, .3);
 	border-bottom: 1px solid rgba(66, 165, 245, 1);
-	color: rgb(250, 250, 250);
+	color: rgb(230, 230, 230);
 }
 /*===========================================================
 =					Animations																				=

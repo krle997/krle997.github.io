@@ -319,7 +319,7 @@ function giveMastery() {
     updateDamage();
 
     let width = item[mastery[rand]].lv * 100 / item[mastery[rand]].maxLv;
-    progressBar(item[mastery[rand]].lv, mastery[rand], width);
+    progressBar(mastery[rand], width);
 
     elem(mastery[rand] + 'Bonus').innerHTML = item[mastery[rand]].bonus * item[mastery[rand]].lv + '%';
   }
@@ -332,7 +332,7 @@ function updateMasteries() {
     let item = Game.Masteries[key];
 
     let width = item.lv * 100 / item.maxLv;
-    progressBar(item.lv, key, width);
+    progressBar(key, width);
 
     elem(key + 'Bonus').innerHTML = item.bonus * item.lv + '%';
   }

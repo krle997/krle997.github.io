@@ -4,21 +4,17 @@
 Game.Damage = {
 	dps: {
 		name: 'Damage per Second',
-		info: 'Damage dealt by the game every second. Can be reduced by Ores Armor',
-		misc: `
-			Armor Pen: <span class='fwhite f16' id='armorPen'></span><br/>
-		`
+		info: 'Damage dealt by the game every second. DPS be reduced by Ores Armor',
+		misc: `Armor Pen: <span class='fwhite f16' id='armorPen'></span>`
 	},
 	dpc: {
 		name: 'Damage per Click',
-		info: 'Damage dealt every click. Clicks can Critically Hit, dealing more damage',
-		misc: `
-			Crit Chance: <span class='fwhite f16' id='critChance'></span><br/>
-		`
+		info: 'Damage dealt every click. Clicks can Critically Hit, dealing more damage. Clicks completely ignore Ores Armor',
+		misc: `Crit Chance: <span class='fwhite f16' id='critChance'></span>`
 	},
 	increment: {
 		name: 'Damage Increment',
-		info: 'Increases both DPS and DPC',
+		info: 'Increases both DPS and DPC by a percentage',
 		misc: ``
 	}
 }
@@ -31,19 +27,21 @@ function generateDamage() {
 
 		let content = `
 			<div class='stat'>
-				<div class='stat-img'><img src='img/character/${key}.png'/></div>
-				<div class='stat-num' id='${key}Anim'><span id='${key}'></span></div>
-				<div class='tooltip stat-tooltip'>
-					<div class='tooltip-content fgrey'>
-					<span class='fwhite'>${item.name}</span><hr/>
-					<span>${item.misc}</span><br/>
-					<span>${item.info}</span>
+				<div class='stat-img'><img src='img/character/${key}.png'></div>
+				<div class='stat-num fgrey' id='${key}Anim'><span id='${key}'></span></div>
+				<div class='tooltip stat-tooltip fgrey f10'>
+					<div class='tooltip-content'>
+						<span class='fwhite f12'>${item.name}</span><hr>
+						<div class='fcenter'>
+							<span>${item.misc}</span>
+						</div><br>
+						<span>${item.info}</span>
 					</div>
 				</div>
 			</div>
 		`;
 
-		elem('damageStats').innerHTML += content;
+		elem('damageStats').insertAdjacentHTML('beforeend', content);
 	}
 }
 /*===========================================================
@@ -75,23 +73,23 @@ function updateDamage() {
 
   totalDpc = 1 + Math.floor(totalDps / 100 * 10);
 
-  Game.Account.character.increment = Game.Inventory.concentratedDarkMatter.amount;
+  Game.Account.character.stats.increment = Game.Inventory.concentratedDarkMatter.amount;
 
   if(Game.Crafting.titaniumBattery.status)
-    Game.Account.character.increment += totalLvs;
+    Game.Account.character.stats.increment += totalLvs;
 
-  Game.Account.character.dps =	Math.floor(totalDps + (totalDps / 100 * Game.Account.character.increment));
-  Game.Account.character.dpc =	Math.floor(totalDpc + (totalDpc / 100 * Game.Account.character.increment));
-  Game.Account.character.critChance = 0;
-  Game.Account.character.armorPen = 0;
+  Game.Account.character.stats.dps =	Math.floor(totalDps + (totalDps / 100 * Game.Account.character.stats.increment));
+  Game.Account.character.stats.dpc =	Math.floor(totalDpc + (totalDpc / 100 * Game.Account.character.stats.increment));
+  Game.Account.character.stats.critChance = 0;
+  Game.Account.character.stats.armorPen = 0;
 
   if(Game.Crafting.plutoniumBattery.status) {
-    Game.Account.character.armorPen += totalLvs / 100;
-    Game.Account.character.critChance += totalLvs / 100;
+    Game.Account.character.stats.armorPen += totalLvs / 100;
+    Game.Account.character.stats.critChance += totalLvs / 100;
   }
 
   if(Game.Crafting.chrysoniteBattery.status) {
-		Game.Account.character.dpc += (Game.Account.character.dpc / 100) * totalLvs / 100;
+		Game.Account.character.stats.dpc += (Game.Account.character.stats.dpc / 100) * totalLvs / 100;
   }
 
 /*  if (Game.dps >= 100 && !Game.achievement.ach5) Game.total.achievements ++, unlockAchievement(5), Game.achievement.ach5 = true;
@@ -100,11 +98,11 @@ function updateDamage() {
   if (Game.dps >= 100000 && !Game.achievement.ach8) Game.total.achievements ++, unlockAchievement(8), Game.achievement.ach8 = true;
   if (Game.dps >= 1000000 && !Game.achievement.ach9) Game.total.achievements ++, unlockAchievement(9),	Game.achievement.ach9 = true;
 */
-  elem('dps').innerHTML = nFormat(Game.Account.character.dps);
-  elem('dpc').innerHTML = nFormat(Game.Account.character.dpc);
-  elem('increment').innerHTML = nFormat(Game.Account.character.increment) + '%';
-  elem('critChance').innerHTML = Game.Account.character.critChance + '%';
-  elem('armorPen').innerHTML = Game.Account.character.armorPen + '%';
+  elem('dps').innerHTML = nFormat(Game.Account.character.stats.dps);
+  elem('dpc').innerHTML = nFormat(Game.Account.character.stats.dpc);
+  elem('increment').innerHTML = nFormat(Game.Account.character.stats.increment) + '%';
+  elem('critChance').innerHTML = Game.Account.character.stats.critChance + '%';
+  elem('armorPen').innerHTML = Game.Account.character.stats.armorPen + '%';
   elem('titaniumBatteryBonus').innerHTML = totalLvs + '%';
   elem('plutoniumBatteryBonus').innerHTML = totalLvs / 100 + '%';
   elem('chrysoniteBatteryBonus').innerHTML = totalLvs / 100 + '%';
