@@ -462,7 +462,7 @@ function oreProgressBar(key) {
 function resetOre(key) {
   let ore = Game.Ascensions[key].ore;
 
-  let oreMaxHp = Math.floor(ore.baseHp * Math.pow(1.03, ore.lv));
+  let oreMaxHp = Math.floor(ore.baseHp * Math.pow(ore.hpPerLv, ore.lv));
   ore.hp = oreMaxHp;
   ore.maxHp = oreMaxHp;
 

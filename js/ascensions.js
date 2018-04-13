@@ -20,7 +20,12 @@ Game.Ascensions = {
       hp: 10,
       baseHp: 10,
       maxHp: 0,
+      hpPerLv: 1.03,
+      hpScaling: '3%',
       armor: 0,
+      baseArmor: 0,
+      armorPerLv: 1.0,
+      armorScaling: '0%',
       antiMatterRate: 50,
       darkMatterRate: 10
     }
@@ -40,10 +45,14 @@ Game.Ascensions = {
       id: 'plutonium',
       lv: 1,
       prog: 0,
-      hp: 1e6,
-      baseHp: 1e6,
+      hp: 0,
+      baseHp: 50e6,
       maxHp: 0,
+      hpPerLv: 1.035,
+      hpScaling: '3.5%',
       armor: 10000,
+      armorPerLv: 1.01,
+      armorScaling: '1%',
       antiMatterRate: 55,
       darkMatterRate: 12
     }
@@ -64,7 +73,11 @@ Game.Ascensions = {
       hp: 1e6,
       baseHp: 1e6,
       maxHp: 0,
+      hpPerLv: 1.04,
+      hpScaling: '4%',
       armor: 10000,
+      armorPerLv: 1.02,
+      armorScaling: '2%',
       antiMatterRate: 60,
       darkMatterRate: 14
     }
@@ -83,7 +96,11 @@ Game.Ascensions = {
       hp: 1e12,
       baseHp: 1e12,
       maxHp: 0,
+      hpPerLv: 1.045,
+      hpScaling: '4.5%',
       armor: 1e6,
+      armorPerLv: 1.03,
+      armorScaling: '3%',
       antiMatterRate: 65,
       darkMatterRate: 16
     }
@@ -105,7 +122,11 @@ Game.Ascensions = {
       hp: 1e12,
       baseHp: 1e12,
       maxHp: 0,
+      hpPerLv: 1.05,
+      hpScaling: '5%',
       armor: 1e6,
+      armorPerLv: 1.04,
+      armorScaling: '4%',
       antiMatterRate: 70,
       darkMatterRate: 18
     }
@@ -127,7 +148,11 @@ Game.Ascensions = {
       hp: 1e12,
       baseHp: 1e12,
       maxHp: 0,
+      hpPerLv: 1.055,
+      hpScaling: '5.5%',
       armor: 1e6,
+      armorPerLv: 1.05,
+      armorScaling: '5%',
       antiMatterRate: 75,
       darkMatterRate: 20
     }

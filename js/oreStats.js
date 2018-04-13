@@ -14,10 +14,13 @@ function generateHpBar() {
     </div>
     <div class='tooltip ore-tooltip fgrey'>
       <div class='tooltip-content'>
-        Progress: <span class='fwhite f16' id='oreProgress'></span><br>
-        Ore Max Hp: <span class='fwhite f16' id='oreMaxHp'></span><br>
-        Ore Armor: <span class='fwhite f16' id='oreArmor'></span><br>
-        Effective Armor: <span class='fwhite f16' id='effectiveArmor'></span><hr>
+        <span class='fgreen f14' id='oreName'></span> <img class='imgFix' id='oreTgs'><hr>
+        Zone: <span class='fwhite f16' id='oreProgress'></span><br>
+        Total Hp: <span class='fwhite f16' id='oreMaxHp'></span><br>
+        Hp per Lv: <span class='fwhite f16' id='oreHpPerLv'></span><br>
+        Armor: <span class='fwhite f16' id='oreArmor'></span>
+        (Eff: <span class='fwhite f16' id='effectiveArmor'></span>)<br>
+        Armor per Lv: <span class='fwhite f16' id='oreArmorPerLv'></span><hr>
         Drop rates per Lv:<br>
         <span class='fblue'>Anti Matter</span> <img src='img/inv/antiMatter16.png' class='imgFix'> <span class='fwhite f16' id='antiMatterDropRate'></span><br>
         <span class='fpurple'>Dark Matter</span> <img src='img/inv/darkMatter16.png' class='imgFix'> <span class='fwhite f16' id='darkMatterDropRate'></span>
@@ -40,10 +43,14 @@ function updateOreStats(key) {
 
   let effArmor = ore.armor - (ore.armor / 100 * acc.character.stats.armorPen);
 
+  elem('oreName').innerHTML = ore.name;
+  elem('oreTgs').src = `img/inv/${ore.id}16.png`
   elem('oreLv').innerHTML = ore.lv;
-  elem('oreArmor').innerHTML = nFormat(ore.armor);
-  elem('effectiveArmor').innerHTML = nFormat(effArmor);
   elem('oreMaxHp').innerHTML = nFormat(ore.maxHp);
+  elem('oreHpPerLv').innerHTML = ore.hpScaling;
+  elem('oreArmor').innerHTML = nFormat(ore.armor);
+  elem('oreArmorPerLv').innerHTML = ore.armorScaling;
+  elem('effectiveArmor').innerHTML = nFormat(effArmor);
   elem('antiMatterDropRate').innerHTML = ore.antiMatterRate + '%';
   elem('darkMatterDropRate').innerHTML = ore.darkMatterRate + '%';
 }
