@@ -55,24 +55,20 @@ function generateCrafting() {
     let content = `
       <div class='hidden' id='${key}' onclick='craft("${key}")'>
         <div class='item-img'>
-          <img src='img/crafting/${key}.png' class='item-img' id='${key}Img'>
+          <img src='img/crafting/${key}.png' id='${key}Img'>
         </div>
-        <div class='item-progressbar'>
-          <div class='item-bar'>
-            <div class='item-prog' id='${key}ItemProg'></div>
-          </div>
+        <div class='item-bar'>
+          <div class='item-progress' id='${key}Progress'></div>
         </div>
-        <div class='tooltip item-tooltip fgrey f10'>
+        <div class='tooltip item-tooltip fgrey'>
           <div class='tooltip-content'>
-            <span class='fwhite f12'>${item.name}</span><hr>
-            <div class='fcenter'>
-              Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/antimatter16.png'><br>
-              Current bonus: <span class='fwhite f16' id='${key}Bonus'></span><br>
-            </div><br>
-            <div>${item.info}</div><br>
-            <div class='fcenter'>
-              <span id='${key}Avb'></span>
-            </div>
+            <span class='fwhite f14'>${item.name}</span><br>
+            <span id='${key}Avb'></span><hr>
+            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/antimatter16.png'><br>
+            Boost: <span class='fwhite f16' id='${key}Bonus'></span><br>
+            Duration: <span class='fwhite f16' id='${key}Duration'>600 s</span><br>
+            Remaining: <span class='fwhite f16' id='${key}Remaining'></span><hr>
+            ${item.info}
           </div>
         </div>
       </div>
@@ -133,19 +129,19 @@ function canCraft() {
 
     if(item.status) {
       elem(key + 'Avb').innerHTML = 'Currently active';
-      elem(key + 'Avb').className = 'fblue f10';
+      elem(key + 'Avb').className = 'fblue';
       elem(key + 'Cost').className = 'fwhite f16';
       elem(key + 'Img').style.opacity = '1';
       elem(key).style.cursor = 'not-allowed';
     } else if(!item.status && inv.antiMatter.amount >= item.cost) {
       elem(key + 'Avb').innerHTML = 'Click to craft';
-      elem(key + 'Avb').className = 'fwhite f10';
+      elem(key + 'Avb').className = 'fwhite';
       elem(key + 'Cost').className = 'fwhite f16';
       elem(key + 'Img').style.opacity = '1';
       elem(key).style.cursor = 'pointer';
     } else if(!item.status && inv.antiMatter.amount <= item.cost) {
       elem(key + 'Avb').innerHTML = 'Not enough resources';
-      elem(key + 'Avb').className = 'fred f10';
+      elem(key + 'Avb').className = 'fred';
       elem(key + 'Cost').className = 'fred f16';
       elem(key + 'Img').style.opacity = '.2';
       elem(key).style.cursor = 'not-allowed';

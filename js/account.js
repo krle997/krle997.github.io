@@ -3,17 +3,13 @@
 ===========================================================*/
 Game.Account = {
 	character: {
-		name: `<span class='fwhite f12'>Character</span> Lv <span class='fwhite f16' id='charLv'></span>`,
+		name: `Character`,
 		tooltipContent: `
-			<div class='fcenter'>
-				XP: <span class='fwhite f16' id='charXp'></span><br>
-				Time Played: <span class='fwhite f16' id='timePlayed'></span><br>
-				Total Clicks: <span class='fwhite f16' id='clicksTotal'></span><br>
-				Total Critical Hits: <span class='fwhite f16' id='critHitsTotal'></span>
-			</div><br>
-			<div class='fcenter'>
-				<span class='fwhite'>Click to view profile</span>
-			</div>
+			Lv: <span class='fwhite f16' id='charLv'></span><br>
+			Xp: <span class='fwhite f16' id='charXp'></span><br>
+			Time Played: <span class='fwhite f16' id='timePlayed'></span><br>
+			Total Clicks: <span class='fwhite f16' id='clicksTotal'></span><br>
+			Total Critical Hits: <span class='fwhite f16' id='critHitsTotal'></span>
 		`,
 		onclick: 'openModal("character")',
 		stats: {
@@ -41,41 +37,25 @@ Game.Account = {
 	  }
 	},
 	achievements: {
-		name: `<span class='fwhite f12'>Achievements</span>`,
+		name: `Achievements`,
 		tooltipContent: `
-			<div class='fcenter'>
-				Unlocked: <span class='fwhite f16' id='charAch'></span>
-			</div><br>
-			<div>
-				Achievements indicate a milestone that you have completed.
-				Completing the entire achievement tree unlocks new avatars
-				for your character
-			</div><br>
-			<div class='fcenter'>
-				<span class='fwhite'>Click to view achievements</span>
-			</div>
+			Unlocked: <span class='fwhite f16' id='charAch'></span><hr>
+			Achievements indicate a milestone that you have completed. Completing the
+			entire achievement tree unlocks new avatars for your character
 		`,
 		onclick: 'openModal("achievements")',
 		unlocked: 0
 	},
 	masteries: {
-		name: `<span class='fwhite f12'>Masteries</span>`,
+		name: `Masteries`,
 		tooltipContent: `
-			<div class='fcenter'>
-				Unlocked:<br>
-				<span class='fgreen'>Common</span>: <span class='fwhite f16'>0 / 105</span><br>
-				<span class='fblue'>Rare</span>: <span class='fwhite f16'>0 / 50</span><br>
-				<span class='fpurple'>Epic</span>: <span class='fwhite f16'>0 / 15</span><br>
-				<span class='forange'>Legendary</span>: <span class='fwhite f16'>0 / 3</span><br>
-			</div><br>
-			<div>
-				Masteries are divided into four categories. You will receive
-				1 random Mastery Point each time your Character levels up. Masteries
-				are permanent and last through Microverses
-			</div><br>
-			<div class='fcenter'>
-				<span class='fwhite'>Click to view masteries</span>
-			</div>
+			<span class='fgreen'>Common</span>: <span class='fwhite f16'>0 / 105</span><br>
+			<span class='fblue'>Rare</span>: <span class='fwhite f16'>0 / 50</span><br>
+			<span class='fpurple'>Epic</span>: <span class='fwhite f16'>0 / 15</span><br>
+			<span class='forange'>Legendary</span>: <span class='fwhite f16'>0 / 3</span><hr>
+			Masteries are divided into four categories. You will receive 1 random
+			Mastery Point each time your Character levels up. Masteries are permanent
+			and last through Microverses
 		`,
 		onclick: 'openModal("masteries")',
 		total: {
@@ -96,12 +76,13 @@ function generateAccount() {
 		let content = `
 	    <div class='sidebar-item' id='${key}'>
 	      <img src='img/character/${key}.png' onclick='${item.onclick}'>
-	      <div class='tooltip stat-tooltip fgrey f10'>
+	      <div class='tooltip stat-tooltip fgrey'>
 					<div class='tooltip-lv'>
 						<canvas id='${key}Bar' width='64' height='64'></canvas>
 					</div>
 					<div class='tooltip-header'>
-            ${item.name}<hr>
+            <span class='fwhite f14'>${item.name}</span><br>
+						<span class='fwhite'>Click to view more</span><hr>
           </div>
 	        <div class='tooltip-content fgrey'>
 						${item.tooltipContent}
@@ -140,5 +121,4 @@ function updateAccount() {
   elem('charXp').innerHTML = nFormat(char.stats.xp) + ' / ' + nFormat(char.stats.xpReq);
 	elem('charLv').innerHTML = char.stats.lv;
 	elem('charAch').innerHTML = achi.unlocked + ' / ' + 80;
-	//elem('charMast').innerHTML = mast.unlocked + ' / ' + 123;
 }

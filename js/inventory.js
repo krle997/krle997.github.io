@@ -62,20 +62,24 @@ function generateInventory() {
 	for(key in Game.Inventory) {
     let item = Game.Inventory[key];
 
-		let inventory = `
+		let content = `
 			<div class='hidden' id='${key}'>
-				<div class='stat-img'><img src='img/inv/${key}.png' id='${key}Loc'/></div>
-				<div class='stat-num fgrey' id='${key}Num'><span id='${key}Amount'></span></div>
-				<div class='tooltip stat-tooltip'>
+				<div class='stat-img'>
+					<img src='img/inv/${key}.png'>
+				</div>
+				<div class='stat-num fgrey' id='${key}Num'>
+					<span id='${key}Amount'></span>
+				</div>
+				<div class='tooltip stat-tooltip fgrey'>
 					<div class='tooltip-content'>
-						<span class='fwhite'>${item.name}</span><hr/>
-						<span class='fgrey f10'>${item.info}</span>
+						<span class='fwhite f14'>${item.name}</span><hr/>
+						${item.info}
 					</div>
 				</div>
 			</div>
 		`;
 
-		elem('inventoryStats').innerHTML += inventory;
+		elem('inventoryStats').insertAdjacentHTML('beforeend', content);
 	}
 }
 /*===========================================================

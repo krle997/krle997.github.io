@@ -143,26 +143,21 @@ function generateAscensions() {
 
     let content = `
       <div class='sidebar-item' id='${key}'>
-        <img src='img/ascencion/${key}.png' id='${key}Img'/>
-        <div class='tooltip item-tooltip fgrey f10'>
+        <img src='img/ascencion/${key}.png' id='${key}Img'>
+        <div class='tooltip item-tooltip fgrey'>
           <div class='tooltip-lv'>
             <canvas id='${key}Bar' width='64' height='64'></canvas>
           </div>
           <div class='tooltip-header'>
-            <span class='fwhite f12'>${item.name}</span><hr>
+            <span class='fwhite f14'>${item.name}</span><br>
+            <span id='${key}Avb'></span><hr>
           </div>
           <div class='tooltip-content'>
-            <div class='fcenter'>
-              Requires: <span class='fwhite f16' id='${key}Req'></span> <img class='imgFix' src='img/inv/darkMatter16.png'><br><br>
-              Ore:<br>
-              <span class='fgreen'>${ore.name}</span> <img class='imgFix' src='img/inv/${ore.id}16.png'> Lv <span class='fwhite f16' id='${key}Lv'></span><br><br>
-              Drop rates per Lv:<br>
-              <span class='fblue'>Anti Matter</span> <img src='img/inv/antiMatter16.png' class='imgFix'> <span class='fwhite f16'>${ore.antiMatterRate}%</span><br>
-              <span class='fpurple'>Dark Matter</span> <img src='img/inv/darkMatter16.png' class='imgFix'> <span class='fwhite f16'>${ore.darkMatterRate}%</span>
-            </div><br>
-            <div>${item.info}</div><br>
-            <div class='fcenter'>
-              <span id='${key}Avb'></span>
+            Requirement: <span class='fwhite f16' id='${key}Req'></span> <img class='imgFix' src='img/inv/darkMatter16.png'><br>
+            <div class='hidden' id='${key}Content'>
+              Ore: <span class='fgreen'>${ore.name}</span> <img class='imgFix' src='img/inv/${ore.id}16.png'><br>
+              Lv: <span class='fwhite f16' id='${key}Lv'></span><hr>
+              ${item.info}
             </div>
           </div>
         </div>
@@ -171,31 +166,6 @@ function generateAscensions() {
 
     elem('ascensionItems').innerHTML += content;
 	}
-}
-/*===========================================================
-=         Generate Ore Stats                                =
-===========================================================*/
-function generateOreStats() {
-	let content = `
-    Ore Max Hp: <span class='fwhite f16' id='oreMaxHp'></span><br>
-    Ore Armor: <span class='fwhite f16' id='oreArmor'></span><br>
-    Effective Armor: <span class='fwhite f16' id='effectiveArmor'></span><hr>
-    Mine ores to receive loot. Clearing the entire Lv sometimes drops special loot.
-	`;
-
-	elem('oreStats').innerHTML = content;
-}
-/*===========================================================
-=         Update Ore Stats                                  =
-===========================================================*/
-function updateOreStats() {
-  for(key in Game.Ascensions) {
-    let ore = Game.Ascensions[key].ore;
-    let oreMaxHp = Math.floor(ore.baseHp * Math.pow(1.03, ore.lv));
-
-    ore.maxHp = oreMaxHp;
-    elem('oreMaxHp').innerHTML = nFormat(ore.maxHp);
-  }
 }
 /*===========================================================
 =         Unlock Ascension                                  =
@@ -212,6 +182,7 @@ function unlockEarth() {
   unlockInventory('frostCrystal');
 	unlockInventory('darkMatter');
   unlockInventory('concentratedDarkMatter');
+  elem('earthContent').className = 'visible';
 }
 function unlockGrudnock() {
   Game.Ascensions.grudnock.ascendTo = true;
@@ -221,6 +192,7 @@ function unlockGrudnock() {
   unlockUpgrade('ricochetLaser');
   unlockCrafting('plutoniumBattery');
   unlockInventory('plutonium');
+  elem('grudnockContent').className = 'visible';
 }
 function unlockTetherus() {
   Game.Ascensions.tetherus.ascendTo = true;
@@ -230,6 +202,7 @@ function unlockTetherus() {
   unlockUpgrade('plasmaClip');
   unlockCrafting('chrysoniteBattery');
   unlockInventory('chrysonite');
+  elem('tetherusContent').className = 'visible';
 }
 function unlockGazorpazorp() {
   Game.Ascensions.gazorpazorp.ascendTo = true;
@@ -239,6 +212,7 @@ function unlockGazorpazorp() {
   unlockUpgrade('laserIntensifier');
   unlockCrafting('armadiumBattery');
   unlockInventory('armadium');
+  elem('gazorpazorpContent').className = 'visible';
 }
 function unlockXeln() {
   Game.Ascensions.xeln.ascendTo = true;
@@ -248,6 +222,7 @@ function unlockXeln() {
   unlockUpgrade('multiBeam');
   unlockCrafting('solaniumBattery');
   unlockInventory('solanium');
+  elem('xelnContent').className = 'visible';
 }
 function unlockBlackHole() {
   Game.Ascensions.blackhole.ascendTo = true;
@@ -257,6 +232,7 @@ function unlockBlackHole() {
   unlockUpgrade('phaseGun');
   unlockCrafting('darkRadiation');
   unlockInventory('hawkingRadiation');
+  elem('blackholeContent').className = 'visible';
 }
 /*===========================================================
 =         Lock Ascensions                                   =
@@ -275,8 +251,6 @@ function ascend(key) {
   if(item.isCurrent && connected) {
     return;
   } else {
-    let effArmor = ore.armor - (ore.armor / 100 * Game.Account.character.armorPen);
-
     for(i in Game.Ascensions) {
       Game.Ascensions[i].isCurrent = false;
       save(i + 'isCurrent', Game.Ascensions[i].isCurrent);
@@ -293,13 +267,11 @@ function ascend(key) {
 
     stopDamage();
     startDamage(key);
+    updateOreStats(key);
 
     connected = true;
 
     elem('oreImg').src = `img/${ore.id}Ore.png`;
-    elem('oreLv').innerHTML = ore.lv;
-    elem('oreArmor').innerHTML = nFormat(ore.armor);
-    elem('effectiveArmor').innerHTML = nFormat(effArmor);
     document.body.style.backgroundImage = `url(img/${key}bg.jpg)`;
   }
 }
@@ -313,17 +285,17 @@ function canAscend() {
 
     if(item.req > inv.amount) {
       elem(key + 'Avb').innerHTML = 'Locked';
-      elem(key + 'Avb').className = 'fred f10';
+      elem(key + 'Avb').className = 'fred';
       elem(key + 'Req').className = 'fred f16';
       elem(key).style.cursor = 'not-allowed';
     } else if(!item.isCurrent && item.req <= inv.amount) {
       elem(key + 'Avb').innerHTML = 'Click to ascend';
-      elem(key + 'Avb').className = 'fwhite f10';
+      elem(key + 'Avb').className = 'fwhite';
       elem(key + 'Req').className = 'fwhite f16';
       elem(key).style.cursor = 'pointer';
     } else if(item.isCurrent && item.req <= inv.amount) {
       elem(key + 'Avb').innerHTML = 'You are here';
-      elem(key + 'Avb').className = 'fblue f10';
+      elem(key + 'Avb').className = 'fblue';
       elem(key + 'Req').className = 'fwhite f16';
       elem(key).style.cursor = 'not-allowed';
     }
@@ -333,8 +305,7 @@ function canAscend() {
 =         Update Ascencions                                 =
 ===========================================================*/
 function updateAscensions() {
-  if(Game.Inventory.darkMatter.amount >= 0)
-    unlockEarth();
+  unlockEarth();
 
   if(Game.Inventory.darkMatter.amount >= 50)
     unlockGrudnock();

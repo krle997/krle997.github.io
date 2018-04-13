@@ -27,15 +27,17 @@ function generateDamage() {
 
 		let content = `
 			<div class='stat'>
-				<div class='stat-img'><img src='img/character/${key}.png'></div>
-				<div class='stat-num fgrey' id='${key}Anim'><span id='${key}'></span></div>
-				<div class='tooltip stat-tooltip fgrey f10'>
+				<div class='stat-img'>
+					<img src='img/character/${key}.png'>
+				</div>
+				<div class='stat-num fgrey' id='${key}Anim'>
+					<span id='${key}'></span>
+				</div>
+				<div class='tooltip stat-tooltip fgrey'>
 					<div class='tooltip-content'>
-						<span class='fwhite f12'>${item.name}</span><hr>
-						<div class='fcenter'>
-							<span>${item.misc}</span>
-						</div><br>
-						<span>${item.info}</span>
+						<span class='fwhite f14'>${item.name}</span><hr>
+						${item.misc}<hr>
+						${item.info}
 					</div>
 				</div>
 			</div>

@@ -193,26 +193,21 @@ function generateUpgrades() {
     let content = `
       <div class='hidden' id='${key}' onclick='buyUpgrade("${key}")'>
         <div class='item-img'>
-          <img src='img/upgrades/${key}.png' class='item-img' id='${key}Img'>
+          <img src='img/upgrades/${key}.png' id='${key}Img'>
         </div>
-        <div class='item-progressbar'>
-          <div class='item-bar'>
-            <div class='item-prog' id='${key}ItemProg'></div>
-          </div>
+        <div class='item-bar'>
+          <div class='item-progress' id='${key}Progress'></div>
         </div>
-        <div class='tooltip item-tooltip fgrey f10'>
+        <div class='tooltip item-tooltip fgrey'>
           <div class='tooltip-content'>
-            <span class='fwhite f12'>${item.name}</span> Lv <span class='fwhite f16' id='${key}Lv'></span><hr>
-            <div class='fcenter'>
-              Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'><br>
-              DPS: <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'><br>
-              Per Lv: <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'><br>
-              % of total DPS: <span class='fwhite f16' id='${key}ofTotal'></span>
-            </div><br>
-            <div>${item.info}</div><br>
-            <div class='fcenter'>
-              <span id='${key}Avb'></span>
-            </div>
+            <span class='fwhite f14'>${item.name}</span><br>
+            <span id='${key}Avb'></span><hr>
+            Lv: <span class='fwhite f16' id='${key}Lv'></span><br>
+            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'><br>
+            DPS: <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'><br>
+            DPS per Lv: <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'><br>
+            % of total DPS: <span class='fwhite f16' id='${key}ofTotal'></span><hr>
+            ${item.info}
   				</div>
         </div>
       </div>
@@ -289,14 +284,14 @@ function canBuyUpgrade() {
 
     if(inv.amount >= item.cost) {
       elem(key + 'Avb').innerHTML = 'Click to buy';
-      elem(key + 'Avb').className = 'fwhite f10';
+      elem(key + 'Avb').className = 'fwhite';
       elem(key + 'Cost').className = 'fwhite f16';
       elem(key + 'Img').style.opacity = '1';
       elem(key).style.cursor = 'pointer';
     }
     else if(inv.amount <= item.cost) {
       elem(key + 'Avb').innerHTML = 'Not enough resources';
-      elem(key + 'Avb').className = 'fred f10';
+      elem(key + 'Avb').className = 'fred';
       elem(key + 'Cost').className = 'fred f16';
       elem(key + 'Img').style.opacity = '.2';
       elem(key).style.cursor = 'not-allowed';

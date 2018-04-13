@@ -25,14 +25,23 @@ html, body {
 ===========================================================*/
 hr {
 	width: 100%;
-	height: 1px;
+	height: 2px;
+	margin: 6px 0 6px 0;
+	padding: 0;
+	box-sizing: border-box;
 	border: 0;
-	background: linear-gradient(90deg, rgba(128, 128, 128, 1), rgba(128, 128, 128, 0));
+	background: linear-gradient(
+		90deg,
+		rgba(102, 102, 102, 1),
+		rgba(102, 102, 102, .5),
+		rgba(102, 102, 102, 0)
+	);
 }
 /*===========================================================
 =			Misc																									=
 ===========================================================*/
 .hidden{ display: none; }
+.visible{ display: initial; }
 .imgFix { vertical-align: text-bottom; }
 
 .fgrey{ color: rgb(102, 102, 102); }
@@ -47,7 +56,6 @@ hr {
 
 .f8 { font-size: 8px; }
 .f10 { font-size: 10px; }
-.f12 { font-size: 12px; }
 .f14 { font-size: 14px; }
 .f16 { font-size: 16px; }
 /*===========================================================
@@ -58,11 +66,9 @@ hr {
 	grid-template-areas: 'sidebar-left game-left game-mid game-right sidebar-right';
 	width: 80%;
 	height: 100%;
-	margin-left: 10%;
-	margin-right: 10%;
-	padding: 0;
+	margin: 0 10% 0 10%;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, 0);
+	background-color: rgba(0, 0, 0, .2);
 }
 /*===========================================================
 =					Game Columns																			=
@@ -106,23 +112,21 @@ hr {
 =					Game Left																					=
 ===========================================================*/
 .stat-wrapper {
-	width: 280px;
+	width: 276px;
 	height: auto;
 	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
 }
 .stat-content {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	margin: 0 auto;
-	padding: 10px;
+	padding: 8px;
 	box-sizing: border-box;
 }
 .stat {
 	position: relative;
 	width: 80px;
-	height: 90px;
+	height: auto;
 	cursor: pointer;
 	transition: background-color .3s ease-in-out;
 }
@@ -134,17 +138,23 @@ hr {
 	width: 64px;
 	height: 64px;
 	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
 }
-
 .stat-num {
 	width: 80px;
-	height: 16px;
-	padding: 5px;
+	height: auto;
+	padding: 4px;
 	box-sizing: border-box;
 	text-align: center;
 	transition: color .3s ease-in-out;
+}
+.stat-tooltip {
+	top: 0;
+	left: 100px;
+	animation: stat-tooltip-anim .3s ease-in-out;
+}
+@keyframes stat-tooltip-anim {
+	from { left: 120px; opacity: 0; }
+	to { left: 100px; opacity: 1; }
 }
 /*===========================================================
 =					Game Mid																					=
@@ -157,95 +167,109 @@ hr {
 	box-sizing: border-box;
 }
 
-.infobox-content {
-	padding: 10px;
-	box-sizing: border-box;
-}
-
 .ore-img {
 	position: relative;
 	width: 512px;
 	height: 512px;
 }
 
-#oreImg:hover {
-	cursor: pointer;
-}
-.ress {
-	position: absolute;
-}
+#oreImg:hover { cursor: pointer; }
+.ress { position: absolute; }
 
 .floating-text {
 	position: fixed;
-	font-size: 16px;
-	font-weight: bold;
 	pointer-events: none;
 }
 /*===========================================================
 =					Game Right																				=
 ===========================================================*/
 .item-wrapper {
-	width: 268px;
+	width: 288px;
 	height: auto;
 	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
 }
 .item-content {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	margin: 0 auto;
-	padding: 10px;
+	padding: 8px;
 	box-sizing: border-box;
 }
 .item {
 	position: relative;
 	width: 64px;
-	height: 72px;
-	margin: 6px;
+	height: auto;
+	margin: 8px;
 	box-sizing: border-box;
 	cursor: pointer;
-
 }
 .item:hover .item-img { background-color: rgba(102, 102, 102, .2); }
 .item:hover .tooltip { display: grid; }
-
 .item-img {
 	width: 64px;
 	height: 64px;
-	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
 	transition: background-color .3s ease-in-out;
-}
-.item-progressbar {
-	width: 64px;
-	height: 6px;
-	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
 }
 .item-bar {
 	width: 100%;
-	height: 6px;
-	background-color: rgba(102, 102, 102, 0);
-	border: 1px solid rgba(102, 102, 102, 1);
-	border-radius: 1px;
-	box-sizing: border-box;
+	height: 4px;
+	background-color: rgba(0, 204, 255, .4);
 }
-.item-prog {
+.item-progress {
 	height: 4px;
 	background-color: rgba(0, 204, 255, 1);
+}
+.item-tooltip {
+	top: 0;
+	right: 84px;
+	animation: item-tooltip-anim .3s ease-in-out;
+}
+@keyframes item-tooltip-anim {
+  from { right: 104px; opacity: 0; }
+	to { right: 84px; opacity: 1; }
 }
 /*===========================================================
 =			Panel																									=
 ===========================================================*/
 .panel {
 	margin: 10px;
-	padding: 0;
-	border-radius: 5px;
 	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .5);
+	border-radius: 3px;
+	background-color: rgba(0, 0, 0, .4);
+}
+.panel-header {
+	position: relative;
+	width: 100%;
+	height: 28px;
+	padding: 8px;
+	box-sizing: border-box;
+	border-radius: 3px;
+	background-color: rgba(0, 0, 0, .2);
+	cursor: pointer;
+	transition: background-color .3s ease-in-out;
+}
+.panel-header:hover { background-color: rgba(0, 0, 0, .4); }
+.panel-header:hover .header-name { color: rgb(230, 230, 230); }
+.panel-header:hover .tooltip { display: grid; }
+.header-name { transition: color .3s ease-in-out; }
+
+.panel-tooltip-left {
+	top: 48px;
+	left: 16px;
+	animation: panel-tooltip-left-anim .3s ease-in-out;
+}
+@keyframes panel-tooltip-left-anim {
+	from { left: 36px; opacity: 0; }
+	to { left: 16px; opacity: 1; }
+}
+.panel-tooltip-right {
+	top: 48px;
+	right: 0;
+	animation: panel-tooltip-right-anim .3s ease-in-out;
+}
+@keyframes panel-tooltip-right-anim {
+	from { right: 20px; opacity: 0; }
+	to { right: 0px; opacity: 1; }
 }
 /*===========================================================
 =			Achievements wrapper																	=
@@ -276,81 +300,75 @@ hr {
 	box-shadow: inset 0 0 0 1px #808080;
 	transition: box-shadow .3s;
 }
-
-.achievement:hover { box-shadow: inset 0 0 0 3px #00CCFF; }
 .achievement:hover .tooltip { display: initial; }
+.ach-tooltip {
+	top: 82px;
+	right: -93px;
+	animation: ach-tooltip-anim .3s ease-in-out;
+}
+@keyframes ach-tooltip-anim {
+	from { right: -73px; opacity: 0; }
+	to { right: -93px; opacity: 1; }
+}
 /*===========================================================
 =			Health bar																						=
 ===========================================================*/
-.display {
+.ore-content {
 	position: relative;
 	display: grid;
 	grid-template-areas:
-		'display-lv display-hp'
-		'display-hpbar display-hpbar'
-		'display-lv-prog display-lv-prog';
+		'ore-lv ore-hp'
+		'hp-bar hp-bar'
+		'zone-bar zone-bar';
 	width: 256px;
 	height: auto;
 	margin: 0 auto;
-	padding: 10px;
+	padding: 8px;
 	box-sizing: border-box;
 	cursor: pointer;
 	transition: background-color .3s ease-in-out;
 }
-.display:hover { background-color: rgba(128, 128, 128, .1); }
-.display:hover .tooltip { display: grid; }
-
-.display-lv {
-	grid-area: display-lv;
-	margin: 0;
-	padding: 10px;
-	box-sizing: border-box;
-}
-.display-hp {
-	grid-area: display-hp;
+.ore-content:hover { background-color: rgba(102, 102, 102, .2); }
+.ore-content:hover .tooltip { display: grid; }
+.ore-lv { grid-area: ore-lv; }
+.ore-hp { grid-area: ore-hp; }
+.ore-num {
 	margin: 0 auto;
 	padding: 10px;
 	box-sizing: border-box;
 }
-.hp-num {
-	grid-area: num;
+.hp-bar {
+	grid-area: hp-bar;
 	width: 100%;
-	height: auto;
-	text-align: center;
-	padding: 10px;
-	box-sizing: border-box;
+	height: 8px;
+	background-color: rgba(0, 204, 255, .2);
 }
-.display-hpbar {
-	grid-area: display-hpbar;
-	width: 100%;
-	height: 10px;
-	background-color: rgba(66, 165, 245, .3);
+.hp-progress {
+	height: 8px;
+	background-color: rgba(0, 204, 255, 1);
 }
-.ore-hp {
-	height: 10px;
-	background: linear-gradient(
-		90deg,
-		hsl(207, 90%, 41%),
-		hsl(207, 90%, 51%),
-		hsl(207, 90%, 61%),
-		hsl(207, 90%, 71%),
-		hsl(207, 90%, 81%)
-	)
-}
-
-.lv-progress-bar {
-	grid-area: display-lv-prog;
-	width: 90%;
-	height: 5px;
+.zone-bar {
+	grid-area: zone-bar;
+	width: 80%;
+	height: 4px;
 	margin: 10px auto;
 	padding: 0;
 	box-sizing: border-box;
-	background-color: rgba(128, 128, 128, .3);
+	background-color: rgba(102, 102, 102, .2);
 }
-.lv-progress {
-	height: 5px;
-	background-color: rgba(128, 128, 128, 1);
+.zone-progress {
+	height: 4px;
+	background-color: rgba(102, 102, 102, 1);
 	transition: width .3s ease-in-out;
+}
+.ore-tooltip {
+	top: 0;
+	left: 276px;
+	animation: ore-tooltip-anim .3s ease-in-out;
+}
+@keyframes ore-tooltip-anim {
+	from { left: 296px; opacity: 0; }
+	to { left: 276px; opacity: 1; }
 }
 /*===========================================================
 =			Tooltip																								=
@@ -358,63 +376,30 @@ hr {
 .tooltip {
 	display: none;
 	position: absolute;
-	grid-template-columns: 64px 192px;
+	grid-template-columns: 80px 208px;
 	grid-template-areas:
 		'tooltip-lv tooltip-header'
 		'tooltip-content tooltip-content';
-	width: 276px;
+	width: 288px;
 	height: auto;
-	margin: 0;
-	padding: 10px;
-	box-sizing: border-box;
 	background-color: rgba(0, 0, 0, .8);
-	border-radius: 3px;
+	border-radius: 5px;
 	z-index: 1;
 }
-.tooltip-lv { grid-area: tooltip-lv; }
-.tooltip-content { grid-area: tooltip-content; }
-.tooltip-header { grid-area: tooltip-header; padding: 20px; box-sizing: border-box; }
-
-.item-tooltip {
-	top: 0;
-	right: 84px;
-	animation: item-tooltip-anim .3s linear;
+.tooltip-lv {
+	grid-area: tooltip-lv;
+	padding: 8px;
+	box-sizing: border-box;
 }
-.stat-tooltip {
-	top: 0;
-	left: 100px;
-	animation: stat-tooltip-anim .3s linear;
+.tooltip-header {
+	grid-area: tooltip-header;
+	padding: 20px 8px 20px 8px;
+	box-sizing: border-box;
 }
-.ach-tooltip {
-	top: 82px;
-	right: -93px;
-	animation: ach-tooltip-anim .3s linear;
-}
-.hp-tooltip {
-	top: 0;
-	left: 266px;
-}
-@keyframes item-tooltip-anim {
-  from { right: 104px; opacity: 0; }
-	to { right: 84px; opacity: 1; }
-}
-@keyframes stat-tooltip-anim {
-	from {
-		left: 120px;
-		opacity: 0;
-	} to {
-		left: 100px;
-		opacity: 1;
-	}
-}
-@keyframes ach-tooltip-anim {
-	from {
-		right: -73px;
-		opacity: 0;
-	} to {
-		right: -93px;
-		opacity: 1;
-	}
+.tooltip-content {
+	grid-area: tooltip-content;
+	padding: 8px;
+	box-sizing: border-box;
 }
 /*===========================================================
 =			Notification container 																=
@@ -437,15 +422,12 @@ hr {
 	box-sizing: border-box;
 	left: 0;
 	bottom: 0;
-	background-color: rgba(0, 0, 0, .9);
+	background-color: rgba(0, 0, 0, .8);
 	text-align: center;
 }
 @keyframes notification-anim {
-	from {
-		opacity: 1;
-	} to {
-		opacity: 0;
-	}
+	from { opacity: 1; }
+	to { opacity: 0; }
 }
 /*===========================================================
 =			Modal  																								=

@@ -137,9 +137,10 @@ function generateContent() {
   generateUpgrades();
   generateCrafting();
   generateAscensions();
-  generateOreStats();
+  generateHpBar();
   generateDamage();
   generateInventory();
+  generateHelp();
 
   updateAccount();
   updateAchievements();
@@ -147,7 +148,7 @@ function generateContent() {
   updateUpgrades();
   updateCrafting();
   updateAscensions();
-  updateOreStats();
+  updateOreStats('earth');
   updateInventory();
   updateDamage();
 
@@ -452,7 +453,8 @@ function oreProgressBar(key) {
   let ore = Game.Ascensions[key].ore;
   let width = ore.prog * 10;
 
-  elem('lvProgress').style.width = width + '%';
+  elem('oreProgressBar').style.width = width + '%';
+  elem('oreProgress').innerHTML = ore.prog + ' / 10';
 }
 /*===========================================================
 =         Reset Ore                                         =
@@ -627,7 +629,7 @@ function microverseAscension() {
   updateUpgrades();
   updateCrafting();
   updateAscensions();
-  updateOreStats();
+  updateOreStats('earth');
   updateInventory();
   updateDamage();
 
@@ -657,7 +659,7 @@ function progressBar(key, width) {
 }
 
 function progBar(num, key, width) {
-  elem(key + 'ItemProg').style.width = width + '%';
+  elem(key + 'Progress').style.width = width + '%';
 }
 /*===========================================================
 =			Mute / unmute settings																=
@@ -743,28 +745,6 @@ function clearNotification() {
   clearTimeout(letMe);
   notifCount = 0;
 }
-
-function setClipboard(text) {
-    if (window.clipboardData && window.clipboardData.setData) {
-        // IE specific code path to prevent textarea being shown while dialog is visible.
-        return clipboardData.setData("Text", text);
-
-    } else if (document.queryCommandSupported && document.queryCommandSupported("copy")) {
-        var textarea = document.createElement("textarea");
-        textarea.textContent = text;
-        textarea.style.position = "fixed";  // Prevent scrolling to bottom of page in MS Edge.
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-            return document.execCommand("copy");  // Security exception may be thrown by some browsers.
-        } catch (ex) {
-            console.warn("Copy to clipboard failed.", ex);
-            return false;
-        } finally {
-            document.body.removeChild(textarea);
-        }
-    }
-}
 /*===========================================================
 =			Set username												      						=
 ===========================================================*/
@@ -782,36 +762,39 @@ function setUsername() {
 ===========================================================*/
 window.onload = function() { generateContent(); }
 
-
-
 Game.Donate = {
 	bitcoin: {
-		name: 'Donate Bitcoin',
-		addr: '1CqcXyy56y69HMuCrxKm9mi2Nr8PA7CCjN'
+		name: 'Bitcoin',
+    info: `
+      Bitcoin uses peer-to-peer technology to operate with no central authority or banks; managing
+      transactions and the issuing of bitcoins is carried out collectively by the network.
+      Bitcoin is open-source; its design is public, nobody owns or controls Bitcoin and everyone
+      can take part<br>
+      More - <span class='fblue'>https://bitcoin.org</span>`,
+		addr: '13yxBLa2cCici4VrsTTvjAP1vUzA5NwLx3'
 	},
 	ethereum: {
-		name: 'Donate Ethereum',
-		addr: '0x819BAD37E98c5Ba3bFDc53391C35384D27Cf1aFE'
+		name: 'Ethereum',
+    info: `
+      Ethereum is a decentralized platform that runs smart contracts: applications that run exactly
+      as programmed without any possibility of downtime, censorship, fraud or third-party interference<br>
+      More - <span class='fblue'>https://ethereum.org</span>`,
+		addr: '0xAFE7502c7aC013306bF5c7399FDd7f73c1f69E54'
 	},
-	litecoin: {
-		name: 'Donate Litecoin',
-		addr: 'LTd9CvqSpzb84oXBAEq1VdCchCoA772YKp'
-	}
 }
 
 function generateDonate() {
 	for(key in Game.Donate) {
-		let name = Game.Donate[key].name;
-		let addr = Game.Donate[key].addr;
+		let item = Game.Donate[key];
 
 		let content = `
 			<div class='sidebar-item'>
-				<img src='img/donate/${key}.png' onclick='setClipboard("${addr}")'/>
-				<div class='tooltip stat-tooltip'>
+				<img src='img/donate/${key}.png' onclick='prompt("Press CTRL + C to copy my address to your clipboard", "${item.addr}")'>
+				<div class='tooltip stat-tooltip fgrey'>
 					<div class='tooltip-content'>
-						<span class='fwhite f12'>${name}</span><hr>
-						<span class='fgrey f10'>Click on the image to get my address copied to your clipboard</span><br>
-						<span class='fwhite f16'>Thank You!</span>
+						<span class='fwhite f14'>${item.name}</span><br>
+            <span class='fwhite'>Click to donate</span><hr>
+						${item.info}
 					</div>
 				</div>
 			</div>
