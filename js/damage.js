@@ -26,11 +26,11 @@ function generateDamage() {
     let item = Game.Damage[key];
 
 		let content = `
-			<div class='stat'>
+			<div class='stat-item'>
 				<div class='stat-img'>
 					<img src='img/character/${key}.png'>
 				</div>
-				<div class='stat-num fgrey' id='${key}Anim'>
+				<div class='stat-num fcenter fgrey'>
 					<span id='${key}'></span>
 				</div>
 				<div class='tooltip stat-tooltip fgrey'>

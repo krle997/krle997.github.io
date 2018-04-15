@@ -3,18 +3,10 @@
 ===========================================================*/
 Game.Achievements = {
   titanium: {
-    name: 'Titanium Mining',
+    name: 'Titanium Accumulation',
     misc: `
-      Total 1 M [<span class='fgrey f16' id='titaniumOne'>✖</span>]<br>
-      Total 1 B [<span class='fgrey f16' id='titaniumTwo'>✖</span>]<br>
-      Total 1 T [<span class='fgrey f16' id='titaniumThree'>✖</span>]<br>
-      Total 1 Qa [<span class='fgrey f16' id='titaniumFour'>✖</span>]<br>
-      Total 1 Qi [<span class='fgrey f16' id='titaniumFive'>✖</span>]<br>
-      Total 1 Sx [<span class='fgrey f16' id='titaniumSix'>✖</span>]<br>
-      Total 1 Sp [<span class='fgrey f16' id='titaniumSeven'>✖</span>]<br>
-      Total 1 Oct [<span class='fgrey f16' id='titaniumEight'>✖</span>]<br>
-      Total 1 Non [<span class='fgrey f16' id='titaniumNine'>✖</span>]<br>
-      Total 1 Dec [<span class='fgrey f16' id='titaniumTen'>✖</span>]
+      <div id='titaniumAchievements'></div><hr>
+      Reward: Titanium Helmet Avatar
     `,
     unlocked: 0,
     ach: {
@@ -30,19 +22,11 @@ Game.Achievements = {
       Ten: false
     }
   },
-  titaniumLv: {
-    name: 'Titanium Clearing',
+  earth: {
+    name: 'Titanium Domination',
     misc: `
-      Reach Lv 10 [<span class='fgrey f16' id='titaniumLvOne'>✖</span>]<br>
-      Reach Lv 25 [<span class='fgrey f16' id='titaniumLvTwo'>✖</span>]<br>
-      Reach Lv 50 [<span class='fgrey f16' id='titaniumLvThree'>✖</span>]<br>
-      Reach Lv 100 [<span class='fgrey f16' id='titaniumLvFour'>✖</span>]<br>
-      Reach Lv 250 [<span class='fgrey f16' id='titaniumLvFive'>✖</span>]<br>
-      Reach Lv 500 [<span class='fgrey f16' id='titaniumLvSix'>✖</span>]<br>
-      Reach Lv 1 K [<span class='fgrey f16' id='titaniumLvSeven'>✖</span>]<br>
-      Reach Lv 2.5 K [<span class='fgrey f16' id='titaniumLvEight'>✖</span>]<br>
-      Reach Lv 5 K [<span class='fgrey f16' id='titaniumLvNine'>✖</span>]<br>
-      Reach Lv 10 K [<span class='fgrey f16' id='titaniumLvTen'>✖</span>]
+      <div id='earthAchievements'></div><hr>
+      Reward: Titanium Obliterator Avatar
     `,
     unlocked: 0,
     ach: {
@@ -61,16 +45,8 @@ Game.Achievements = {
   plutonium: {
     name: 'Plutonium Mining',
     misc: `
-      Total 1 M [<span class='fgrey f16' id='plutoniumOne'>✖</span>]<br>
-      Total 1 B [<span class='fgrey f16' id='plutoniumTwo'>✖</span>]<br>
-      Total 1 T [<span class='fgrey f16' id='plutoniumThree'>✖</span>]<br>
-      Total 1 Qa [<span class='fgrey f16' id='plutoniumFour'>✖</span>]<br>
-      Total 1 Qi [<span class='fgrey f16' id='plutoniumFive'>✖</span>]<br>
-      Total 1 Sx [<span class='fgrey f16' id='plutoniumSix'>✖</span>]<br>
-      Total 1 Sp [<span class='fgrey f16' id='plutoniumSeven'>✖</span>]<br>
-      Total 1 Oct [<span class='fgrey f16' id='plutoniumEight'>✖</span>]<br>
-      Total 1 Non [<span class='fgrey f16' id='plutoniumNine'>✖</span>]<br>
-      Total 1 Dec [<span class='fgrey f16' id='plutoniumTen'>✖</span>]
+      <div id='plutoniumAchievements'></div><hr>
+      Reward: Plutonium Lover Avatar
     `,
     unlocked: 0,
     ach: {
@@ -86,19 +62,11 @@ Game.Achievements = {
       Ten: false
     }
   },
-  plutoniumLv: {
-    name: 'Plutonium Clearing',
+  grudnock: {
+    name: 'Grudnock Invasion',
     misc: `
-    Reach Lv 10 [<span class='fgrey f16' id='plutoniumLvOne'>✖</span>]<br>
-    Reach Lv 25 [<span class='fgrey f16' id='plutoniumLvTwo'>✖</span>]<br>
-    Reach Lv 50 [<span class='fgrey f16' id='plutoniumLvThree'>✖</span>]<br>
-    Reach Lv 100 [<span class='fgrey f16' id='plutoniumLvFour'>✖</span>]<br>
-    Reach Lv 250 [<span class='fgrey f16' id='plutoniumLvFive'>✖</span>]<br>
-    Reach Lv 500 [<span class='fgrey f16' id='plutoniumLvSix'>✖</span>]<br>
-    Reach Lv 1 K [<span class='fgrey f16' id='plutoniumLvSeven'>✖</span>]<br>
-    Reach Lv 2.5 K [<span class='fgrey f16' id='plutoniumLvEight'>✖</span>]<br>
-    Reach Lv 5 K [<span class='fgrey f16' id='plutoniumLvNine'>✖</span>]<br>
-    Reach Lv 10 K [<span class='fgrey f16' id='plutoniumLvTen'>✖</span>]
+      <div id='grudnockAchievements'></div><hr>
+      Reward: Grudnock God Avatar
     `,
     unlocked: 0,
     ach: {
@@ -117,16 +85,8 @@ Game.Achievements = {
   chrysonite: {
     name: 'Chrysonite Mining',
     misc: `
-      Total 1 M [<span class='fgrey f16' id='chrysoniteOne'>✖</span>]<br>
-      Total 1 B [<span class='fgrey f16' id='chrysoniteTwo'>✖</span>]<br>
-      Total 1 T [<span class='fgrey f16' id='chrysoniteThree'>✖</span>]<br>
-      Total 1 Qa [<span class='fgrey f16' id='chrysoniteFour'>✖</span>]<br>
-      Total 1 Qi [<span class='fgrey f16' id='chrysoniteFive'>✖</span>]<br>
-      Total 1 Sx [<span class='fgrey f16' id='chrysoniteSix'>✖</span>]<br>
-      Total 1 Sp [<span class='fgrey f16' id='chrysoniteSeven'>✖</span>]<br>
-      Total 1 Oct [<span class='fgrey f16' id='chrysoniteEight'>✖</span>]<br>
-      Total 1 Non [<span class='fgrey f16' id='chrysoniteNine'>✖</span>]<br>
-      Total 1 Dec [<span class='fgrey f16' id='chrysoniteTen'>✖</span>]
+      <div id='chrysoniteAchievements'></div><hr>
+      Reward: Chrysonite Toxin Avatar
     `,
     unlocked: 0,
     ach: {
@@ -142,19 +102,11 @@ Game.Achievements = {
       Ten: false
     }
   },
-  chrysoniteLv: {
-    name: 'Chrysonite Clearing',
+  tetherus: {
+    name: 'Tetheruss Rings Collab',
     misc: `
-    Reach Lv 10 [<span class='fgrey f16' id='chrysoniteLvOne'>✖</span>]<br>
-    Reach Lv 25 [<span class='fgrey f16' id='chrysoniteLvTwo'>✖</span>]<br>
-    Reach Lv 50 [<span class='fgrey f16' id='chrysoniteLvThree'>✖</span>]<br>
-    Reach Lv 100 [<span class='fgrey f16' id='chrysoniteLvFour'>✖</span>]<br>
-    Reach Lv 250 [<span class='fgrey f16' id='chrysoniteLvFive'>✖</span>]<br>
-    Reach Lv 500 [<span class='fgrey f16' id='chrysoniteLvSix'>✖</span>]<br>
-    Reach Lv 1 K [<span class='fgrey f16' id='chrysoniteLvSeven'>✖</span>]<br>
-    Reach Lv 2.5 K [<span class='fgrey f16' id='chrysoniteLvEight'>✖</span>]<br>
-    Reach Lv 5 K [<span class='fgrey f16' id='chrysoniteLvNine'>✖</span>]<br>
-    Reach Lv 10 K [<span class='fgrey f16' id='chrysoniteLvTen'>✖</span>]
+      <div id='tetherusAchievements'></div><hr>
+      Reward: Tethered Avatar
     `,
     unlocked: 0,
     ach: {
@@ -173,16 +125,28 @@ Game.Achievements = {
   armadium: {
     name: 'Armadium Mining',
     misc: `
-      Total 1 M [<span class='fgrey f16' id='armadiumOne'>✖</span>]<br>
-      Total 1 B [<span class='fgrey f16' id='armadiumTwo'>✖</span>]<br>
-      Total 1 T [<span class='fgrey f16' id='armadiumThree'>✖</span>]<br>
-      Total 1 Qa [<span class='fgrey f16' id='armadiumFour'>✖</span>]<br>
-      Total 1 Qi [<span class='fgrey f16' id='armadiumFive'>✖</span>]<br>
-      Total 1 Sx [<span class='fgrey f16' id='armadiumSix'>✖</span>]<br>
-      Total 1 Sp [<span class='fgrey f16' id='armadiumSeven'>✖</span>]<br>
-      Total 1 Oct [<span class='fgrey f16' id='armadiumEight'>✖</span>]<br>
-      Total 1 Non [<span class='fgrey f16' id='armadiumNine'>✖</span>]<br>
-      Total 1 Dec [<span class='fgrey f16' id='armadiumTen'>✖</span>]
+      <div id='armadiumAchievements'></div><hr>
+      Reward: Armadium Nobel
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
+  },
+  gazorpazorp: {
+    name: 'Rick and Morty Bitch',
+    misc: `
+      <div id='gazorpazorpAchievements'></div><hr>
+      Reward: Ricked Avatar
     `,
     unlocked: 0,
     ach: {
@@ -201,16 +165,8 @@ Game.Achievements = {
   solanium: {
     name: 'Solanium Mining',
     misc: `
-      Total 1 M [<span class='fgrey f16' id='solaniumOne'>✖</span>]<br>
-      Total 1 B [<span class='fgrey f16' id='solaniumTwo'>✖</span>]<br>
-      Total 1 T [<span class='fgrey f16' id='solaniumThree'>✖</span>]<br>
-      Total 1 Qa [<span class='fgrey f16' id='solaniumFour'>✖</span>]<br>
-      Total 1 Qi [<span class='fgrey f16' id='solaniumFive'>✖</span>]<br>
-      Total 1 Sx [<span class='fgrey f16' id='solaniumSix'>✖</span>]<br>
-      Total 1 Sp [<span class='fgrey f16' id='solaniumSeven'>✖</span>]<br>
-      Total 1 Oct [<span class='fgrey f16' id='solaniumEight'>✖</span>]<br>
-      Total 1 Non [<span class='fgrey f16' id='solaniumNine'>✖</span>]<br>
-      Total 1 Dec [<span class='fgrey f16' id='solaniumTen'>✖</span>]
+      <div id='solaniumAchievements'></div><hr>
+      Reward: Solanium Addict
     `,
     unlocked: 0,
     ach: {
@@ -226,19 +182,51 @@ Game.Achievements = {
       Ten: false
     }
   },
-  hawkingRadiation: {
-    name: 'Hawking Radiation Mining',
+  xeln: {
+    name: 'Underwater Triumph',
     misc: `
-      Total 1 M [<span class='fgrey f16' id='hawkingRadiationOne'>✖</span>]<br>
-      Total 1 B [<span class='fgrey f16' id='hawkingRadiationTwo'>✖</span>]<br>
-      Total 1 T [<span class='fgrey f16' id='hawkingRadiationThree'>✖</span>]<br>
-      Total 1 Qa [<span class='fgrey f16' id='hawkingRadiationFour'>✖</span>]<br>
-      Total 1 Qi [<span class='fgrey f16' id='hawkingRadiationFive'>✖</span>]<br>
-      Total 1 Sx [<span class='fgrey f16' id='hawkingRadiationSix'>✖</span>]<br>
-      Total 1 Sp [<span class='fgrey f16' id='hawkingRadiationSeven'>✖</span>]<br>
-      Total 1 Oct [<span class='fgrey f16' id='hawkingRadiationEight'>✖</span>]<br>
-      Total 1 Non [<span class='fgrey f16' id='hawkingRadiationNine'>✖</span>]<br>
-      Total 1 Dec [<span class='fgrey f16' id='hawkingRadiationTen'>✖</span>]
+      <div id='xelnAchievements'></div><hr>
+      Reward: Water Element Helmet
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
+  },
+  singularity: {
+    name: 'Singularity Origins',
+    misc: `
+      <div id='singularityAchievements'></div><hr>
+      Reward: Singular Mass
+    `,
+    unlocked: 0,
+    ach: {
+      One: false,
+      Two: false,
+      Three: false,
+      Four: false,
+      Five: false,
+      Six: false,
+      Seven: false,
+      Eight: false,
+      Nine: false,
+      Ten: false
+    }
+  },
+  blackhole: {
+    name: 'Black Hole Infinity',
+    misc: `
+      <div id='blackholeAchievements'></div><hr>
+      Reward: Pocket Hole
     `,
     unlocked: 0,
     ach: {
@@ -257,16 +245,8 @@ Game.Achievements = {
   antiMatter: {
     name: 'Anti Matter Collecting',
     misc: `
-      Total 10 [<span class='fgrey f16' id='antiMatterOne'>✖</span>]<br>
-      Total 25 [<span class='fgrey f16' id='antiMatterTwo'>✖</span>]<br>
-      Total 50 [<span class='fgrey f16' id='antiMatterThree'>✖</span>]<br>
-      Total 100 [<span class='fgrey f16' id='antiMatterFour'>✖</span>]<br>
-      Total 250 [<span class='fgrey f16' id='antiMatterFive'>✖</span>]<br>
-      Total 500 [<span class='fgrey f16' id='antiMatterSix'>✖</span>]<br>
-      Total 1 K [<span class='fgrey f16' id='antiMatterSeven'>✖</span>]<br>
-      Total 2.5 K [<span class='fgrey f16' id='antiMatterEight'>✖</span>]<br>
-      Total 5 K [<span class='fgrey f16' id='antiMatterNine'>✖</span>]<br>
-      Total 10 K [<span class='fgrey f16' id='antiMatterTen'>✖</span>]
+      <div id='antiMatterAchievements'></div><hr>
+      Reward: Anti Matterialistic
     `,
     unlocked: 0,
     ach: {
@@ -282,19 +262,11 @@ Game.Achievements = {
       Ten: false
     }
   },
-  frostCrystal: {
-    name: 'Frost Crystal Collecting',
+  concentratedDarkMatter: {
+    name: 'Concentrated Power',
     misc: `
-    Total 10 [<span class='fgrey f16' id='antiMatterOne'>✖</span>]<br>
-    Total 25 [<span class='fgrey f16' id='antiMatterTwo'>✖</span>]<br>
-    Total 50 [<span class='fgrey f16' id='antiMatterThree'>✖</span>]<br>
-    Total 100 [<span class='fgrey f16' id='antiMatterFour'>✖</span>]<br>
-    Total 250 [<span class='fgrey f16' id='antiMatterFive'>✖</span>]<br>
-    Total 500 [<span class='fgrey f16' id='antiMatterSix'>✖</span>]<br>
-    Total 1 K [<span class='fgrey f16' id='antiMatterSeven'>✖</span>]<br>
-    Total 2.5 K [<span class='fgrey f16' id='antiMatterEight'>✖</span>]<br>
-    Total 5 K [<span class='fgrey f16' id='antiMatterNine'>✖</span>]<br>
-    Total 10 K [<span class='fgrey f16' id='antiMatterTen'>✖</span>]
+      <div id='concentratedDarkMatterAchievements'></div><hr>
+      Reward: Undying
     `,
     unlocked: 0,
     ach: {
@@ -320,39 +292,79 @@ function generateAchievements() {
 
 		let content = `
 			<div class='item' id='${key}Ach'>
-				<img src='img/achievements/${key}.png' id='${key}Img'/>
-				<div class='tooltip ach-tooltip'>
-          <div class='tooltip-lv'>
-            <canvas id='${key}Bar' width='64' height='64'></canvas>
-          </div>
-          <div class='tooltip-content fgrey'>
-            <span class='fwhite'>${item.name}</span><hr/>
-            <span class='f10'>${item.misc}</span>
+        <div class='item-img' id='${key}Img'>
+          <img src='img/achievements/${key}.png'>
+        </div>
+        <div class='item-bar'>
+          <div class='item-progress' id='${key}Progress'></div>
+        </div>
+				<div class='tooltip ach-tooltip fgrey'>
+          <div class='tooltip-content'>
+            <span class='fwhite f14'>${item.name}</span><hr/>
+            ${item.misc}
           </div>
 				</div>
 			</div>
 		`;
 
-    elem('achBoxes').innerHTML += content;
+    elem('achBoxes').insertAdjacentHTML('beforeend', content);
 	}
+
+  let farm = [ '1 M', '1 B', '1 T', '1 Qa', '1 Qi', '1 Sx', '1 Sp', '1 Oct', '1 Non', '1 Dec' ]
+  let lv = [ '10', '25', '50', '100', '250', '500', '1 K', '2.5 K', '5 K', '10 K']
+  generateAchTiles('titanium', farm, 'inv/titanium16.png', 'Total');
+  generateAchTiles('earth', lv, 'character/lv16.png', 'Reach Lv');
+  generateAchTiles('plutonium', farm, 'inv/plutonium16.png', 'Total');
+  generateAchTiles('grudnock', lv, 'character/lv16.png', 'Reach Lv');
+  generateAchTiles('chrysonite', farm, 'inv/chrysonite16.png', 'Total');
+  generateAchTiles('tetherus', lv, 'character/lv16.png', 'Reach Lv');
+  generateAchTiles('armadium', farm, 'inv/armadium16.png', 'Total');
+  generateAchTiles('gazorpazorp', lv, 'character/lv16.png', 'Reach Lv');
+  generateAchTiles('solanium', farm, 'inv/solanium16.png', 'Total');
+  generateAchTiles('xeln', lv, 'character/lv16.png', 'Reach Lv');
+  generateAchTiles('singularity', farm, 'inv/singularity16.png', 'Total');
+  generateAchTiles('blackhole', lv, 'character/lv16.png', 'Reach Lv');
+  generateAchTiles('antiMatter', lv, 'inv/antiMatter16.png', 'Total');
+  generateAchTiles('concentratedDarkMatter', lv, 'inv/concentratedDarkMatter16.png', 'Total');
+}
+
+function generateAchTiles(key, amount, img, what) {
+  let item = Game.Achievements[key];
+  let num = [ 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten' ]
+
+  for(i = 0; i < 10; i ++) {
+    let content = `
+      [<span class='fred f16' id='${key + num[i]}'>✖</span>]
+      ${what}: <span class='fwhite f16'>${amount[i]}</span>
+      <img class='imgFix' src='img/${img}'><br>
+    `;
+
+    elem(`${key}Achievements`).insertAdjacentHTML('beforeend', content)
+  }
 }
 /*===========================================================
-=			Unlock achievement																		=
+=         Unlock achievement                                =
 ===========================================================*/
 function unlockAchievement(key, i) {
-  elem(key + i).innerHTML = '✓';
-  elem(key + i).className = 'fgreen f16';
   Game.Achievements[key].ach[i] = true;
-  save(key + i, Game.Achievements[key].ach[i]);
   Game.Achievements[key].unlocked ++;
   Game.Account.achievements.unlocked ++;
+
+  save(`${key + i}`, Game.Achievements[key].ach[i]);
+  elem(`${key + i}`).innerHTML = '✓';
+  elem(`${key + i}`).className = 'fgreen f16';
 }
 /*===========================================================
 =         Update Achievement                                =
 ===========================================================*/
 function updateAchievements() {
+  let item = Game.Ascensions;
+  let acc = Game.Account;
+  let inv = Game.Inventory;
+
   for(key in Game.Achievements) {
     for(i in Game.Achievements[key].ach) {
+
       if(Game.Achievements[key].ach[i]) {
         elem(key + i).innerHTML = '✓';
         elem(key + i).className = 'fgreen f16';
@@ -361,7 +373,7 @@ function updateAchievements() {
       }
 
       let width = Game.Achievements[key].unlocked * 100 / 10;
-      progressBar(key, width);
+      progBar(key, width);
     }
   }
 }

@@ -1,5 +1,5 @@
 /*===========================================================
-=			HTML, BODY																						=
+=					Edit HTML & BODY																	=
 ===========================================================*/
 html, body {
 	position: relative;
@@ -21,28 +21,25 @@ html, body {
   src: url('font/conthrax.ttf');
 }
 /*===========================================================
-=			Horizontal Line																				=
+=					Horizontal Line																		=
 ===========================================================*/
 hr {
 	width: 100%;
-	height: 2px;
-	margin: 6px 0 6px 0;
-	padding: 0;
-	box-sizing: border-box;
+	height: 1px;
 	border: 0;
-	background: linear-gradient(
-		90deg,
+	background: linear-gradient(90deg,
 		rgba(102, 102, 102, 1),
 		rgba(102, 102, 102, .5),
 		rgba(102, 102, 102, 0)
 	);
 }
 /*===========================================================
-=			Misc																									=
+=					Miscellaneous																			=
 ===========================================================*/
 .hidden{ display: none; }
 .visible{ display: initial; }
 .imgFix { vertical-align: text-bottom; }
+.fcenter { text-align: center; }
 
 .fgrey{ color: rgb(102, 102, 102); }
 .fwhite{ color: rgb(230, 230, 230); }
@@ -51,8 +48,6 @@ hr {
 .fgreen{ color: rgb(102, 255, 102); }
 .forange{ color: rgb(255, 153, 51); }
 .fpurple { color: rgb(204, 102, 255); }
-
-.fcenter { text-align: center; }
 
 .f8 { font-size: 8px; }
 .f10 { font-size: 10px; }
@@ -63,157 +58,177 @@ hr {
 ===========================================================*/
 .game {
 	display: grid;
-	grid-template-areas: 'sidebar-left game-left game-mid game-right sidebar-right';
-	width: 80%;
+	grid-template-areas: 'outter-left inner-left mid inner-right outter-right';
+	width: 1304px;
+	/*========== WIDTH MATH ==========
+		outter-left: width 104px
+		inner-left: width 296px
+		mid: width 528px
+		inner-right: width 272px
+		outter-right: width 104px
+		total: 1342px
+	================================*/
 	height: 100%;
-	margin: 0 10% 0 10%;
-	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .2);
+	margin: 0 auto;
 }
 /*===========================================================
 =					Game Columns																			=
 ===========================================================*/
-.sidebar-left { grid-area: sidebar-left; }
-.game-left { grid-area: game-left; }
-.game-mid { grid-area: game-mid; }
-.game-right { grid-area: game-right; }
-.sidebar-right { grid-area: sidebar-right; }
-/*===========================================================
-=					Sidebar Left																			=
-===========================================================*/
-.sidebar-wrapper {
-	width: 124px;
+.outter-left {
+	grid-area: outter-left;
+	width: 104px;
+	/*========== WIDTH MATH ==========
+		sidebar-item: width 64px + padding 8px = 72px
+		panel: margin 16px + padding 16px = 32px
+		total: 104px
+	==================================*/
 	height: auto;
-	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
 }
-.sidebar-content {
-	display: grid;
-	grid-template-columns: repeat(1, 1fr);
-	margin: 5px auto;
-	padding: 10px;
-	box-sizing: border-box;
+.inner-left {
+	grid-area: inner-left;
+	width: 296px;
+	/*========== WIDTH MATH ==========
+		stat: width 88px x 3/col = 264px
+		panel: margin 16px + padding 16px = 32px
+		total: 296px
+	==================================*/
+	height: auto;
 }
+.mid {
+	grid-area: mid;
+	width: 528px;
+	/*========== WIDTH MATH ==========
+		ore-img: width 512px
+		panel: margin 16px + padding 16px = 32px
+		total: 544px
+	==================================*/
+	height: auto;
+}
+.inner-right {
+	grid-area: inner-right;
+	width: 272px;
+	/*========== WIDTH MATH ==========
+		item: width 64px + margin 16px x 3/col = 240px
+		panel: margin 16px + padding 16px = 32px
+		total: 272px
+	==================================*/
+	height: auto;
+}
+.outter-right {
+	grid-area: outter-right;
+	width: 104px;
+	/*========== WIDTH MATH ==========
+		sidebar-item: width 64px + padding 8px = 72px
+		panel: margin 16px + padding 16px = 32px
+		total: 104px
+	==================================*/
+	height: auto;
+}
+/*===========================================================
+=					Sidebar Item Box																	=
+===========================================================*/
 .sidebar-item {
 	position: relative;
 	width: 64px;
-	height: 64px;
-	margin: 5px auto;
-	padding: 0;
+	height: auto;
+	padding: 4px;
 	box-sizing: border-box;
 	cursor: pointer;
-	opacity: .5;
-	transition: opacity .3s;
+	opacity: .6;
+	transition: opacity .3s ease-in-out;
 }
 .sidebar-item:hover { opacity: 1; }
 .sidebar-item:hover .tooltip { display: grid; }
+.sidebar-left-tooltip {
+	top: 0;
+	left: 96px;
+	/*========== TOOLTIP MATH ==========
+		sidebar-item: width 64px + padding 8px = 72px
+		tooltip-distance: 24px;
+		total: 96px
+	====================================*/
+	animation: sidebar-left-tooltip-anim .3s ease-in-out;
+}
+@keyframes sidebar-left-tooltip-anim {
+  from { left: 128px; opacity: 0; }
+	to { left: 96px; opacity: 1; }
+}
+.sidebar-right-tooltip {
+	top: 0;
+	right: 96px;
+	/*========== TOOLTIP MATH ==========
+		sidebar-item: width 64px + padding 8px = 72px
+		tooltip-distance: 24px;
+		total: 96px
+	====================================*/
+	animation: sidebar-right-tooltip-anim .3s ease-in-out;
+}
+@keyframes sidebar-right-tooltip-anim {
+  from { right: 128px; opacity: 0; }
+	to { right: 96px; opacity: 1; }
+}
 /*===========================================================
-=					Game Left																					=
+=					Stat Item Box																			=
 ===========================================================*/
-.stat-wrapper {
-	width: 276px;
-	height: auto;
-	margin: 0 auto;
-}
-.stat-content {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	margin: 0 auto;
-	padding: 8px;
-	box-sizing: border-box;
-}
-.stat {
+.stat-item {
 	position: relative;
-	width: 80px;
+	width: 88px;
 	height: auto;
 	cursor: pointer;
-	transition: background-color .3s ease-in-out;
 }
-.stat:hover { background-color: rgba(102, 102, 102, .2); }
-.stat:hover .stat-num { color: rgb(230, 230, 230); }
-.stat:hover .tooltip { display: grid; }
-
+.stat-item:hover .stat-img { opacity: 1; }
+.stat-item:hover .stat-num { color: rgb(230, 230, 230); }
+.stat-item:hover .tooltip { display: grid; }
 .stat-img {
 	width: 64px;
 	height: 64px;
 	margin: 0 auto;
+	opacity: .6;
+	transition: opacity .3s ease-in-out;
 }
 .stat-num {
-	width: 80px;
+	width: 100%;
 	height: auto;
-	padding: 4px;
+	padding: 8px 0 8px 0;
 	box-sizing: border-box;
-	text-align: center;
 	transition: color .3s ease-in-out;
 }
 .stat-tooltip {
 	top: 0;
-	left: 100px;
+	left: 112px;
+	/*========== TOOLTIP MATH ==========
+		stat-item: width 88px
+		tooltip-distance: 24px;
+		total: 112px
+	====================================*/
 	animation: stat-tooltip-anim .3s ease-in-out;
 }
 @keyframes stat-tooltip-anim {
-	from { left: 120px; opacity: 0; }
-	to { left: 100px; opacity: 1; }
+	from { left: 136px; opacity: 0; }
+	to { left: 112px; opacity: 1; }
 }
 /*===========================================================
-=					Game Mid																					=
+=					Item Box																					=
 ===========================================================*/
-.game-mid-wrapper {
-	width: 532px;
-	height: auto;
-	margin: 0 auto;
-	padding: 0;
-	box-sizing: border-box;
-}
-
-.ore-img {
-	position: relative;
-	width: 512px;
-	height: 512px;
-}
-
-#oreImg:hover { cursor: pointer; }
-.ress { position: absolute; }
-
-.floating-text {
-	position: fixed;
-	pointer-events: none;
-}
-/*===========================================================
-=					Game Right																				=
-===========================================================*/
-.item-wrapper {
-	width: 288px;
-	height: auto;
-	margin: 0 auto;
-}
-.item-content {
-	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	margin: 0 auto;
-	padding: 8px;
-	box-sizing: border-box;
-}
 .item {
 	position: relative;
 	width: 64px;
 	height: auto;
 	margin: 8px;
-	box-sizing: border-box;
 	cursor: pointer;
 }
-.item:hover .item-img { background-color: rgba(102, 102, 102, .2); }
+.item:hover .item-img { opacity: 1; }
 .item:hover .tooltip { display: grid; }
 .item-img {
 	width: 64px;
 	height: 64px;
-	transition: background-color .3s ease-in-out;
+	opacity: .6;
+	transition: opacity .3s ease-in-out;
 }
 .item-bar {
 	width: 100%;
 	height: 4px;
-	background-color: rgba(0, 204, 255, .4);
+	background-color: rgba(0, 204, 255, .2);
 }
 .item-progress {
 	height: 4px;
@@ -221,97 +236,85 @@ hr {
 }
 .item-tooltip {
 	top: 0;
-	right: 84px;
+	right: 96px;
+	/*========== TOOLTIP MATH ==========
+		item: width 64px + margin 8px = 72px
+		tooltip-distance: 24px;
+		total: 96px
+	====================================*/
 	animation: item-tooltip-anim .3s ease-in-out;
 }
 @keyframes item-tooltip-anim {
-  from { right: 104px; opacity: 0; }
-	to { right: 84px; opacity: 1; }
+	from { right: 128px; opacity: 0; }
+	to { right: 96px; opacity: 1; }
 }
 /*===========================================================
 =			Panel																									=
 ===========================================================*/
 .panel {
-	margin: 10px;
-	box-sizing: border-box;
+	margin: 8px;
 	border-radius: 3px;
-	background-color: rgba(0, 0, 0, .4);
+	background-color: rgba(0, 0, 0, .6);
 }
 .panel-header {
 	position: relative;
 	width: 100%;
-	height: 28px;
-	padding: 8px;
+	height: 32px;
+	padding: 8px 0 8px 0;
 	box-sizing: border-box;
 	border-radius: 3px;
-	background-color: rgba(0, 0, 0, .2);
 	cursor: pointer;
-	transition: background-color .3s ease-in-out;
+	transition: color .3s ease-in-out;
 }
-.panel-header:hover { background-color: rgba(0, 0, 0, .4); }
-.panel-header:hover .header-name { color: rgb(230, 230, 230); }
+.panel-header-name { transition: color .3s ease-in-out; }
+.panel-header:hover .panel-header-name{ color: rgb(230, 230, 230); }
 .panel-header:hover .tooltip { display: grid; }
-.header-name { transition: color .3s ease-in-out; }
+.panel-content {
+	display: grid;
+	margin: 0 auto;
+	padding: 8px;
+	box-sizing: border-box;
+}
+.one-per-row { grid-template-columns: repeat(1, 1fr); }
+.three-per-row { grid-template-columns: repeat(3, 1fr); }
 
 .panel-tooltip-left {
-	top: 48px;
-	left: 16px;
+	top: 56px;
+	left: 24px;
 	animation: panel-tooltip-left-anim .3s ease-in-out;
 }
 @keyframes panel-tooltip-left-anim {
-	from { left: 36px; opacity: 0; }
-	to { left: 16px; opacity: 1; }
+	from { left: 56px; opacity: 0; }
+	to { left: 24px; opacity: 1; }
 }
 .panel-tooltip-right {
-	top: 48px;
-	right: 0;
+	top: 56px;
+	right: 24px;
 	animation: panel-tooltip-right-anim .3s ease-in-out;
 }
 @keyframes panel-tooltip-right-anim {
-	from { right: 20px; opacity: 0; }
-	to { right: 0px; opacity: 1; }
+	from { right: 56px; opacity: 0; }
+	to { right: 24px; opacity: 1; }
 }
 /*===========================================================
-=			Achievements wrapper																	=
+=					Game Mid																					=
 ===========================================================*/
-.achievement-wrapper {
-	display: grid;
-	grid-template-columns: repeat(10, 1fr);
-	width: 580px;
-	height: auto;
-	margin: 0 auto;
-	box-sizing: border-box;
-}
-.masteries-wrapper {
-	display: grid;
-	grid-template-columns: repeat(5, 1fr);
-	width: 380px;
-	height: auto;
-	margin: 0 auto;
-	box-sizing: border-box;
-}
-.achievement {
+.ore-img {
 	position: relative;
-	width: 48px;
-	height: 48px;
-	margin: 5px;
-	box-sizing: border-box;
-	cursor: pointer;
-	box-shadow: inset 0 0 0 1px #808080;
-	transition: box-shadow .3s;
+	width: 512px;
+	height: 512px;
 }
-.achievement:hover .tooltip { display: initial; }
-.ach-tooltip {
-	top: 82px;
-	right: -93px;
-	animation: ach-tooltip-anim .3s ease-in-out;
+.ore-img:hover { cursor: pointer; }
+.ress {
+	position: absolute;
+	pointer-events: none;
 }
-@keyframes ach-tooltip-anim {
-	from { right: -73px; opacity: 0; }
-	to { right: -93px; opacity: 1; }
+.floating-text {
+	position: fixed;
+	pointer-events: none;
 }
 /*===========================================================
-=			Health bar																						=
+=					Ore Stats																					=
 ===========================================================*/
 .ore-content {
 	position: relative;
@@ -323,18 +326,13 @@ hr {
 	width: 256px;
 	height: auto;
 	margin: 0 auto;
-	padding: 8px;
-	box-sizing: border-box;
-	cursor: pointer;
-	transition: background-color .3s ease-in-out;
 }
-.ore-content:hover { background-color: rgba(102, 102, 102, .2); }
 .ore-content:hover .tooltip { display: grid; }
 .ore-lv { grid-area: ore-lv; }
 .ore-hp { grid-area: ore-hp; }
 .ore-num {
 	margin: 0 auto;
-	padding: 10px;
+	padding: 8px 0 8px 0;
 	box-sizing: border-box;
 }
 .hp-bar {
@@ -351,9 +349,7 @@ hr {
 	grid-area: zone-bar;
 	width: 80%;
 	height: 4px;
-	margin: 10px auto;
-	padding: 0;
-	box-sizing: border-box;
+	margin: 8px auto;
 	background-color: rgba(102, 102, 102, .2);
 }
 .zone-progress {
@@ -362,16 +358,16 @@ hr {
 	transition: width .3s ease-in-out;
 }
 .ore-tooltip {
-	top: 0;
-	left: 276px;
+	bottom: 96px;
+	left: 16px;
 	animation: ore-tooltip-anim .3s ease-in-out;
 }
 @keyframes ore-tooltip-anim {
-	from { left: 296px; opacity: 0; }
-	to { left: 276px; opacity: 1; }
+	from { left: 32px; opacity: 0; }
+	to { left: 16px; opacity: 1; }
 }
 /*===========================================================
-=			Tooltip																								=
+=					Tooltip																						=
 ===========================================================*/
 .tooltip {
 	display: none;
@@ -383,7 +379,7 @@ hr {
 	width: 288px;
 	height: auto;
 	background-color: rgba(0, 0, 0, .8);
-	border-radius: 5px;
+	border-radius: 3px;
 	z-index: 1;
 }
 .tooltip-lv {
@@ -393,12 +389,12 @@ hr {
 }
 .tooltip-header {
 	grid-area: tooltip-header;
-	padding: 20px 8px 20px 8px;
+	padding: 16px 8px 16px 8px;
 	box-sizing: border-box;
 }
 .tooltip-content {
 	grid-area: tooltip-content;
-	padding: 8px;
+	padding: 16px;
 	box-sizing: border-box;
 }
 /*===========================================================
@@ -430,7 +426,7 @@ hr {
 	to { opacity: 0; }
 }
 /*===========================================================
-=			Modal  																								=
+=					Modal																							=
 ===========================================================*/
 .modal {
 	display: none;
@@ -439,85 +435,78 @@ hr {
 	height: 100%;
 	left: 0;
 	top: 0;
-	background-color: rgba(0, 0, 0, .5);
+	background-color: rgba(0, 0, 0, .6);
 	z-index: 1;
 }
-/*===========================================================
-=			Modal panel  																					=
-===========================================================*/
 .modal-panel {
 	position: relative;
-	width: 50%;
+	width: 768px;
 	height: auto;
-	margin: 50px auto;
-	padding: 0;
-	box-sizing: border-box;
-	background-color: rgba(0, 0, 0, .9);
-	cursor: default;
-	animation-name: animatetop;
-  animation-duration: .5s;
+	margin: 64px auto;
+	background-color: rgba(0, 0, 0, .8);
+	border-radius: 3px;
+	animation: modal-anim .3s ease-in-out;
+}
+@keyframes modal-anim {
+  from { top: -100%; opacity: 0; }
+  to { top: 0%; opacity: 1; }
 }
 .modal-header {
 	width: 100%;
 	height: auto;
-	margin: 0;
-	padding: 10px;
+	padding: 8px 0 8px 0;
 	box-sizing: border-box;
 	text-align: center;
-	border-bottom: 1px solid rgba(66, 165, 245, 1);
 }
 .modal-content {
+	display: grid;
 	width: 100%;
 	height: auto;
-	margin: 0;
-	padding: 10px;
+	padding: 8px;
 	box-sizing: border-box;
 }
-
-@keyframes animatetop {
-  from { top: -100%; opacity: 0; }
-  to { top: 0%; opacity: 1; }
+.achievement-modal {
+	width: 732px;
+	/*========== WIDTH MATH ==========
+		item: width 64px + margin: 16px x 9/col = 720px
+		modal-content: padding 16px
+		total: 732px
+	==================================*/
+	margin: 0 auto;
+	grid-template-columns: repeat(9, 1fr);
 }
-
 .modal-btn {
 	width: 150px;
 	height: auto;
 	padding: 10px;
-	margin: 5px auto;
-	box-sizing: border-box;
+	margin: 8px auto;
 	text-align: center;
-	background-color: rgba(189, 189, 189, 0);
-	border-bottom: 1px solid rgba(189, 189, 189, 1);
+	background-color: rgba(0, 0, 0, 0);
+	border-bottom: 1px solid rgba(102, 102, 102, 1);
+	box-sizing: border-box;
 	cursor: pointer;
-	transition: border .3s, background-color .3s, color .3s;
+	transition: all .3s ease-in-out;
 }
 
 .modal-btn:hover {
-	background-color: rgba(189, 189, 189, .3);
-	border-bottom: 1px solid rgba(66, 165, 245, 1);
+	background-color: rgba(230, 230, 230, .2);
+	border-bottom: 1px solid rgba(0, 204, 255, 1);
 	color: rgb(230, 230, 230);
+}
+.ach-tooltip {
+	top: 82px;
+	right: -93px;
+	animation: ach-tooltip-anim .3s ease-in-out;
+}
+@keyframes ach-tooltip-anim {
+	from { right: -73px; opacity: 0; }
+	to { right: -93px; opacity: 1; }
 }
 /*===========================================================
 =					Animations																				=
 ===========================================================*/
-@keyframes flash {
-	0% { background-color: linear-gradient(180deg, rgba(0, 204, 255, 0), rgba(0, 204, 255, 1), rgba(0, 204, 255, 0)); }
-	100% { background-color: linear-gradient(180deg, rgba(0, 204, 255, 1), rgba(0, 204, 255, 0), rgba(0, 204, 255, 1)); }
-}
-
 @keyframes crafting-anim {
 	0% { box-shadow: inset 0 0 50px 0 rgba(0, 204, 255, 0); }
 	50% { box-shadow: inset 0 0 50px 0 rgba(0, 204, 255, 1); }
 	100% { box-shadow: inset 0 0 50px 0 rgba(0, 204, 255, 0); }
-}
-
-@keyframes ore-click-animation {
-	0% { transform: scale(.99); }
-	100% { transform: scale(1); }
-}
-
-@keyframes breathe {
-	0% { transform: scale(1); }
-	50% { transform: scale(1.25); color: #66BB6A; }
-	100% { transform: scale(1); }
 }

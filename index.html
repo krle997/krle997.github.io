@@ -29,79 +29,55 @@
 
 <body>
   <div class='game'>
-    <div class='sidebar-left'>
-      <div class='sidebar-wrapper'>
-
-        <div class='panel'>
-          <div class='panel-header' id='accountHeader'></div>
-          <div class='sidebar-content' id='accountBoxes'></div>
-        </div>
-
-        <div class='panel'>
-          <div class='panel-header' id='donateHeader'></div>
-          <div class='sidebar-content' id='donateBoxes'></div>
-        </div>
-
+    <div class='outter-left'>
+      <div class='panel'>
+        <div class='panel-header' id='accountHeader'></div>
+        <div class='panel-content one-per-row' id='accountBoxes'></div>
+      </div>
+      <div class='panel'>
+        <div class='panel-header' id='donateHeader'></div>
+        <div class='panel-content one-per-row' id='donateBoxes'></div>
       </div>
     </div>
 
-    <div class='game-left'>
-      <div class='stat-wrapper'>
-
-        <div class='panel'>
-          <div class='panel-header' id='damageHeader'></div>
-          <div class='stat-content' id='damageStats'></div>
-        </div>
-
-        <div class='panel'>
-          <div class='panel-header' id='inventoryHeader'></div>
-          <div class='stat-content' id='inventoryStats'></div>
-        </div>
-
+    <div class='inner-left'>
+      <div class='panel'>
+        <div class='panel-header' id='damageHeader'></div>
+        <div class='panel-content three-per-row' id='damageStats'></div>
+      </div>
+      <div class='panel'>
+        <div class='panel-header' id='inventoryHeader'></div>
+        <div class='panel-content three-per-row' id='inventoryStats'></div>
       </div>
     </div>
 
-    <div class='game-mid'>
-      <div class='game-mid-wrapper'>
-
-        <div class='panel'>
-          <div class='ore-img' id='resourceContainer'>
-            <img draggable='false' id='oreImg'>
-          </div>
+    <div class='mid'>
+      <div class='panel'>
+        <div class='ore-img' id='resourceContainer'>
+          <img draggable='false' id='oreImg'>
         </div>
-
-        <div class='panel'>
-          <div class='panel-header' id='healthBarHeader'></div>
-          <div class='ore-content' id='oreContent'></div>
-        </div>
-
+      </div>
+      <div class='panel'>
+        <div class='panel-header' id='healthBarHeader'></div>
+        <div class='ore-content' id='oreContent'></div>
       </div>
     </div>
 
-    <div class='game-right'>
-      <div class='item-wrapper'>
-
-        <div class='panel'>
-          <div class='panel-header' id='upgradesHeader'></div>
-          <div class='item-content' id='upgradeItems'></div>
-        </div>
-
-        <div class='panel'>
-          <div class='panel-header' id='craftingHeader'></div>
-          <div class='item-content' id='craftItems'></div>
-        </div>
-
+    <div class='inner-right'>
+      <div class='panel'>
+        <div class='panel-header' id='upgradesHeader'></div>
+        <div class='panel-content three-per-row' id='upgradeItems'></div>
+      </div>
+      <div class='panel'>
+        <div class='panel-header' id='craftingHeader'></div>
+        <div class='panel-content three-per-row' id='craftItems'></div>
       </div>
     </div>
 
-    <div class='sidebar-right'>
-      <div class='sidebar-wrapper'>
-
-        <div class='panel'>
-          <div class='panel-header' id='ascendHeader'></div>
-          <div class='sidebar-content' id='ascensionItems'></div>
-        </div>
-
+    <div class='outter-right'>
+      <div class='panel'>
+        <div class='panel-header' id='ascendHeader'></div>
+        <div class='panel-content one-per-row' id='ascensionItems'></div>
       </div>
     </div>
   </div>

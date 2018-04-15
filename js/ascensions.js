@@ -4,11 +4,15 @@
 Game.Ascensions = {
   earth: {
     name: 'Earth',
-    info: `Earth was inhabited by humans, who were extinct
-    millions of years ago. The planet has been abbandoned
-    ever since, and there are very little leftovers of the
-    unfortunate civilization. But there are lots of Titanium
-    Ores, and looks like they are all yours to keep`,
+    info: `
+      Our species used to observe Earth back in the ancient times, and obduct
+      humans for valuable research and experiments. Their brains had enormous
+      capabilities, too bad they let greed and selfishness terminate them, along
+      with every other living being on the planet. Over the course of millions
+      of years, everything slowly degraded to dust, and since Titanium is
+      very common here, it's formed ores are now widespread across the entire
+      planet.
+    `,
     isCurrent: true,
     ascendTo: true,
     req: 0,
@@ -64,7 +68,7 @@ Game.Ascensions = {
     what you're after`,
     isCurrent: false,
     ascendTo: false,
-    req: 500,
+    req: 250,
     ore: {
       name: 'Chrysonite',
       id: 'chrysonite',
@@ -87,7 +91,7 @@ Game.Ascensions = {
     info: `1 year of coding, Morty! Only 11 more years to go Moooor*buuuurp*ty!!`,
     isCurrent: false,
     ascendTo: false,
-    req: 2500,
+    req: 1000,
     ore: {
       name: 'Armadium',
       id: 'armadium',
@@ -113,7 +117,7 @@ Game.Ascensions = {
     rare, and we're in luck nobody bothered to visit this planet before us`,
     isCurrent: false,
     ascendTo: false,
-    req: 10000,
+    req: 2500,
     ore: {
       name: 'Solanium',
       id: 'solanium',
@@ -139,10 +143,10 @@ Game.Ascensions = {
     very few who can obtain it`,
     isCurrent: false,
     ascendTo: false,
-    req: 25000,
+    req: 10000,
     ore: {
       name: 'Singularity',
-      id: 'hawkingRadiation',
+      id: 'singularity',
       lv: 1,
       prog: 0,
       hp: 1e12,
@@ -169,7 +173,7 @@ function generateAscensions() {
     let content = `
       <div class='sidebar-item' id='${key}'>
         <img src='img/ascencion/${key}.png' id='${key}Img'>
-        <div class='tooltip item-tooltip fgrey'>
+        <div class='tooltip sidebar-right-tooltip fgrey'>
           <div class='tooltip-lv'>
             <canvas id='${key}Bar' width='64' height='64'></canvas>
           </div>
@@ -256,7 +260,7 @@ function unlockBlackHole() {
   unlockUpgrade('beamCharger');
   unlockUpgrade('phaseGun');
   unlockCrafting('darkRadiation');
-  unlockInventory('hawkingRadiation');
+  unlockInventory('singularity');
   elem('blackholeContent').className = 'visible';
 }
 /*===========================================================
@@ -264,7 +268,8 @@ function unlockBlackHole() {
 ===========================================================*/
 function lockAscensions() {
 	for(key in Game.Ascensions)
-		elem(key).onclick = function () {}
+		elem(key).onclick = function () {};
+    elem(key + 'Content').className = 'hidden';
 }
 /*===========================================================
 =         Ascend                                            =
@@ -362,7 +367,7 @@ function updateAscensions() {
       ascend(key);
     }
 
-    elem(key + 'Req').innerHTML = item.req;
+    elem(key + 'Req').innerHTML = nFormat(item.req);
     elem(key + 'Lv').innerHTML = ore.lv;
   }
 

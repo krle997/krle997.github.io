@@ -198,7 +198,7 @@ function gameLoop() {
       }
 
       let width = 100 / (600000 / item.remaining);
-      progBar(item.remaining / 1000, key, width);
+      progBar(key, width);
     }
   }
 
@@ -583,7 +583,7 @@ function microverseAscension() {
   inv.chrysonite.amount = 0;
   inv.armadium.amount = 0;
   inv.solanium.amount = 0;
-  inv.hawkingRadiation.amount = 0;
+  inv.singularity.amount = 0;
 
 	for(key in inv)
 		save(key + 'Amount', inv[key].amount);
@@ -658,7 +658,7 @@ function progressBar(key, width) {
   ctx.stroke();
 }
 
-function progBar(num, key, width) {
+function progBar(key, width) {
   elem(key + 'Progress').style.width = width + '%';
 }
 /*===========================================================
@@ -693,11 +693,11 @@ function nFormat(num) {
 
 	for(i = 0; i < si.length; i ++) {
 		if(num >= si[i].value) {
-			return(num / si[i].value).toFixed(1).replace(rx, '$1') + si[i].symbol;
+			return(num / si[i].value).toFixed(2).replace(rx, '$1') + si[i].symbol;
 		}
 	}
 
-	return num.toFixed(1).replace(rx, '$1');
+	return num.toFixed(2).replace(rx, '$1');
 }
 /*===========================================================
 =			Open Modal																						=
@@ -790,7 +790,7 @@ function generateDonate() {
 		let content = `
 			<div class='sidebar-item'>
 				<img src='img/donate/${key}.png' onclick='prompt("Press CTRL + C to copy my address to your clipboard", "${item.addr}")'>
-				<div class='tooltip stat-tooltip fgrey'>
+				<div class='tooltip sidebar-left-tooltip fgrey'>
 					<div class='tooltip-content'>
 						<span class='fwhite f14'>${item.name}</span><br>
             <span class='fwhite'>Click to donate</span><hr>

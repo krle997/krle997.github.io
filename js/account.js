@@ -31,7 +31,7 @@ Game.Account = {
 			chrysonite: 0,
 			armadium: 0,
 	    solanium: 0,
-	    hawkingradiation: 0,
+	    singularity: 0,
 			antiMatter: 0,
 			frostCrystal: 0
 	  }
@@ -40,8 +40,9 @@ Game.Account = {
 		name: `Achievements`,
 		tooltipContent: `
 			Unlocked: <span class='fwhite f16' id='charAch'></span><hr>
-			Achievements indicate a milestone that you have completed. Completing the
-			entire achievement tree unlocks new avatars for your character
+			Achievements are split in category trees. They indicate a milestone that
+			you have reached. Unlocking all achievements in the same tree unlocks
+			unique avatars for your character
 		`,
 		onclick: 'openModal("achievements")',
 		unlocked: 0
@@ -53,6 +54,7 @@ Game.Account = {
 			<span class='fblue'>Rare</span>: <span class='fwhite f16'>0 / 50</span><br>
 			<span class='fpurple'>Epic</span>: <span class='fwhite f16'>0 / 15</span><br>
 			<span class='forange'>Legendary</span>: <span class='fwhite f16'>0 / 3</span><hr>
+			<span class='fred'>Masteries are in developement!</span><br>
 			Masteries are divided into four categories. You will receive 1 random
 			Mastery Point each time your Character levels up. Masteries are permanent
 			and last through Microverses
@@ -76,7 +78,7 @@ function generateAccount() {
 		let content = `
 	    <div class='sidebar-item' id='${key}'>
 	      <img src='img/character/${key}.png' onclick='${item.onclick}'>
-	      <div class='tooltip stat-tooltip fgrey'>
+	      <div class='tooltip sidebar-left-tooltip fgrey'>
 					<div class='tooltip-lv'>
 						<canvas id='${key}Bar' width='64' height='64'></canvas>
 					</div>

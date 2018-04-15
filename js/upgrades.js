@@ -155,7 +155,7 @@ Game.Upgrades = {
   beamCooler: {
     name: 'Beam Cooler',
     info: 'Hi-tech cooler for your Phase Beam',
-    res: 'hawkingRadiation',
+    res: 'singularity',
     lv: 0,
     cost: 0,
     baseCost: 10,
@@ -165,7 +165,7 @@ Game.Upgrades = {
   beamCharger: {
     name: 'Beam Charger',
     info: 'Charges the beam for more damage',
-    res: 'hawkingRadiation',
+    res: 'singularity',
     lv: 0,
     cost: 0,
     baseCost: 200,
@@ -175,7 +175,7 @@ Game.Upgrades = {
   phaseGun: {
     name: 'Phase Gun',
     info: 'A combination of your plasma and laser beam guns.',
-    res: 'hawkingRadiation',
+    res: 'singularity',
     lv: 0,
     cost: 0,
     baseCost: 4000,
@@ -192,8 +192,8 @@ function generateUpgrades() {
 
     let content = `
       <div class='hidden' id='${key}' onclick='buyUpgrade("${key}")'>
-        <div class='item-img'>
-          <img src='img/upgrades/${key}.png' id='${key}Img'>
+        <div class='item-img' id='${key}Img'>
+          <img src='img/upgrades/${key}.png'>
         </div>
         <div class='item-bar'>
           <div class='item-progress' id='${key}Progress'></div>
@@ -204,9 +204,8 @@ function generateUpgrades() {
             <span id='${key}Avb'></span><hr>
             Lv: <span class='fwhite f16' id='${key}Lv'></span><br>
             Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'><br>
-            DPS: <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'><br>
-            DPS per Lv: <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'><br>
-            % of total DPS: <span class='fwhite f16' id='${key}ofTotal'></span><hr>
+            DPS: <span class='fwhite f16' id='${key}Dps'></span> (<span class='fwhite f16' id='${key}ofTotal'></span>) <img class='imgFix' src='img/character/dps16.png'><br>
+            DPS per Lv: <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'><hr>
             ${item.info}
   				</div>
         </div>
@@ -262,7 +261,7 @@ function buyUpgrade(key) {
     elem(key + 'Cost').innerHTML = nFormat(item.cost);
 
     let width = (20 - (nextLv - item.lv)) * 5;
-    progBar(item.lv, key, width);
+    progBar(key, width);
 
     updateDamage();
     canBuyUpgrade();
@@ -286,14 +285,14 @@ function canBuyUpgrade() {
       elem(key + 'Avb').innerHTML = 'Click to buy';
       elem(key + 'Avb').className = 'fwhite';
       elem(key + 'Cost').className = 'fwhite f16';
-      elem(key + 'Img').style.opacity = '1';
+      //elem(key + 'Img').style.opacity = '.6';
       elem(key).style.cursor = 'pointer';
     }
     else if(inv.amount <= item.cost) {
       elem(key + 'Avb').innerHTML = 'Not enough resources';
       elem(key + 'Avb').className = 'fred';
       elem(key + 'Cost').className = 'fred f16';
-      elem(key + 'Img').style.opacity = '.2';
+      //elem(key + 'Img').style.opacity = '.2';
       elem(key).style.cursor = 'not-allowed';
     }
   }
@@ -313,7 +312,7 @@ function updateUpgrades() {
     item.dps = dps;
     item.cost = cost;
 
-    progBar(item.lv, key, width);
+    progBar(key, width);
     elem(key + 'Lv').innerHTML = item.lv;
     elem(key + 'Cost').innerHTML = nFormat(item.cost);
     elem(key + 'Dps').innerHTML = nFormat(item.dps);

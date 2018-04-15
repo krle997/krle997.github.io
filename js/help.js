@@ -68,7 +68,7 @@ function generateHelp() {
   for(key in Game.Help) {
     let item = Game.Help[key];
     let content = `
-      <div class='header-name fcenter fgrey'>${item.name}</div>
+      <div class='panel-header-name fcenter fgrey'>${item.name}</div>
       <div class='tooltip ${item.tooltipType} fgrey'>
         <div class='tooltip-content'>
           ${item.info}

@@ -276,22 +276,25 @@ function generateMasteries() {
 
     let content = `
       <div class='item' id='${key}'>
-        <img src='img/${key}.png' id='${key}Img'/>
-        <div class='tooltip ach-tooltip'>
-          <div class='tooltip-lv'>
-            <canvas id='${key}Bar' width='64' height='64'></canvas>
-          </div>
-          <div class='tooltip-content fgrey'>
-            <span class='fwhite'>${item.name}</span><br/>
-            ${item.type}<hr/>
-            Bonus: <span class='fwhite f16' id='${key}Bonus'></span><hr/>
+        <div class='item-img' id='${key}Img'>
+          <img src='img/achievements/${key}.png'>
+        </div>
+        <div class='item-bar'>
+          <div class='item-progress' id='${key}Progress'></div>
+        </div>
+        <div class='tooltip ach-tooltip fgrey'>
+          <div class='tooltip-content'>
+            <span class='fwhite'>${item.name}</span><br>
+            ${item.type}<hr>
+            Lv: <span class='fwhite f16' id='${key}Lv'></span><br>
+            Bonus: <span class='fwhite f16' id='${key}Bonus'></span><hr>
             <span class='f10'>${item.info}</span>
           </div>
         </div>
       </div>
     `;
 
-    elem('masteryItems').innerHTML += content;
+    elem('masteryItems').insertAdjacentHTML('beforeend', content);
   }
 }
 /*===========================================================
@@ -319,9 +322,10 @@ function giveMastery() {
     updateDamage();
 
     let width = item[mastery[rand]].lv * 100 / item[mastery[rand]].maxLv;
-    progressBar(mastery[rand], width);
+    progBar(mastery[rand], width);
 
     elem(mastery[rand] + 'Bonus').innerHTML = item[mastery[rand]].bonus * item[mastery[rand]].lv + '%';
+    elem(mastery[rand] + 'Lv').innerHTML = item[mastery[rand]].lv;
   }
 }
 /*===========================================================
@@ -332,8 +336,9 @@ function updateMasteries() {
     let item = Game.Masteries[key];
 
     let width = item.lv * 100 / item.maxLv;
-    progressBar(key, width);
+    progBar(key, width);
 
     elem(key + 'Bonus').innerHTML = item.bonus * item.lv + '%';
+    elem(key + 'Lv').innerHTML = item.lv;
   }
 }

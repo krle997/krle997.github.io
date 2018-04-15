@@ -17,10 +17,11 @@ function generateHpBar() {
         <span class='fgreen f14' id='oreName'></span> <img class='imgFix' id='oreTgs'><hr>
         Zone: <span class='fwhite f16' id='oreProgress'></span><br>
         Total Hp: <span class='fwhite f16' id='oreMaxHp'></span><br>
-        Hp per Lv: <span class='fwhite f16' id='oreHpPerLv'></span><br>
         Armor: <span class='fwhite f16' id='oreArmor'></span>
         (Eff: <span class='fwhite f16' id='effectiveArmor'></span>)<br>
-        Armor per Lv: <span class='fwhite f16' id='oreArmorPerLv'></span><hr>
+        Scaling per Lv:<br>
+        Hp per Lv: <span class='fwhite f16' id='oreHpPerLv'></span><br>
+        Armor per Lv: <span class='fwhite f16' id='oreArmorPerLv'></span><br>
         Drop rates per Lv:<br>
         <span class='fblue'>Anti Matter</span> <img src='img/inv/antiMatter16.png' class='imgFix'> <span class='fwhite f16' id='antiMatterDropRate'></span><br>
         <span class='fpurple'>Dark Matter</span> <img src='img/inv/darkMatter16.png' class='imgFix'> <span class='fwhite f16' id='darkMatterDropRate'></span>

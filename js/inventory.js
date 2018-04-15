@@ -27,7 +27,7 @@ Game.Inventory = {
 		info: `<span class='fgreen'>Solanium</span> is an exotic element. It can be mined on planet Xeln`,
 		amount: 0
 	},
-	hawkingRadiation: {
+	singularity: {
 		name: 'Hawking Radiation',
 		info: `<span class='fgreen'>Hawking Radiation</span> holds secrets burried throughout billions of Black Holes existence. It can be mined in a Black Hole`,
 		amount: 0
@@ -67,7 +67,7 @@ function generateInventory() {
 				<div class='stat-img'>
 					<img src='img/inv/${key}.png'>
 				</div>
-				<div class='stat-num fgrey' id='${key}Num'>
+				<div class='stat-num fcenter fgrey'>
 					<span id='${key}Amount'></span>
 				</div>
 				<div class='tooltip stat-tooltip fgrey'>
@@ -86,7 +86,7 @@ function generateInventory() {
 =					Unlock Inventory																	=
 ===========================================================*/
 function unlockInventory(key) {
-  elem(key).className = 'stat';
+  elem(key).className = 'stat-item';
 }
 /*===========================================================
 =					Lock Inventory																		=

@@ -113,7 +113,7 @@ function craft(key) {
     elem(key + 'Img').style.animation = 'crafting-anim 3s linear infinite';
 
     let width = 100 / (600000 / item.remaining);
-    progBar(item.remaining / 1000, key, width);
+    progBar(key, width);
 
     updateDamage();
     canCraft();
@@ -161,7 +161,7 @@ function updateCrafting() {
       elem(key + 'Img').style.animation = '';
 
     let width = 100 / (600000 / item.remaining);
-    progBar(item.remaining / 1000, key, width);
+    progBar(key, width);
     elem(key + 'Cost').innerHTML = nFormat(item.cost);
   }
 
