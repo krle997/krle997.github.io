@@ -3,7 +3,7 @@
 ===========================================================*/
 Game.Account = {
 	character: {
-		name: `Character`,
+		name: 'Character',
 		tooltipContent: `
 			Lv: <span class='fwhite f16' id='charLv'></span><br>
 			Xp: <span class='fwhite f16' id='charXp'></span><br>
@@ -34,7 +34,15 @@ Game.Account = {
 	    singularity: 0,
 			antiMatter: 0,
 			frostCrystal: 0
-	  }
+	  },
+		highestLv: {
+			titanium: 0,
+			plutonium: 0,
+			chrysonite: 0,
+			armadium: 0,
+	    solanium: 0,
+	    singularity: 0,
+		}
 	},
 	achievements: {
 		name: `Achievements`,
@@ -76,16 +84,18 @@ function generateAccount() {
 		let item = Game.Account[key];
 
 		let content = `
-	    <div class='sidebar-item' id='${key}'>
-	      <img src='img/character/${key}.png' onclick='${item.onclick}'>
-	      <div class='tooltip sidebar-left-tooltip fgrey'>
-					<div class='tooltip-lv'>
-						<canvas id='${key}Bar' width='64' height='64'></canvas>
+	    <div class='item' id='${key}' onclick='${item.onclick}'>
+				<div class='item-img' id='${key}Img'>
+					<img src='img/character/${key}.png'>
+				</div>
+				<div class='item-bar'>
+					<div class='item-progress' id='${key}Progress'></div>
+				</div>
+	      <div class='tooltip item-tooltip-left fgrey'>
+					<div class='tooltip-header fcenter'>
+						<span class='fwhite f14'>${item.name}</span><br>
+						<span class='fwhite'>Click to view more</span>
 					</div>
-					<div class='tooltip-header'>
-            <span class='fwhite f14'>${item.name}</span><br>
-						<span class='fwhite'>Click to view more</span><hr>
-          </div>
 	        <div class='tooltip-content fgrey'>
 						${item.tooltipContent}
 					</div>
@@ -93,7 +103,7 @@ function generateAccount() {
 	    </div>
 	  `;
 
-		elem('accountBoxes').insertAdjacentHTML('beforeend', content);
+		elem('accountItems').insertAdjacentHTML('beforeend', content);
 	}
 }
 /*===========================================================
@@ -119,6 +129,10 @@ function updateAccount() {
 	for(key in char.total) {
     elem(key + 'Total').innerHTML = nFormat(char.total[key]);
   }
+
+	for(key in char.highestLv) {
+		elem(key + 'UppermostLv').innerHTML = nFormat(char.highestLv[key]);
+	}
 
   elem('charXp').innerHTML = nFormat(char.stats.xp) + ' / ' + nFormat(char.stats.xpReq);
 	elem('charLv').innerHTML = char.stats.lv;

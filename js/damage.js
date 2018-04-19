@@ -4,18 +4,35 @@
 Game.Damage = {
 	dps: {
 		name: 'Damage per Second',
-		info: 'Damage dealt by the game every second. DPS be reduced by Ores Armor',
-		misc: `Armor Pen: <span class='fwhite f16' id='armorPen'></span>`
+		info: `
+			This is how much damage you do each second. DPS cannot critically hit, and
+			can be reduced by Ores Armor
+		`,
+		misc: `
+			Critical Chance: <span class='fwhite f16'>0%</span><br>
+			Armor Pen: <span class='fwhite f16' id='armorPen'></span>
+		`
 	},
 	dpc: {
 		name: 'Damage per Click',
-		info: 'Damage dealt every click. Clicks can Critically Hit, dealing more damage. Clicks completely ignore Ores Armor',
-		misc: `Crit Chance: <span class='fwhite f16' id='critChance'></span>`
+		info: `
+			This is how much damage you do each click. DPC can critically hit, dealing
+			significantly more damage. DPC also completely ignores Ores Armor
+		`,
+		misc: `
+			Critical Chance: <span class='fwhite f16' id='critChance'></span><br>
+			Armor Pen: <span class='fwhite f16'>100%</span>
+		`
 	},
 	increment: {
 		name: 'Damage Increment',
-		info: 'Increases both DPS and DPC by a percentage',
-		misc: ``
+		info: `
+			Increases both DPS and DPC by a percentage. Damage Increment can be
+			increased in various ways.
+		`,
+		misc: `
+			From <img src='img/inv/concentratedDarkMatter16.png'>: <span class='fwhite f16' id='fromCDarkMatter'></span>
+		`
 	}
 }
 /*===========================================================
@@ -26,7 +43,7 @@ function generateDamage() {
     let item = Game.Damage[key];
 
 		let content = `
-			<div class='stat-item'>
+			<div class='stat'>
 				<div class='stat-img'>
 					<img src='img/character/${key}.png'>
 				</div>
@@ -34,8 +51,10 @@ function generateDamage() {
 					<span id='${key}'></span>
 				</div>
 				<div class='tooltip stat-tooltip fgrey'>
+					<div class='tooltip-header fcenter'>
+						<span class='fwhite f14'>${item.name}</span>
+					</div>
 					<div class='tooltip-content'>
-						<span class='fwhite f14'>${item.name}</span><hr>
 						${item.misc}<hr>
 						${item.info}
 					</div>
@@ -105,6 +124,7 @@ function updateDamage() {
   elem('increment').innerHTML = nFormat(Game.Account.character.stats.increment) + '%';
   elem('critChance').innerHTML = Game.Account.character.stats.critChance + '%';
   elem('armorPen').innerHTML = Game.Account.character.stats.armorPen + '%';
+	elem('fromCDarkMatter').innerHTML = nFormat(Game.Inventory.concentratedDarkMatter.amount);
   elem('titaniumBatteryBonus').innerHTML = totalLvs + '%';
   elem('plutoniumBatteryBonus').innerHTML = totalLvs / 100 + '%';
   elem('chrysoniteBatteryBonus').innerHTML = totalLvs / 100 + '%';

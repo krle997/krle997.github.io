@@ -5,7 +5,7 @@ Game.Help = {
       On the account tab you can track your every progress, conduct microverse
       ascensions, view masteries and achievements, and change game settings
     `,
-    tooltipType: 'panel-tooltip-left'
+    tooltip: 'panel-tooltip-left'
   },
   donate: {
     name: 'Donate',
@@ -13,12 +13,12 @@ Game.Help = {
       I will never display ads or make the game pay to win to generate revenue...
       Every donation is greatly appreciated. Thank you!
     `,
-    tooltipType: 'panel-tooltip-left'
+    tooltip: 'panel-tooltip-left'
   },
   damage: {
     name: 'Damage',
     info: `Do you really need an explanation for this...`,
-    tooltipType: 'panel-tooltip-left'
+    tooltip: 'panel-tooltip-left'
   },
   inventory: {
     name: 'Inventory',
@@ -27,22 +27,36 @@ Game.Help = {
       on upgrades or crafting, others can't be spent but provide core
       fundamentals for game progression
     `,
-    tooltipType: 'panel-tooltip-left'
+    tooltip: 'panel-tooltip-left'
   },
-  healthBar: {
-    name: 'Ore Stats',
+  ore: {
+    name: `<span id='oreName'></span>`,
     info: `
-      Track your progress, see how far you've come and how each Ore scales
+      Zone: <span class='fwhite f16' id='oreProgress'></span><br>
+      Total Hp: <span class='fwhite f16' id='oreMaxHp'></span><br>
+      Armor: <span class='fwhite f16' id='oreArmor'></span>
+      (Eff: <span class='fwhite f16' id='effectiveArmor'></span>)<hr>
+      Total Hp / Lv: <span class='fwhite f16' id='oreHpPerLv'></span><br>
+      Armor / Lv: <span class='fwhite f16' id='oreArmorPerLv'></span><br>
+      Xp / Zone: <span class='fwhite f16'>+ 1</span><br>
+      <img class='imgFix' src='img/inv/antiMatter16.png'> Drop Rate / Lv: <span class='fwhite f16' id='antiMatterDropRate'></span><br>
+      <img class='imgFix' src='img/inv/darkMatter16.png'> Drop Rate / Lv: <span class='fwhite f16' id='darkMatterDropRate'></span>
     `,
-    tooltipType: 'panel-tooltip-left'
+    tooltip: 'ore-tooltip'
   },
   upgrades: {
     name: 'Upgrades',
     info: `
-      Acumulate <span class='fgreen'>resources</span> to buy upgrades and
-      increase your DPS. Each upgrade has its individual DPS doubled every 20 Lvs
+      <ul>
+        <li>Acumulate <span class='fgreen'>resources</span> to buy upgrades</li>
+        <li>Each upgrade has its individual DPS doubled every 20 Lvs</li>
+        <li>Press <span class='fwhite'>Z</span> to buy 1x</li>
+        <li>Press <span class='fwhite'>X</span> to buy 20x</li>
+        <li>Press <span class='fwhite'>C</span> to buy 100x</li>
+        <li>Press <span class='fwhite'>A</span> to toggle auto-buy</li>
+      </ul>
     `,
-    tooltipType: 'panel-tooltip-right'
+    tooltip: 'panel-tooltip-right'
   },
   crafting: {
     name: 'Crafting',
@@ -51,7 +65,7 @@ Game.Help = {
       and temporarily boost your stats. Crafted items only last for a limited
       amount of time, but offer strong, scaling power-ups
     `,
-    tooltipType: 'panel-tooltip-right'
+    tooltip: 'panel-tooltip-right'
   },
   ascend: {
     name: 'Ascend',
@@ -60,21 +74,23 @@ Game.Help = {
       Unlocking new ascension also unlocks 3 new upgrades and 1 new crafting
       item. Each ascension has a unique mineable ore
     `,
-    tooltipType: 'panel-tooltip-right'
+    tooltip: 'panel-tooltip-right'
   }
 }
 
 function generateHelp() {
   for(key in Game.Help) {
     let item = Game.Help[key];
+
     let content = `
-      <div class='panel-header-name fcenter fgrey'>${item.name}</div>
-      <div class='tooltip ${item.tooltipType} fgrey'>
+      <div class='fcenter'>${item.name}</div>
+      <div class='tooltip ${item.tooltip} fgrey'>
         <div class='tooltip-content'>
           ${item.info}
         </div>
       </div>
-    `
-    elem(key + 'Header').insertAdjacentHTML('beforeend', content);
+    `;
+
+    elem(`${key}Header`).insertAdjacentHTML('beforeend', content);
   }
 }

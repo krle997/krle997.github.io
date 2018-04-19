@@ -282,13 +282,15 @@ function generateMasteries() {
         <div class='item-bar'>
           <div class='item-progress' id='${key}Progress'></div>
         </div>
-        <div class='tooltip ach-tooltip fgrey'>
-          <div class='tooltip-content'>
+        <div class='tooltip item-tooltip-bottom fgrey'>
+          <div class='tooltip-header fcenter'>
             <span class='fwhite'>${item.name}</span><br>
-            ${item.type}<hr>
+            ${item.type}
+          </div>
+          <div class='tooltip-content'>
             Lv: <span class='fwhite f16' id='${key}Lv'></span><br>
             Bonus: <span class='fwhite f16' id='${key}Bonus'></span><hr>
-            <span class='f10'>${item.info}</span>
+            ${item.info}
           </div>
         </div>
       </div>
@@ -322,7 +324,7 @@ function giveMastery() {
     updateDamage();
 
     let width = item[mastery[rand]].lv * 100 / item[mastery[rand]].maxLv;
-    progBar(mastery[rand], width);
+    progressBar(mastery[rand], width);
 
     elem(mastery[rand] + 'Bonus').innerHTML = item[mastery[rand]].bonus * item[mastery[rand]].lv + '%';
     elem(mastery[rand] + 'Lv').innerHTML = item[mastery[rand]].lv;
@@ -336,7 +338,7 @@ function updateMasteries() {
     let item = Game.Masteries[key];
 
     let width = item.lv * 100 / item.maxLv;
-    progBar(key, width);
+    progressBar(key, width);
 
     elem(key + 'Bonus').innerHTML = item.bonus * item.lv + '%';
     elem(key + 'Lv').innerHTML = item.lv;

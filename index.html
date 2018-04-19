@@ -12,16 +12,16 @@
 	<link rel='stylesheet' type='text/css' href='game.css'>
 
   <script type='text/javascript' src='game.js' defer></script>
-  <script type='text/javascript' src='js/oreStats.js' defer></script>
   <script type='text/javascript' src='js/account.js' defer></script>
+  <script type='text/javascript' src='js/donate.js' defer></script>
   <script type='text/javascript' src='js/upgrades.js' defer></script>
   <script type='text/javascript' src='js/crafting.js' defer></script>
   <script type='text/javascript' src='js/ascensions.js' defer></script>
+  <script type='text/javascript' src='js/ores.js' defer></script>
   <script type='text/javascript' src='js/achievements.js' defer></script>
   <script type='text/javascript' src='js/masteries.js' defer></script>
   <script type='text/javascript' src='js/inventory.js' defer></script>
   <script type='text/javascript' src='js/damage.js' defer></script>
-
   <script type='text/javascript' src='js/help.js' defer></script>
   <script type='text/javascript' src='js/modals.js' defer></script>
   <script type='text/javascript' src='js/HackTimer.js'></script>
@@ -31,58 +31,59 @@
   <div class='game'>
     <div class='outter-left'>
       <div class='panel'>
-        <div class='panel-header' id='accountHeader'></div>
-        <div class='panel-content one-per-row' id='accountBoxes'></div>
+        <div class='panel-header fgrey' id='accountHeader'></div>
+        <div class='panel-content one-per-row' id='accountItems'></div>
       </div>
       <div class='panel'>
-        <div class='panel-header' id='donateHeader'></div>
-        <div class='panel-content one-per-row' id='donateBoxes'></div>
+        <div class='panel-header fgrey' id='donateHeader'></div>
+        <div class='panel-content one-per-row' id='donateItems'></div>
       </div>
     </div>
 
     <div class='inner-left'>
       <div class='panel'>
-        <div class='panel-header' id='damageHeader'></div>
+        <div class='panel-header fgrey' id='damageHeader'></div>
         <div class='panel-content three-per-row' id='damageStats'></div>
       </div>
       <div class='panel'>
-        <div class='panel-header' id='inventoryHeader'></div>
+        <div class='panel-header fgrey' id='inventoryHeader'></div>
         <div class='panel-content three-per-row' id='inventoryStats'></div>
       </div>
     </div>
 
     <div class='mid'>
       <div class='panel'>
+        <div class='panel-header fgrey' id='oreHeader'></div>
         <div class='ore-img' id='resourceContainer'>
           <img draggable='false' id='oreImg'>
         </div>
       </div>
       <div class='panel'>
-        <div class='panel-header' id='healthBarHeader'></div>
         <div class='ore-content' id='oreContent'></div>
       </div>
     </div>
 
     <div class='inner-right'>
       <div class='panel'>
-        <div class='panel-header' id='upgradesHeader'></div>
+        <div class='panel-header fgrey' id='upgradesHeader'></div>
         <div class='panel-content three-per-row' id='upgradeItems'></div>
       </div>
       <div class='panel'>
-        <div class='panel-header' id='craftingHeader'></div>
-        <div class='panel-content three-per-row' id='craftItems'></div>
+        <div class='panel-header fgrey' id='craftingHeader'></div>
+        <div class='panel-content three-per-row' id='craftingItems'></div>
       </div>
     </div>
 
     <div class='outter-right'>
       <div class='panel'>
-        <div class='panel-header' id='ascendHeader'></div>
+        <div class='panel-header fgrey' id='ascendHeader'></div>
         <div class='panel-content one-per-row' id='ascensionItems'></div>
       </div>
     </div>
   </div>
 
   <div class='notification-container' id='notifContainer'></div>
+  <img class='background-img' id='backgroundImg'>
   <div id='modalContainer'></div>
 
 </body>
