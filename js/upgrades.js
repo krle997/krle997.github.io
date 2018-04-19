@@ -10,6 +10,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 10,
+    costPerLv: 1.04,
     dps: 0,
     baseDps: 1
   },
@@ -21,6 +22,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 200,
+    costPerLv: 1.04,
     dps: 0,
     baseDps: 20
   },
@@ -32,6 +34,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 4000,
+    costPerLv: 1.04,
     dps: 0,
     baseDps: 400
   },
@@ -43,6 +46,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 10,
+    costPerLv: 1.045,
     dps: 0,
     baseDps: 10000
   },
@@ -54,6 +58,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 200,
+    costPerLv: 1.045,
     dps: 0,
     baseDps: 200000
   },
@@ -65,6 +70,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 4000,
+    costPerLv: 1.045,
     dps: 0,
     baseDps: 4e6
   },
@@ -76,6 +82,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 10,
+    costPerLv: 1.05,
     dps: 0,
     baseDps: 4e9
   },
@@ -87,6 +94,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 200,
+    costPerLv: 1.05,
     dps: 0,
     baseDps: 4e10
   },
@@ -98,6 +106,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 4000,
+    costPerLv: 1.05,
     dps: 0,
     baseDps: 4e11
   },
@@ -109,6 +118,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 10,
+    costPerLv: 1.055,
     dps: 0,
     baseDps: 4e11
   },
@@ -120,6 +130,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 200,
+    costPerLv: 1.055,
     dps: 0,
     baseDps: 4e11
   },
@@ -131,6 +142,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 4000,
+    costPerLv: 1.055,
     dps: 0,
     baseDps: 4e11
   },
@@ -142,6 +154,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 10,
+    costPerLv: 1.06,
     dps: 0,
     baseDps: 4e11
   },
@@ -153,6 +166,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 200,
+    costPerLv: 1.06,
     dps: 0,
     baseDps: 4e11
   },
@@ -164,6 +178,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 4000,
+    costPerLv: 1.06,
     dps: 0,
     baseDps: 4e11
   },
@@ -175,6 +190,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 10,
+    costPerLv: 1.065,
     dps: 0,
     baseDps: 4e11
   },
@@ -186,6 +202,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 200,
+    costPerLv: 1.065,
     dps: 0,
     baseDps: 4e11
   },
@@ -197,6 +214,7 @@ Game.Upgrades = {
     lv: 0,
     cost: 0,
     baseCost: 4000,
+    costPerLv: 1.065,
     dps: 0,
     baseDps: 4e11
   }
@@ -222,10 +240,11 @@ function generateUpgrades() {
             <span id='${key}Avb'></span>
           </div>
           <div class='tooltip-content'>
-            Lv: <span class='fwhite f16' id='${key}Lv'></span><br>
-            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'><br>
-            DPS: <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'> (<span class='fwhite f16' id='${key}ofTotal'></span>)<br>
-            Per Lv: <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'><hr>
+            Lv : <span class='fwhite f16' id='${key}Lv'></span><br>
+            Cost : <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'><br>
+            DPS : <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'> (<span class='fwhite f16' id='${key}ofTotal'></span>)<hr>
+            DPS / Lv : <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'><br>
+            Cost / Lv : <span class='fwhite f16'>+ ${item.costPerLv * 100 - 100}%</span><hr>
             ${item.info}
           </div>
         </div>
@@ -262,7 +281,7 @@ window.addEventListener('keypress', function(event) {
 
         let item = Game.Upgrades[key];
 
-        item.cost = Math.floor(item.baseCost * Math.pow(1.04, item.lv));
+        item.cost = Math.floor(item.baseCost * Math.pow(item.costPerLv, item.lv));
         item.quantity = 1;
 
         elem(`${key}Cost`).innerHTML = nFormat(item.cost);
@@ -275,7 +294,7 @@ window.addEventListener('keypress', function(event) {
 
         let item = Game.Upgrades[key];
 
-        item.cost = Math.floor(item.baseCost * (Math.pow(1.04, item.lv + 20) - Math.pow(1.04, item.lv)) / 0.04);
+        item.cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + 20) - Math.pow(item.costPerLv, item.lv)) / 0.04);
         item.quantity = 20;
 
         elem(`${key}Cost`).innerHTML = nFormat(item.cost);
@@ -288,7 +307,7 @@ window.addEventListener('keypress', function(event) {
 
         let item = Game.Upgrades[key];
 
-        item.cost = Math.floor(item.baseCost * (Math.pow(1.04, item.lv + 100) - Math.pow(1.04, item.lv)) / 0.04);
+        item.cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + 100) - Math.pow(item.costPerLv, item.lv)) / 0.04);
         item.quantity = 100;
 
         elem(`${key}Cost`).innerHTML = nFormat(item.cost);
@@ -311,7 +330,7 @@ function buyUpg() {
     let nextLv = (Math.floor(item.lv / 20) + 1) * 20;
 
     item.dps = (item.lv * item.baseDps) * Math.pow(2, Math.floor(item.lv / 20));
-    item.cost = Math.floor(item.baseCost * (Math.pow(1.04, item.lv + item.quantity) - Math.pow(1.04, item.lv)) / 0.04);
+    item.cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + item.quantity) - Math.pow(item.costPerLv, item.lv)) / 0.04);
 
     save(`${item.res}Amount`, inv.amount);
     save(`${this.id}Lv`, item.lv);
@@ -340,13 +359,13 @@ function canBuyUpgrade() {
     let inv = Game.Inventory[item.res];
 
     if(inv.amount >= item.cost) {
-      elem(`${key}Avb`).innerHTML = 'Click to buy';
+      elem(`${key}Avb`).innerHTML = `Click to buy [x${item.quantity}]`;
       elem(`${key}Avb`).className = 'fwhite';
       elem(`${key}Cost`).className = 'fwhite f16';
       elem(key).style.cursor = 'pointer';
     }
     else if(inv.amount <= item.cost) {
-      elem(`${key}Avb`).innerHTML = 'Not enough resources';
+      elem(`${key}Avb`).innerHTML = `Unavailable [x${item.quantity}]`;
       elem(`${key}Avb`).className = 'fred';
       elem(`${key}Cost`).className = 'fred f16';
       elem(key).style.cursor = 'not-allowed';
@@ -363,7 +382,7 @@ function updateUpgrades() {
     let nextLv = (Math.floor(item.lv / 20) + 1) * 20;
 
     item.dps = (item.lv * item.baseDps) * Math.pow(2, Math.floor(item.lv / 20));
-    item.cost = Math.floor(item.baseCost * Math.pow(1.04, item.lv));
+    item.cost = Math.floor(item.baseCost * Math.pow(item.costPerLv, item.lv));
 
     let width = (20 - (nextLv - item.lv)) * 5;
     progressBar(key, width);
