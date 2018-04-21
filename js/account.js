@@ -1,6 +1,39 @@
 /*===========================================================
 =					Account																						=
 ===========================================================*/
+Game.Character = {
+	lv: 0,
+	xp: 0,
+	xpReq: 30,
+	dps: 0,
+	dpc: 0,
+	increment: 0,
+	critChance: 0,
+	critHit: false,
+	armorPen: 0,
+
+	total: {
+		clicks: 0,
+		critHits: 0,
+		titanium: 0,
+		plutonium: 0,
+		chrysonite: 0,
+		armadium: 0,
+		solanium: 0,
+		singularity: 0,
+		antiMatter: 0,
+		frostCrystal: 0
+	},
+
+	highestLv: {
+		titanium: 0,
+		plutonium: 0,
+		chrysonite: 0,
+		armadium: 0,
+		solanium: 0,
+		singularity: 0,
+	}
+}
 Game.Account = {
 	character: {
 		name: 'Character',
@@ -12,37 +45,6 @@ Game.Account = {
 			Total Critical Hits: <span class='fwhite f16' id='critHitsTotal'></span>
 		`,
 		onclick: 'openModal("character")',
-		stats: {
-			lv: 0,
-			xp: 0,
-			xpReq: 30,
-			dps: 0,
-			dpc: 0,
-			increment: 0,
-			critChance: 0,
-			critHit: false,
-			armorPen: 0
-		},
-		total: {
-			clicks: 0,
-			critHits: 0,
-	    titanium: 0,
-			plutonium: 0,
-			chrysonite: 0,
-			armadium: 0,
-	    solanium: 0,
-	    singularity: 0,
-			antiMatter: 0,
-			frostCrystal: 0
-	  },
-		highestLv: {
-			titanium: 0,
-			plutonium: 0,
-			chrysonite: 0,
-			armadium: 0,
-	    solanium: 0,
-	    singularity: 0,
-		}
 	},
 	achievements: {
 		name: `Achievements`,
@@ -111,14 +113,15 @@ function generateAccount() {
 ===========================================================*/
 function updateAccount() {
 	let item = Game.Account;
-	let char = item.character;
+	//let char = item.character;
+	let char = Game.Character;
 	let mast = item.masteries;
 	let achi = item.achievements;
 
-	let xpReq = Math.floor(30 * Math.pow(1.5, char.stats.lv));
-	char.stats.xpReq = xpReq;
+	let xpReq = Math.floor(30 * Math.pow(1.5, char.lv));
+	char.xpReq = xpReq;
 
-	let widthChar = char.stats.xp / char.stats.xpReq * 100;
+	let widthChar = char.xp / char.xpReq * 100;
 	let widthAchi = achi.unlocked * 100 / 80;
 	let widthMast = mast.unlocked * 100 / 188;
 
@@ -134,7 +137,7 @@ function updateAccount() {
 		elem(key + 'UppermostLv').innerHTML = nFormat(char.highestLv[key]);
 	}
 
-  elem('charXp').innerHTML = nFormat(char.stats.xp) + ' / ' + nFormat(char.stats.xpReq);
-	elem('charLv').innerHTML = char.stats.lv;
+  elem('charXp').innerHTML = nFormat(char.xp) + ' / ' + nFormat(char.xpReq);
+	elem('charLv').innerHTML = char.lv;
 	elem('charAch').innerHTML = achi.unlocked + ' / ' + 80;
 }

@@ -4,98 +4,100 @@
 Game.Ores = {
   titanium: {
     name: 'Titanium',
+    ascendId: 'earth',
     lv: 1,
     prog: 0,
     hp: 10,
     baseHp: 10,
     maxHp: 0,
     hpPerLv: 1.03,
-    hpScaling: '3%',
     armor: 0,
     armorPerLv: 1.0,
-    armorScaling: '0%',
     antiMatterRate: 50,
-    darkMatterRate: 20
+    darkMatterRate: 20,
+    lootRewarded: false
   },
   plutonium: {
     name: 'Plutonium',
+    ascendId: 'grudnock',
     lv: 1,
     prog: 0,
     hp: 0,
     baseHp: 50e6,
     maxHp: 0,
     hpPerLv: 1.035,
-    hpScaling: '3.5%',
     armor: 10000,
     armorPerLv: 1.01,
-    armorScaling: '1%',
     antiMatterRate: 55,
-    darkMatterRate: 25
+    darkMatterRate: 25,
+    lootRewarded: false
   },
   chrysonite: {
     name: 'Chrysonite',
+    ascendId: 'tetherus',
     lv: 1,
     prog: 0,
     hp: 1e6,
     baseHp: 1e6,
     maxHp: 0,
     hpPerLv: 1.04,
-    hpScaling: '4%',
     armor: 10000,
     armorPerLv: 1.02,
-    armorScaling: '2%',
     antiMatterRate: 60,
-    darkMatterRate: 14
+    darkMatterRate: 14,
+    lootRewarded: false
   },
   armadium: {
     name: 'Armadium',
+    ascendId: 'gazorpazorp',
     lv: 1,
     prog: 0,
     hp: 1e12,
     baseHp: 1e12,
     maxHp: 0,
     hpPerLv: 1.045,
-    hpScaling: '4.5%',
     armor: 1e6,
     armorPerLv: 1.03,
-    armorScaling: '3%',
     antiMatterRate: 65,
-    darkMatterRate: 16
+    darkMatterRate: 16,
+    lootRewarded: false
   },
   solanium: {
     name: 'Solanium',
+    ascendId: 'xeln',
     lv: 1,
     prog: 0,
     hp: 1e12,
     baseHp: 1e12,
     maxHp: 0,
     hpPerLv: 1.05,
-    hpScaling: '5%',
     armor: 1e6,
     armorPerLv: 1.04,
-    armorScaling: '4%',
     antiMatterRate: 70,
-    darkMatterRate: 18
+    darkMatterRate: 18,
+    lootRewarded: false
   },
   singularity: {
     name: 'Singularity',
+    ascendId: 'blackhole',
     lv: 1,
     prog: 0,
     hp: 1e12,
     baseHp: 1e12,
     maxHp: 0,
     hpPerLv: 1.055,
-    hpScaling: '5.5%',
     armor: 1e6,
     armorPerLv: 1.05,
-    armorScaling: '5%',
     antiMatterRate: 75,
-    darkMatterRate: 20
+    darkMatterRate: 20,
+    lootRewarded: false
   }
 }
-
+/*===========================================================
+=         Generate Hp Bar                                   =
+===========================================================*/
 function generateHpBar() {
-  let content = `
+  let html = `
     <div class='ore-lv ore-num fgrey'>
       Lv <span class='fwhite f16' id='oreLv'></span>
     </div>
@@ -110,71 +112,63 @@ function generateHpBar() {
     </div>
   `;
 
-  elem('oreContent').insertAdjacentHTML('beforeend', content);
+  elem('oreContent').insertAdjacentHTML('beforeend', html);
 }
 /*===========================================================
 =         Update Health Bar                                 =
 ===========================================================*/
 function healthBar(key) {
-  let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
-
-  let width = ore.hp * 100 / ore.maxHp;
+  let item = Game.Ores[key];
+  let width = item.hp * 100 / item.maxHp;
 
   elem('oreHpBar').style.width = `${width}%`;
-  elem('oreHp').innerHTML = nFormat(ore.hp);
+  elem('oreHp').innerHTML = nFormat(item.hp);
 }
 /*===========================================================
 =         Update Progress Bar                               =
 ===========================================================*/
 function oreProgressBar(key) {
-  let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
+  let item = Game.Ores[key];
+  let width = item.prog * 10;
 
-  let width = ore.prog * 10;
-
-  elem('oreProgBar').style.width = width + '%';
-  elem('oreProgress').innerHTML = ore.prog + ' / 10';
+  elem('oreProgBar').style.width = `${width}%`;
+  elem('oreProgress').innerHTML = `${item.prog} / 10`;
 }
 /*===========================================================
 =         Reset Ore                                         =
 ===========================================================*/
 function resetOre(key) {
-  let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
+  let item = Game.Ores[key];
+  let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
 
-  let oreMaxHp = Math.floor(ore.baseHp * Math.pow(ore.hpPerLv, ore.lv));
+  item.hp = oreMaxHp;
+  item.maxHp = oreMaxHp;
+  item.lootRewarded = false;
 
-  ore.hp = oreMaxHp;
-  ore.maxHp = oreMaxHp;
-  rewarded = false;
-
-  healthBar(key);
-
-  save('rewarded', rewarded);
-
-  elem('oreMaxHp').innerHTML = nFormat(ore.maxHp);
+  save(`${key}Rewarded`, item.lootRewarded);
+  elem('oreMaxHp').innerHTML = nFormat(item.maxHp);
 }
 /*===========================================================
 =         Update Ore Stats                                  =
 ===========================================================*/
 function updateOreStats(key) {
-  let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
-  let acc = Game.Account;
+  let item = Game.Ores[key];
+  let char = Game.Character;
+  let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
+  let effArmor = item.armor - (item.armor / 100 * char.armorPen);
 
-  let oreMaxHp = Math.floor(ore.baseHp * Math.pow(ore.hpPerLv, ore.lv));
-  ore.maxHp = oreMaxHp;
+  item.maxHp = oreMaxHp;
 
-  let effArmor = ore.armor - (ore.armor / 100 * acc.character.stats.armorPen);
+  healthBar(key);
+  oreProgressBar(key);
 
-  elem('oreName').innerHTML = ore.name;
-  elem('oreLv').innerHTML = ore.lv;
-  elem('oreMaxHp').innerHTML = nFormat(ore.maxHp);
-  elem('oreHpPerLv').innerHTML = `+ ${ore.hpScaling}`;
-  elem('oreArmor').innerHTML = nFormat(ore.armor);
-  elem('oreArmorPerLv').innerHTML = `+ ${ore.armorScaling}`;
+  elem('oreName').innerHTML = item.name;
+  elem('oreLv').innerHTML = item.lv;
+  elem('oreMaxHp').innerHTML = nFormat(item.maxHp);
+  elem('oreHpPerLv').innerHTML = `+ ${(item.hpPerLv * 100) - 100}`;
+  elem('oreArmor').innerHTML = nFormat(item.armor);
+  elem('oreArmorPerLv').innerHTML = `+ ${(item.armorPerLv * 100) - 100}`;
   elem('effectiveArmor').innerHTML = nFormat(effArmor);
-  elem('antiMatterDropRate').innerHTML = `${ore.antiMatterRate}%`;
-  elem('darkMatterDropRate').innerHTML = `${ore.darkMatterRate}%`;
+  elem('antiMatterDropRate').innerHTML = `${item.antiMatterRate}%`;
+  elem('darkMatterDropRate').innerHTML = `${item.darkMatterRate}%`;
 }

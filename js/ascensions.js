@@ -101,7 +101,7 @@ function generateAscensions() {
     let item = Game.Ascensions[key];
     let ore = Game.Ores[item.oreId];
 
-    let content = `
+    let html = `
       <div class='item' id='${key}'>
         <div class='item-img'>
           <img src='img/ascencion/${key}.png'>
@@ -118,7 +118,7 @@ function generateAscensions() {
             Requirement: <span class='fwhite f16' id='${key}Req'></span> <img class='imgFix' src='img/inv/darkMatter16.png'><br>
             <div class='hidden' id='${key}Content'>
               Ore: <span class='fgreen'>${ore.name}</span> <img class='imgFix' src='img/inv/${item.oreId}16.png'><br>
-              Lv: <span class='fwhite f16' id='${key}Lv'></span><hr>
+              Lv: <span class='fwhite f16' id='${item.oreId}Lv'></span><hr>
               ${item.info}
             </div>
           </div>
@@ -126,7 +126,7 @@ function generateAscensions() {
       </div>
     `;
 
-    elem('ascensionItems').insertAdjacentHTML('beforeend', content);
+    elem('ascensionItems').insertAdjacentHTML('beforeend', html);
 	}
 }
 /*===========================================================
@@ -160,30 +160,26 @@ function lockAscensions() {
 ===========================================================*/
 function ascend(key) {
   let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
 
-  if(item.current && connected) {
+  if(item.current && Game.connected)
     return;
-  } else if(item.current && !connected || !item.current) {
+  else if(item.current && !Game.connected || !item.current) {
+    stopDamage();
+    clearTimeout(Game.resetOreTo);
+
     for(i in Game.Ascensions) {
       Game.Ascensions[i].current = false;
       save(`${i}Current`, Game.Ascensions[i].current);
     }
 
     item.current = true;
-    save(`${key}Current`, item.current);
+    Game.connected = true;
 
+    updateOreStats(item.oreId);
     canAscend();
-    healthBar(key);
-    oreProgressBar(key);
-    updateOreStats(key);
+    startDamage(item.oreId);
 
-    clearTimeout(oreClearTO);
-    stopDamage();
-    startDamage(key);
-
-    connected = true;
-
+    save(`${key}Current`, item.current);
     elem('oreImg').src = `img/${item.oreId}Ore.png`;
     elem('backgroundImg').src = `img/${key}bg.jpg`;
   }
@@ -201,12 +197,14 @@ function canAscend() {
       elem(`${key}Avb`).className = 'fred';
       elem(`${key}Req`).className = 'fred f16';
       elem(key).style.cursor = 'not-allowed';
-    } else if(!item.current && item.req <= inv.darkMatter.amount) {
+    }
+    else if(!item.current && item.req <= inv.darkMatter.amount) {
       elem(`${key}Avb`).innerHTML = 'Click to ascend';
       elem(`${key}Avb`).className = 'fwhite';
       elem(`${key}Req`).className = 'fwhite f16';
       elem(key).style.cursor = 'pointer';
-    } else if(item.current && item.req <= inv.darkMatter.amount) {
+    }
+    else if(item.current && item.req <= inv.darkMatter.amount) {
       elem(`${key}Avb`).innerHTML = 'You are here';
       elem(`${key}Avb`).className = 'fblue';
       elem(`${key}Req`).className = 'fwhite f16';
@@ -231,11 +229,10 @@ function updateAscensions() {
   for(key in Game.Ascensions) {
     let item = Game.Ascensions[key];
     let ore = Game.Ores[item.oreId];
+    let width = inv.darkMatter.amount * 100 / item.req;
 
     if(inv.darkMatter.amount >= item.req)
       unlockAscension(key);
-
-    let width = inv.darkMatter.amount * 100 / item.req;
 
     if(item.req <= inv.darkMatter.amount)
       progressBar(key, 100);
@@ -246,8 +243,6 @@ function updateAscensions() {
       ascend(key);
 
     elem(`${key}Req`).innerHTML = nFormat(item.req);
-    elem(`${key}Lv`).innerHTML = ore.lv;
+    elem(`${item.oreId}Lv`).innerHTML = ore.lv;
   }
-
-  progressBar('earth', 100);
 }

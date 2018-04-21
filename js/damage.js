@@ -69,6 +69,7 @@ function generateDamage() {
 =					Update Damage																			=
 ===========================================================*/
 function updateDamage() {
+	let char = Game.Character;
   let totalLvs = 0;
   let totalDps = 0;
   let totalDpc = 0;
@@ -94,23 +95,23 @@ function updateDamage() {
 
   totalDpc = 1 + Math.floor(totalDps / 100 * 10);
 
-  Game.Account.character.stats.increment = Game.Inventory.concentratedDarkMatter.amount;
+  char.increment = Game.Inventory.concentratedDarkMatter.amount;
 
-  if(Game.Crafting.titaniumBattery.status)
-    Game.Account.character.stats.increment += totalLvs;
+  if(Game.Crafting.titaniumBattery.active)
+    char.increment += totalLvs;
 
-  Game.Account.character.stats.dps =	Math.floor(totalDps + (totalDps / 100 * Game.Account.character.stats.increment));
-  Game.Account.character.stats.dpc =	Math.floor(totalDpc + (totalDpc / 100 * Game.Account.character.stats.increment));
-  Game.Account.character.stats.critChance = 0;
-  Game.Account.character.stats.armorPen = 0;
+  char.dps =	Math.floor(totalDps + (totalDps / 100 * char.increment));
+  char.dpc =	Math.floor(totalDpc + (totalDpc / 100 * char.increment));
+  char.critChance = 0;
+  char.armorPen = 0;
 
-  if(Game.Crafting.plutoniumBattery.status) {
-    Game.Account.character.stats.armorPen += totalLvs / 100;
-    Game.Account.character.stats.critChance += totalLvs / 100;
+  if(Game.Crafting.plutoniumBattery.active) {
+    char.armorPen += totalLvs / 100;
+    char.critChance += totalLvs / 100;
   }
 
-  if(Game.Crafting.chrysoniteBattery.status) {
-		Game.Account.character.stats.dpc += (Game.Account.character.stats.dpc / 100) * totalLvs / 100;
+  if(Game.Crafting.chrysoniteBattery.active) {
+		char.dpc += (char.dpc / 100) * totalLvs / 100;
   }
 
 /*  if (Game.dps >= 100 && !Game.achievement.ach5) Game.total.achievements ++, unlockAchievement(5), Game.achievement.ach5 = true;
@@ -119,11 +120,11 @@ function updateDamage() {
   if (Game.dps >= 100000 && !Game.achievement.ach8) Game.total.achievements ++, unlockAchievement(8), Game.achievement.ach8 = true;
   if (Game.dps >= 1000000 && !Game.achievement.ach9) Game.total.achievements ++, unlockAchievement(9),	Game.achievement.ach9 = true;
 */
-  elem('dps').innerHTML = nFormat(Game.Account.character.stats.dps);
-  elem('dpc').innerHTML = nFormat(Game.Account.character.stats.dpc);
-  elem('increment').innerHTML = nFormat(Game.Account.character.stats.increment) + '%';
-  elem('critChance').innerHTML = Game.Account.character.stats.critChance + '%';
-  elem('armorPen').innerHTML = Game.Account.character.stats.armorPen + '%';
+  elem('dps').innerHTML = nFormat(char.dps);
+  elem('dpc').innerHTML = nFormat(char.dpc);
+  elem('increment').innerHTML = nFormat(char.increment) + '%';
+  elem('critChance').innerHTML = char.critChance + '%';
+  elem('armorPen').innerHTML = char.armorPen + '%';
 	elem('fromCDarkMatter').innerHTML = nFormat(Game.Inventory.concentratedDarkMatter.amount);
   elem('titaniumBatteryBonus').innerHTML = totalLvs + '%';
   elem('plutoniumBatteryBonus').innerHTML = totalLvs / 100 + '%';

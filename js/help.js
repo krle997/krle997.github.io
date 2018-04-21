@@ -47,14 +47,12 @@ Game.Help = {
   upgrades: {
     name: 'Upgrades',
     info: `
-      <ul>
-        <li>Acumulate <span class='fgreen'>resources</span> to buy upgrades</li>
-        <li>Each upgrade has its individual DPS doubled every 20 Lvs</li>
-        <li>Press <span class='fwhite'>Z</span> to buy 1x</li>
-        <li>Press <span class='fwhite'>X</span> to buy 20x</li>
-        <li>Press <span class='fwhite'>C</span> to buy 100x</li>
-        <li>Press <span class='fwhite'>A</span> to toggle auto-buy</li>
-      </ul>
+      Acumulate <span class='fgreen'>resources</span> to buy upgrades and increase your DPS.
+      Each upgrade has its individual DPS doubled every 20 Lvs<hr>
+      <div class='keyboard-btn fcenter fgrey f16'>z</div> - Buy <span class='fwhite f16'>x1 Lvs</span><br>
+      <div class='keyboard-btn fcenter fgrey f16'>x</div> - Buy <span class='fwhite f16'>x20 Lvs</span><br>
+      <div class='keyboard-btn fcenter fgrey f16'>c</div> - Buy <span class='fwhite f16'>x100 Lvs</span><br>
+      <div class='keyboard-btn fcenter fgrey f16'>a</div> - Toggle <span class='fwhite f16'>auto-buy</span>
     `,
     tooltip: 'panel-tooltip-right'
   },

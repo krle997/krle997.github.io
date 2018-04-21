@@ -5,7 +5,7 @@ Game.Crafting = {
   titaniumBattery: {
     name: 'Titanium Battery',
     info: 'Increases Damage Increment by 1% per Upgrade Lv',
-    status: false,
+    active: false,
     duration: 600000,
     remaining: 600000,
     cost: 10
@@ -13,7 +13,7 @@ Game.Crafting = {
   plutoniumBattery: {
     name: 'Plutonium Battery',
     info: 'Increases Critical Hit and Armor Penetration by 0.01% per Upgrade Lv',
-    status: false,
+    active: false,
     duration: 600000,
     remaining: 600000,
     cost: 15
@@ -21,7 +21,7 @@ Game.Crafting = {
   chrysoniteBattery: {
     name: 'Chrysonite Battery',
     info: `Increases DPC by 0.01% per Upgrade Lv`,
-    status: false,
+    active: false,
     duration: 600000,
     remaining: 600000,
     cost: 20
@@ -29,7 +29,7 @@ Game.Crafting = {
   armadiumBattery: {
     name: 'Armadium Battery',
     info: `Increases DPC by 0.01% per Upgrade Lv`,
-    status: false,
+    active: false,
     duration: 600000,
     remaining: 600000,
     cost: 25
@@ -37,7 +37,7 @@ Game.Crafting = {
   solaniumBattery: {
     name: 'Solanium Battery',
     info: `Increases DPC by 0.01% per Upgrade Lv`,
-    status: false,
+    active: false,
     duration: 600000,
     remaining: 600000,
     cost: 30
@@ -45,7 +45,7 @@ Game.Crafting = {
   darkRadiation: {
     name: 'Dark Radiation',
     info: `Doubles the efficiency of Concentrated Dark Matter`,
-    status: false,
+    active: false,
     duration: 600000,
     remaining: 600000,
     cost: 35
@@ -108,14 +108,14 @@ function craft(key) {
 
   if(inv.antiMatter.amount < item.cost) {
     return;
-  } else if(item.status) {
+  } else if(item.active) {
     return;
   } else {
     inv.antiMatter.amount -= item.cost;
-    item.status = true;
+    item.active = true;
 
     save('antiMatterAmount', inv.antiMatter.amount);
-    save(`${key}Status`, item.status);
+    save(`${key}Active`, item.active);
 
     let width = 100 / (600000 / item.remaining);
     progressBar(key, width);
@@ -137,17 +137,17 @@ function canCraft() {
     let item = Game.Crafting[key];
     let inv = Game.Inventory;
 
-    if(item.status) {
+    if(item.active) {
       elem(`${key}Avb`).innerHTML = 'Currently active';
       elem(`${key}Avb`).className = 'fblue';
       elem(`${key}Cost`).className = 'fwhite f16';
       elem(`${key}`).style.cursor = 'not-allowed';
-    } else if(!item.status && inv.antiMatter.amount >= item.cost) {
+    } else if(!item.active && inv.antiMatter.amount >= item.cost) {
       elem(`${key}Avb`).innerHTML = 'Click to craft';
       elem(`${key}Avb`).className = 'fwhite';
       elem(`${key}Cost`).className = 'fwhite f16';
       elem(`${key}`).style.cursor = 'pointer';
-    } else if(!item.status && inv.antiMatter.amount <= item.cost) {
+    } else if(!item.active && inv.antiMatter.amount <= item.cost) {
       elem(`${key}Avb`).innerHTML = 'Not enough resources';
       elem(`${key}Avb`).className = 'fred';
       elem(`${key}Cost`).className = 'fred f16';
@@ -162,7 +162,7 @@ function updateCrafting() {
   for(key in Game.Crafting) {
     let item = Game.Crafting[key];
 
-    if(item.status) {
+    if(item.active) {
       elem(`${key}Img`).style.animation = 'crafting-anim 3s linear infinite';
       elem(`${key}Remaining`).innerHTML = `${item.remaining / 1000} s`;
     } else {

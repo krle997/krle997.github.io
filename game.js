@@ -13,15 +13,23 @@ var Game = {
 		hours: 0
   },
 
-  resources: {}
+  connected: false,
+
+  resetOreTo: null,
+
+  dpsAnimFrame: null,
+  dpsAnimStart: null,
+
+  gameLoopInt: null,
+  gameLoopStarted: null,
+
+  res: {},
+  resAnimFrame: null,
+  resFadeOutAnim: null,
+
+  fText: {},
+  fTextAnimFrame: null
 }
-
-var gameLoopInt;
-var doDpsINT;
-var oreClearTO;
-
-var connected = false;
-var rewarded = false;
 /*===========================================================
 =					Get Element ID																		=
 ===========================================================*/
@@ -55,8 +63,8 @@ function loadGame() {
 	for(key in Game.Crafting) {
 		let item = Game.Crafting[key];
 
-		if(load(key + 'Status')) {
-			item.status = load(key + 'Status');
+		if(load(key + 'Active')) {
+			item.active = load(key + 'Active');
 		};
 		if(load(key + 'Remaining')) {
 			item.remaining = load(key + 'Remaining');
@@ -73,21 +81,27 @@ function loadGame() {
 
 	for(key in Game.Ascensions) {
 		let item = Game.Ascensions[key];
-		let ore = Game.Ores[item.oreId];
-
-    if(load(`${item.oreId}Prog`))
-      ore.prog = load(`${item.oreId}Prog`);
-
-		if(load(`${item.oreId}Lv`))
-			ore.lv = load(`${item.oreId}Lv`);
-
-		if(load(`${item.oreId}Hp`))
-			ore.hp = load(`${item.oreId}Hp`);
 
     if(load(`${key}Current`)) {
       item.current = load(`${key}Current`);
     }
 	}
+
+  for(key in Game.Ores) {
+    let item = Game.Ores[key];
+
+    if(load(`${key}Prog`))
+      item.prog = load(`${key}Prog`);
+
+		if(load(`${key}Lv`))
+			item.lv = load(`${key}Lv`);
+
+		if(load(`${key}Hp`))
+			item.hp = load(`${key}Hp`);
+
+    if(load(`${key}Rewarded`))
+      item.lootRewarded = load(`${key}Rewarded`);
+  }
 
 	for(key in Game.Inventory) {
 		let inv = Game.Inventory[key];
@@ -101,11 +115,17 @@ function loadGame() {
 			Game.time[key] = load(key);
 	}
 
-  for(key in Game.Account.character.total) {
+  for(key in Game.Character.total) {
     if(load(key + 'Total')) {
-      Game.Account.character.total[key] = load(key + 'Total');
+      Game.Character.total[key] = load(key + 'Total');
     }
   }
+
+  if(load('characterLv'))
+    Game.Character.lv = load('characterLv');
+
+  if(load('characterXp'))
+    Game.Character.xp = load('characterXp');
 
   for(key in Game.Achievements) {
     for(i in Game.Achievements[key].ach) {
@@ -113,18 +133,6 @@ function loadGame() {
         Game.Achievements[key].ach[i] = load(key + i);
       }
     }
-  }
-
-  if(load('characterLv')) {
-    Game.Account.character.stats.lv = load('characterLv');
-  }
-
-  if(load('characterXp')) {
-    Game.Account.character.stats.xp = load('characterXp');
-  }
-
-  if(load('rewarded')) {
-    rewarded = load('rewarded');
   }
 }
 /*===========================================================
@@ -157,7 +165,8 @@ function generateContent() {
 
   muteSounds();
 
-  gameLoopInt = setInterval(function() {
+  Game.gameLoopStarted = Date.now();
+  Game.gameLoopInt = setInterval(function() {
     gameLoop();
   }, 1000);
 }
@@ -165,7 +174,11 @@ function generateContent() {
 =					Game Loop																					=
 ===========================================================*/
 function gameLoop() {
-  Game.time.seconds ++;
+  let timestamp = Date.now();
+  let runtime = timestamp - Game.gameLoopStarted;
+
+  Game.gameLoopStarted = timestamp;
+  Game.time.seconds += runtime / 1000;
 
   if(Game.time.seconds > 59) {
     Game.time.seconds = 0;
@@ -180,271 +193,346 @@ function gameLoop() {
 	save('seconds', Game.time.seconds);
 	save('minutes', Game.time.minutes);
 	save('hours', Game.time.hours);
+  elem('timePlayed').innerHTML = `${Game.time.hours}h ${Game.time.minutes}m ${Math.round(Game.time.seconds)}s`;
 
   for(key in Game.Crafting) {
     let item = Game.Crafting[key];
 
-    if(item.status) {
-      item.remaining -= 1000;
+    if(item.active) {
+      item.remaining -= runtime;
 
       save(`${key}Remaining`, item.remaining);
-
-      elem(`${key}Remaining`).innerHTML = `${item.remaining / 1000} s`;
+      elem(`${key}Remaining`).innerHTML = `${Math.round(item.remaining / 1000)} s`;
 
       if(item.remaining <= 0) {
-        item.status = false;
-        item.remaining = 600000;
-
-        save(`${key}Remaining`, item.remaining);
-				save(`${key}Status`, item.status);
+        item.active = false;
+        item.remaining = item.duration;
 
         updateDamage();
 				updateCrafting();
 
+        save(`${key}Active`, item.active);
+        save(`${key}Remaining`, item.remaining);
         elem(`${key}Remaining`).innerHTML = 'Inactive';
         elem(`${key}Img`).style.animation = '';
       }
 
-      let width = 100 / (600000 / item.remaining);
+      let width = 100 / (item.duration / item.remaining);
       progressBar(key, width);
     }
   }
+}
+/*===========================================================
+=         Start Damage                                      =
+===========================================================*/
+function startDamage(key) {
+  elem('oreImg').onclick = function() { doDpc(key); }
 
-  elem('timePlayed').innerHTML = `${Game.time.hours} h ${Game.time.minutes} m`;
+  Game.dpsAnimStart = performance.now();
+  Game.dpsAnimFrame = requestAnimationFrame(function(time) {
+    dpsAnim(time, key);
+  });
+}
+/*===========================================================
+=         Stop Damage                                       =
+===========================================================*/
+function stopDamage() {
+  elem('oreImg').onclick = function () {}
 }
 /*===========================================================
 =         Damage per Second                                 =
 ===========================================================*/
-function doDps(key) {
-  let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
-  let acc = Game.Account;
+function dpsAnim(time, key) {
+  let frame = time - Game.dpsAnimStart;
+  Game.dpsAnimStart = time;
 
-  let penetrate = ore.armor / 100 * acc.character.stats.armorPen;
-  let damage = (acc.character.stats.dps - (ore.armor - penetrate)) / Game.fps;
+  let item = Game.Ores[key];
+  let char = Game.Character;
 
-  if(ore.armor - penetrate >= acc.character.stats.dps || acc.character.stats.dps <= 0)
+  let penetrate = item.armor / 100 * char.armorPen;
+  let damage = char.dps - (item.armor - penetrate);
+  let damagePerFrame = (damage * frame) / 1000;
+
+  if(item.armor - penetrate >= char.dps || char.dps <= 0)
     return;
+  else if(item.hp > 0)
+    item.hp -= damagePerFrame;
+  else if(item.hp <= 0 && !item.lootRewarded) {
+    item.lootRewarded = true;
+    item.hp = 0;
+    item.prog ++;
 
-  ore.hp -= damage;
-	save(`${item.oreId}Hp`, ore.hp);
+    console.log('hp <= 1, loot true ? =', item.lootRewarded);
 
-  if(ore.hp <= 0)
-    zeroHp(key);
+    giveXp();
+    giveLoot(key);
+
+    if(item.prog >= 10) {
+      let lvGoals = {
+        One: 25,
+        Two: 50,
+        Three: 75,
+        Four: 100,
+        Five: 250,
+        Six: 500,
+        Seven: 750,
+        Eight: 1000,
+        Nine: 2500,
+        Ten: 5000
+      }
+
+      item.lv ++;
+      item.prog = 0;
+
+      if(item.lv >= char.highestLv[key]) {
+        char.highestLv[key] = item.lv;
+
+        elem(`${key}UppermostLv`).innerHTML = char.highestLv[key];
+      }
+
+      // FIX -- add planet ID to ores
+      for(i in lvGoals) {
+        if(char.highestLv[key] >= lvGoals[i] && !Game.Achievements[key].ach[i])
+          unlockAchievement(key, i);
+      }
+
+      giveSpecialLoot(key);
+    }
+
+    Game.resetOreTo = setTimeout(function() {
+      let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
+
+      item.hp = oreMaxHp;
+      item.maxHp = oreMaxHp;
+      item.lootRewarded = false;
+
+      save(`${key}Rewarded`, item.lootRewarded);
+
+      console.log('hp <= 1, loot false ? =', item.lootRewarded);
+
+      elem('oreMaxHp').innerHTML = nFormat(item.maxHp);
+
+      requestAnimationFrame(function(time) {
+        dpsAnim(time, key);
+      });
+    }, 500);
+
+    oreProgressBar(key);
+
+    save(`${key}Rewarded`, item.lootRewarded);
+    save(`${key}Lv`, item.lv);
+    save(`${key}Prog`, item.prog);
+    elem(`${key}Lv`).innerHTML = item.lv;
+    elem('oreLv').innerHTML = item.lv;
+  }
+  /*else if(item.hp <= 0 && item.lootRewarded) { // If lv is cleared but user already received loot
+
+  }*/
 
   healthBar(key);
+  save(`${key}Hp`, item.hp);
+
+  if(item.hp > 0 || !item.lootRewarded) {
+    requestAnimationFrame(function(time) {
+      dpsAnim(time, key);
+    });
+  }
 }
+
+
+
+
+/*
+function doDps(timestamp, key) {
+  let runtime = timestamp - Game.dpsAnimStarted; // Runtime roughly equals 1 frame (16ms);
+  Game.dpsAnimStarted = timestamp; // Function frames lag
+
+  let item = Game.Ores[key];
+  let char = Game.Character;
+  let penetrate = item.armor / 100 * char.armorPen;
+  let damage = char.dps - (item.armor - penetrate);
+  let damagePerFrame = (damage * runtime) / 1000; // Move 1.66% hp per frame
+
+  if(item.armor - penetrate >= char.dps || char.dps <= 0)
+    return;
+
+  item.hp -= damagePerFrame;
+
+  if(item.hp <= 0) {
+    item.hp = 0;
+
+    if(!item.lootRewarded) {
+      item.lootRewarded = true;
+      item.prog ++;
+
+      giveXp();
+      giveLoot(key);
+
+      if(item.prog >= 10) {
+        let lvGoals = {
+          One: 25,
+          Two: 50,
+          Three: 75,
+          Four: 100,
+          Five: 250,
+          Six: 500,
+          Seven: 750,
+          Eight: 1000,
+          Nine: 2500,
+          Ten: 5000
+        }
+
+        item.prog = 0;
+        item.lv ++;
+
+        if(item.lv >= char.highestLv[key]) {
+          char.highestLv[key] = item.lv;
+
+          elem(`${key}UppermostLv`).innerHTML = char.highestLv[key];
+        }
+
+        // FIX -- add planet ID to ores
+        for(i in lvGoals) {
+          if(char.highestLv[key] >= lvGoals[i] && !Game.Achievements[key].ach[i])
+            unlockAchievement(key, i);
+        }
+
+        giveSpecialLoot(key);
+
+      }
+
+
+      oreProgressBar(key);
+
+      save(`${key}Lv`, item.lv);
+      elem(`${key}Lv`).innerHTML = item.lv;
+      elem('oreLv').innerHTML = item.lv;
+      save(`${key}Prog`, item.prog);
+      save(`${key}Rewarded`, item.lootRewarded);
+
+      Game.resetOreTo = setTimeout(function() {
+        resetOre(key);
+        startDamage(key);
+      }, 500);
+    }
+    resetOre(key);
+
+    else {
+      Game.resetOreTo = setTimeout(function() {
+        resetOre(key);
+        startDamage(key);
+      }, 500);
+    }
+  }
+
+  if(item.hp <= 0) {
+    stopDamage();
+    oreClear(key);
+    //return;
+  }
+
+  healthBar(key);
+  save(`${key}Hp`, item.hp);
+
+  if(Game.doDpsActive) {
+  requestAnimationFrame(function(timestamp) {
+    doDps(timestamp, key);
+  });
+  }
+  else {
+    cancelAnimationFrame(Game.doDpsAnimFrame);
+  }
+}*/
 /*===========================================================
 =         Damage per Click                                  =
 ===========================================================*/
 function doDpc(key) {
-  let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
-  let acc = Game.Account;
+  let item = Game.Ores[key];
+  let char = Game.Character;
 
-  if(acc.character.stats.critChance > 0)
+  if(char.critChance > 0)
     checkCrit();
 
-  if(acc.character.stats.critHit) {
-    ore.hp -= acc.character.stats.dpc * 2;
-    acc.character.total.critHits ++;
-    acc.character.stats.critHit = false;
+  if(char.critHit) {
+    item.hp -= char.dpc * 2;
+    char.total.critHits ++;
+    char.critHit = false;
 
-    generateFloatingText(`- ${nFormat(acc.character.stats.dpc * 2)} <img class='imgFix' src='img/character/dps16.png'/>`, event.clientX, event.clientY - 20);
+    generateFloatingText(nFormat(char.dpc * 2), 'character/dps16.png', event.clientX, event.clientY - 20);
 
-    save(`${item.oreId}Hp`, ore.hp);
-		save('critHitsTotal', acc.character.total.critHits);
+		save('critHitsTotal', char.total.critHits);
+    elem('critHitsTotal').innerHTML = nFormat(char.total.critHits);
+  }
+  else {
+    item.hp -= char.dpc;
+    char.total.clicks ++;
 
-    elem('critHitsTotal').innerHTML = nFormat(acc.character.total.critHits);
-  } else {
-    ore.hp -= acc.character.stats.dpc;
-    acc.character.total.clicks ++;
+    generateFloatingText(nFormat(char.dpc), 'character/dps16.png', event.clientX, event.clientY - 20);
 
-    generateFloatingText(`- ${nFormat(acc.character.stats.dpc)} <img class='imgFix' src='img/character/dps16.png'/>`, event.clientX, event.clientY - 20);
-
-    save(`${item.oreId}Hp`, ore.hp);
-  	save('clicksTotal', acc.character.total.clicks);
-    elem('clicksTotal').innerHTML = nFormat(acc.character.total.clicks);
+  	save('clicksTotal', char.total.clicks);
+    elem('clicksTotal').innerHTML = nFormat(char.total.clicks);
   }
 
-  if(ore.hp <= 0)
-    zeroHp(key);
+  if(item.hp <= 0) {
+    stopDamage();
+    //oreClear(key);
+  }
 
   healthBar(key);
-
-  if(!Game.muted) {
-    let sound = new Audio('sounds/dpc.wav');
-    sound.play();
-  }
+  save(`${key}Hp`, item.hp);
+  playAudio('dpc');
 }
 /*===========================================================
 =         Check Critical Hit                                =
 ===========================================================*/
 function checkCrit() {
-  let acc = Game.Account;
+  let char = Game.Character;
   let rand = Math.floor(Math.random() * (100 - 1) + 1);
-  let req = 100 - acc.character.stats.critChance;
+  let req = 100 - char.critChance;
 
   if(rand > req)
-    acc.character.stats.critHit = true;
+    char.critHit = true;
 }
 /*===========================================================
-=         Generate Floating Text                            =
+=         Ore Cleared                                       =
 ===========================================================*/
-function generateFloatingText(text, x, y) {
-  let id = Math.random();
-  let content = `<div class='floating-text fwhite' id='floatingText${id}'>${text}</div>`;
+function oreClear(key) {
+  let item = Game.Ores[key];
 
-  elem('resourceContainer').insertAdjacentHTML('beforeend', content);
-  elem('floatingText' + id).style.left = x + 'px';
-  elem('floatingText' + id).style.top = y + 'px';
-  animateFloatingText(id, y);
-}
-/*===========================================================
-=         Animate Floating Text                             =
-===========================================================*/
-function animateFloatingText(id, y) {
-  let frame = 0;
-  let opacity = 1;
-  let distance = 0;
+  item.hp = 0;
 
-  let interval = setInterval(function() {
-    frame ++;
-    distance ++;
+  if(!item.lootRewarded) {
+    item.lootRewarded = true;
+    item.prog ++;
 
-    elem('floatingText' + id).style.top = y - distance + 'px';
+    giveXp();
+    giveLoot(key);
 
-    if(frame >= Game.fps) {
-      opacity -= 1 / Game.fps;
-      elem('floatingText' + id).style.opacity = opacity;
-    }
+    if(item.prog >= 10)
+      oreLvUp(key);
 
-    if(frame >= Game.fps * 2) {
-      clearInterval(interval);
-      elem('floatingText' + id).parentNode.removeChild(elem('floatingText' + id));
-    }
-  }, 1000 / Game.fps);
-}
-/*===========================================================
-=         Generate Resources                                =
-===========================================================*/
-function generateResource(ore, amount) {
-  let id = Math.random();
-  let x = 224;
-  let y = Math.floor(Math.random() * (384 - 320) + 320);
-  let content = `<img class='animated-resource' id='res${id}' src='img/inv/${ore}.png'/>`;
+    oreProgressBar(key);
+    save(`${key}Prog`, item.prog);
+    save(`${key}Rewarded`, item.lootRewarded);
 
-  elem('resourceContainer').insertAdjacentHTML('beforeend', content);
-  elem('res' + id).style.left = x + 'px';
-  elem('res' + id).style.top = y + 'px';
-
-  animateResource(id, x, y, ore, amount);
-}
-/*===========================================================
-=         Animate Resources                                 =
-===========================================================*/
-function animateResource(id, x, y, ore, amount) {
-  let pos = elem('resourceContainer').getBoundingClientRect();
-  let gravityPull = 0;
-  let bounce = 0.5;
-  let bounced = 0;
-  let opacity = 1;
-  let side = Math.random();
-
-  let interval = setInterval(function() {
-    gravityPull += 0.1;
-    y += gravityPull;
-
-    elem('res' + id).style.left = x + 'px';
-    elem('res' + id).style.top = y + 'px';
-
-    if(bounced <= 4) {
-      if(side > 0.5)
-        x -= 0.5;
-      else
-        x += 0.5;
-    }
-    if(y >= pos.bottom - 64) {
-      y = pos.bottom - 64;
-      gravityPull = -(gravityPull * bounce);
-      bounced ++;
-    }
-
-    if(bounced >= 4) {
-      clearInterval(interval);
-      let fos = elem('res' + id).getBoundingClientRect();
-      generateFloatingText(`+ ${nFormat(amount)} <img class='imgFix' src='img/inv/${ore}16.png'/>`, fos.left, fos.top);
-
-      let fadeOut = setInterval(function() {
-        opacity -= 1 / Game.fps;
-        elem('res' + id).style.opacity = opacity;
-
-        if(opacity <= 0) {
-          elem('res' + id).style.opacity = 0;
-          elem('res' + id).parentNode.removeChild(elem('res' + id));
-          clearInterval(fadeOut);
-        }
-      }, 1000 / Game.fps);
-    }
-  }, 1000 / Game.fps);
-}
-
-function stopDamage() {
-  elem('oreImg').onclick = function () {}
-
-  clearInterval(doDpsINT);
-}
-function startDamage(key) {
-  elem('oreImg').onclick = function() { doDpc(key); }
-
-  doDpsINT = setInterval(function() { doDps(key); }, 1000 / Game.fps);
-}
-/*===========================================================
-=         Zero Hp                                           =
-===========================================================*/
-function zeroHp(key) {
-  let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
-  let acc = Game.Account;
-
-  if(rewarded) {
-    resetOre(key);
-    return;
+    Game.resetOreTo = setTimeout(function() {
+      resetOre(key);
+      startDamage(key);
+    }, 500);
   }
-
-  stopDamage();
-
-  ore.hp = 0;
-  ore.prog ++;
-
-  healthBar(key);
-  giveLoot(key);
-  giveXp();
-
-  if(ore.prog >= 10)
-    oreLvUp(key);
-
-  oreProgressBar(key);
-
-  rewarded = true;
-
-  save(`${item.oreId}Hp`, ore.hp);
-  save(`${item.oreId}Prog`, ore.prog);
-  save('rewarded', rewarded);
-
-  oreClearTO = setTimeout(function() {
-    resetOre(key);
-    startDamage(key);
-  }, 500);
+  else {
+    Game.resetOreTo = setTimeout(function() {
+      resetOre(key);
+      startDamage(key);
+    }, 500);
+  }
 }
 /*===========================================================
 =         Ore Lv Up                                         =
 ===========================================================*/
 function oreLvUp(key) {
-  let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
-  let acc = Game.Account;
-
+  let item = Game.Ores[key];
+  let char = Game.Character;
   let lvGoals = {
     One: 25,
     Two: 50,
@@ -458,38 +546,34 @@ function oreLvUp(key) {
     Ten: 5000
   }
 
-  ore.prog = 0;
-  ore.lv ++;
+  item.prog = 0;
+  item.lv ++;
 
-  if(ore.lv >= acc.character.highestLv[item.oreId]) {
-    acc.character.highestLv[item.oreId] = ore.lv;
+  if(item.lv >= char.highestLv[key]) {
+    char.highestLv[key] = item.lv;
 
-    elem(`${item.oreId}UppermostLv`).innerHTML = acc.character.highestLv[item.oreId];
+    elem(`${key}UppermostLv`).innerHTML = char.highestLv[key];
   }
 
+  // FIX -- add planet ID to ores
   for(i in lvGoals) {
-    if(acc.character.highestLv[item.oreId] >= lvGoals[i] && !Game.Achievements[key].ach[i])
+    if(char.highestLv[key] >= lvGoals[i] && !Game.Achievements[key].ach[i])
       unlockAchievement(key, i);
   }
 
   giveSpecialLoot(key);
-
-  save(`${item.oreId}Lv`, ore.lv);
-
-  elem(`${key}Lv`).innerHTML = ore.lv;
-  elem('oreLv').innerHTML = ore.lv;
+  save(`${key}Lv`, item.lv);
+  elem(`${key}Lv`).innerHTML = item.lv;
+  elem('oreLv').innerHTML = item.lv;
 }
 /*===========================================================
 =         Give Loot                                         =
 ===========================================================*/
 function giveLoot(key) {
-  let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
-  let inv = Game.Inventory[item.oreId];
-  let acc = Game.Account;
-
-  let resGain = Math.floor(10 * Math.pow(1.02, ore.lv));
-
+  let item = Game.Ores[key];
+  let inv = Game.Inventory[key];
+  let char = Game.Character;
+  let resGain = Math.floor(10 * Math.pow(1.02, item.lv));
   let resGoals = {
     One: 1e6,
     Two: 1e9,
@@ -504,104 +588,73 @@ function giveLoot(key) {
   }
 
   inv.amount += resGain;
-  acc.character.total[item.oreId] += resGain;
+  char.total[key] += resGain;
 
   for(i in resGoals) {
-    if(acc.character.total[item.oreId] >= resGoals[i] && !Game.Achievements[item.oreId].ach[i])
-      unlockAchievement(item.oreId, i);
+    if(char.total[key] >= resGoals[i] && !Game.Achievements[key].ach[i])
+      unlockAchievement(key, i);
   }
 
-  generateResource(item.oreId, resGain);
-  numPopUp(item.oreId);
+  generateResource(key, resGain);
+  numPopUp(key);
   canBuyUpgrade();
-
-  save(`${item.oreId}Amount`, inv.amount);
-	save(`${item.oreId}Total`, acc.character.total[item.oreId]);
-
-  elem(`${item.oreId}Amount`).innerHTML = nFormat(inv.amount);
-  elem(`${item.oreId}Total`).innerHTML = nFormat(acc.character.total[item.oreId]);
-}
-/*===========================================================
-=         Animate Stat Num                                  =
-===========================================================*/
-function numPopUp(key) {
-  let frame = 0;
-  let scale = 1;
-
-  let animateScale = setInterval(function() {
-    frame ++;
-
-    if(frame <= Game.fps / 4)
-      scale += 0.015;
-    if(frame >= Game.fps / 4)
-      scale -= 0.015;
-
-    elem(`${key}Amount`).style.transform = `scale(${scale})`;
-
-    if(frame >= Game.fps / 2) {
-      elem(`${key}Amount`).style.transform = `scale(1)`;
-      clearInterval(animateScale);
-    }
-
-  }, 1000 / Game.fps)
+  save(`${key}Amount`, inv.amount);
+	save(`${key}Total`, char.total[key]);
+  elem(`${key}Amount`).innerHTML = nFormat(inv.amount);
+  elem(`${key}Total`).innerHTML = nFormat(char.total[key]);
 }
 /*===========================================================
 =         Give XP                                           =
 ===========================================================*/
 function giveXp() {
-  let acc = Game.Account;
-  let width = acc.character.stats.xp / acc.character.stats.xpReq * 100;
+  let char = Game.Character;
+  let width = char.xp / char.xpReq * 100;
 
-  acc.character.stats.xp ++;
+  char.xp ++;
 
-  if(acc.character.stats.xp > acc.character.stats.xpReq) {
-    acc.character.stats.lv ++;
-    acc.character.stats.xp = 0;
-    acc.character.stats.xpReq = 30 * Math.pow(1.5, acc.character.stats.lv);
+  if(char.xp > char.xpReq) {
+    char.lv ++;
+    char.xp = 0;
+    char.xpReq = 30 * Math.pow(1.5, char.lv);
 
     giveMastery();
-    save('characterLv', acc.character.stats.lv);
+    save('characterLv', char.lv);
   }
 
-  elem('charXp').innerHTML = nFormat(acc.character.stats.xp) + ' / ' + nFormat(acc.character.stats.xpReq);
-  save('characterXp', acc.character.stats.xp);
   progressBar('character', width);
+  save('characterXp', char.xp);
+  elem('charXp').innerHTML = `${nFormat(char.xp)} / ${nFormat(char.xpReq)}`;
 }
 /*===========================================================
 =         Give Special Loot                                 =
 ===========================================================*/
 function giveSpecialLoot(key) {
-  let item = Game.Ascensions[key];
-  let ore = Game.Ores[item.oreId];
+  let item = Game.Ores[key];
   let inv = Game.Inventory;
-  let acc = Game.Account;
-
+  let char = Game.Character;
   let rand = Math.floor(Math.random() * 100 + 1);
 
-  if(rand < ore.darkMatterRate) {
+  if(rand < item.darkMatterRate) {
     inv.darkMatter.amount += 1;
 
     generateResource('darkMatter', 1);
     numPopUp('darkMatter');
     updateAscensions();
-
     save('darkMatterAmount', inv.darkMatter.amount);
-
     elem('darkMatterAmount').innerHTML = nFormat(inv.darkMatter.amount);
   }
 
-  if(rand < ore.antiMatterRate) {
+  if(rand < item.antiMatterRate) {
     inv.antiMatter.amount += 1;
-    acc.character.total.antiMatter ++;
+    char.total.antiMatter ++;
 
     generateResource('antiMatter', 1);
     numPopUp('antiMatter');
     canCraft();
-
     save('antiMatterAmount', inv.antiMatter.amount);
-    save('antiMatterTotal', acc.character.total.antiMatter);
+    save('antiMatterTotal', char.total.antiMatter);
     elem('antiMatterAmount').innerHTML = nFormat(inv.antiMatter.amount);
-    elem('antiMatterTotal').innerHTML = nFormat(acc.character.total.antiMatter);
+    elem('antiMatterTotal').innerHTML = nFormat(char.total.antiMatter);
   }
 }
 /*===========================================================
@@ -633,18 +686,24 @@ function microverseAscension() {
   for(key in Game.Crafting) {
     let craft = Game.Crafting[key];
 
-    craft.status = false;
+    craft.active = false;
     craft.remaining = 600000;
 
 		save(key + 'Remaining', craft.remaining);
-		save(key + 'Status', craft.status);
+		save(key + 'Active', craft.active);
   }
 
   for(key in Game.Ascensions) {
     let item = Game.Ascensions[key];
-    let ore = Game.Ores[item.oreId];
+
 
     item.current = false;
+
+  }
+
+  for(key in Game.Ores) {
+    let ore = Game.Ores[key];
+
     ore.lv = 1;
     ore.prog = 1;
     ore.hp = ore.baseHp;
@@ -668,14 +727,14 @@ function microverseAscension() {
   updateInventory();
   updateDamage();
 
-  connected = false;
+  Game.connected = false;
   ascend('earth');
 }
 /*===========================================================
 =					Update Progress Bar																=
 ===========================================================*/
 function progressBar(key, width) {
-  elem(`${key}Progress`).style.width = width + '%';
+  elem(`${key}Progress`).style.width = `${width}%`;
 }
 /*===========================================================
 =			Mute / unmute settings																=

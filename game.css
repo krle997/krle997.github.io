@@ -38,18 +38,22 @@ hr {
 	height: 2px;
 	margin: 8px 0 8px 0;
 	border: 0;
+	line-height: 1.6;
 	background: linear-gradient(90deg, rgba(102, 102, 102, 1), rgba(102, 102, 102, 0));
 }
 
-ul {
-	list-style-position: inside;
-	margin: 0;
-	padding: 0;
-}
-
-li {
-	margin: 0;
-	padding: 0;
+.keyboard-btn {
+	display: inline-block;
+	width: 32px;
+	height: auto;
+	margin: 4px;
+  padding: 0;
+	box-sizing: border-box;
+	font-family: 'conthrax';
+	border-radius: 4px;
+  background-color: rgba(230, 230, 230, 1);
+  box-shadow: inset 0 0 4px 2px rgba(102, 102, 102, 1);
+	border: 1px solid rgba(230, 230, 230, 1);
 }
 /*===========================================================
 =					Miscellaneous																			=
@@ -113,8 +117,9 @@ li {
 =					Panel																							=
 ===========================================================*/
 .panel {
-	margin: 8px;
+	margin: 16px 8px;
 	background-color: rgba(0, 0, 0, .4);
+	/*box-shadow: 0 0 0px 1px rgba(0, 204, 255, .4);*/
 }
 .panel-header {
 	position: relative;
