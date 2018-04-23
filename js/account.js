@@ -96,12 +96,12 @@ function generateAccount() {
 				<div class='item-bar'>
 					<div class='item-progress' id='${key}Progress'></div>
 				</div>
-	      <div class='tooltip item-tooltip-left fgrey'>
+	      <div class='tooltip item-tooltip-left'>
 					<div class='tooltip-header fcenter'>
 						<span class='fwhite f14'>${item.name}</span><br>
 						<span class='fwhite'>Click to view more</span>
 					</div>
-	        <div class='tooltip-content fgrey'>
+	        <div class='tooltip-content'>
 						${item.tooltipContent}
 					</div>
 	      </div>

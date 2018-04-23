@@ -329,7 +329,7 @@ function generateAchievements() {
 	for(key in Game.Achievements) {
     let item = Game.Achievements[key];
 
-		let content = `
+		let html = `
 			<div class='item' id='${key}Ach'>
         <div class='item-img' id='${key}Img'>
           <img src='img/achievements/${key}.png'>
@@ -337,7 +337,7 @@ function generateAchievements() {
         <div class='item-bar'>
           <div class='item-progress' id='${key}Progress'></div>
         </div>
-				<div class='tooltip item-tooltip-bottom fgrey'>
+				<div class='tooltip item-tooltip-bottom'>
           <div class='tooltip-header fcenter'>
             <span class='fwhite'>${item.name}</span>
           </div>
@@ -348,7 +348,7 @@ function generateAchievements() {
 			</div>
 		`;
 
-    elem('achievementItems').insertAdjacentHTML('beforeend', content);
+    elem('achievementItems').insertAdjacentHTML('beforeend', html);
 	}
 
   let farm = [ '1 M', '1 B', '1 T', '1 Qa', '1 Qi', '1 Sx', '1 Sp', '1 Oct', '1 Non', '1 Dec' ]
@@ -375,7 +375,7 @@ function generateAchTiles(key, amount, what) {
 
   for(i = 0; i < 10; i ++) {
     let content = `
-      [<span class='fgrey f16' id='${key + num[i]}'>✖</span>]
+      [<span class='f16' id='${key + num[i]}'>✖</span>]
       ${what}: <span class='fwhite f16'>${amount[i]}</span><br>
     `;
 

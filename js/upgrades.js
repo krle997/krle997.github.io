@@ -6,7 +6,6 @@ Game.Upgrades = {
     name: 'Laser Gun',
     info: 'Basic beam for your laser gun. Low price makes it efficient, scalable upgrade',
     res: 'titanium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 10,
@@ -18,7 +17,6 @@ Game.Upgrades = {
     name: 'Advanced Lasers',
     info: 'Intensifies the laser for more damage',
     res: 'titanium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 200,
@@ -30,7 +28,6 @@ Game.Upgrades = {
     name: 'Laser Amplifier',
     info: 'Amplifies the laser strength',
     res: 'titanium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 4000,
@@ -42,7 +39,6 @@ Game.Upgrades = {
     name: 'Lasergun Cooler',
     info: 'An excellent cooler that prevents your laser gun from ever heating up',
     res: 'plutonium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 10,
@@ -54,7 +50,6 @@ Game.Upgrades = {
     name: 'Reload Accelerator',
     info: 'Reduces time needed to reload the LaserGun',
     res: 'plutonium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 200,
@@ -66,7 +61,6 @@ Game.Upgrades = {
     name: 'Ricochet Laser',
     info: 'Your lasergun can now shoot multiple laser beams simultaneously',
     res: 'plutonium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 4000,
@@ -78,7 +72,6 @@ Game.Upgrades = {
     name: 'Plasma Launcher',
     info: 'Bursts a lot of hot plasma, melting the Ores core',
     res: 'chrysonite',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 10,
@@ -90,7 +83,6 @@ Game.Upgrades = {
     name: 'Plasma Cooler',
     info: 'Hi-tech cooler for your Plasma Launcher',
     res: 'chrysonite',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 200,
@@ -102,7 +94,6 @@ Game.Upgrades = {
     name: 'Plasma Clip',
     info: 'Holds so much more ammo than basic clip, meaning you wont have to reload very often',
     res: 'chrysonite',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 4000,
@@ -114,7 +105,6 @@ Game.Upgrades = {
     name: 'Plasma Charger',
     info: 'Charges your plasma gun, much like Laser Amplifier amplifies your laser',
     res: 'armadium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 10,
@@ -126,7 +116,6 @@ Game.Upgrades = {
     name: 'Laser Burster',
     info: 'Your lasers burst upon impact, exploding and weakening ores core',
     res: 'armadium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 200,
@@ -138,7 +127,6 @@ Game.Upgrades = {
     name: 'Laser Intensifier',
     info: 'Intensifies the lasers strength',
     res: 'armadium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 4000,
@@ -150,7 +138,6 @@ Game.Upgrades = {
     name: 'Phase Beam',
     info: 'Takes a while to charge, but hits like a rock',
     res: 'solanium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 10,
@@ -162,7 +149,6 @@ Game.Upgrades = {
     name: 'Beam Intensifier',
     info: 'Makes the beam hit even stronger',
     res: 'solanium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 200,
@@ -174,7 +160,6 @@ Game.Upgrades = {
     name: 'Multi Beam',
     info: 'Phase Beam can now shoot multiple beams at once',
     res: 'solanium',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 4000,
@@ -186,7 +171,6 @@ Game.Upgrades = {
     name: 'Beam Cooler',
     info: 'Hi-tech cooler for your Phase Beam',
     res: 'singularity',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 10,
@@ -198,7 +182,6 @@ Game.Upgrades = {
     name: 'Beam Charger',
     info: 'Charges the beam for more damage',
     res: 'singularity',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 200,
@@ -210,7 +193,6 @@ Game.Upgrades = {
     name: 'Phase Gun',
     info: 'A combination of your plasma and laser beam guns.',
     res: 'singularity',
-    quantity: 1,
     lv: 0,
     cost: 0,
     baseCost: 4000,
@@ -229,20 +211,19 @@ function generateUpgrades() {
     let html = `
       <div class='hidden' id='${key}'>
         <div class='item-img'>
-          <img src='img/upgrades/${key}.png' id='${key}Img'>
+          <img src='img/upgrades/${key}.png'>
         </div>
         <div class='item-bar'>
           <div class='item-progress' id='${key}Progress'></div>
         </div>
-        <div class='tooltip item-tooltip-right fgrey'>
+        <div class='tooltip item-tooltip-right'>
           <div class='tooltip-header fcenter'>
             <span class='fwhite'>${item.name}</span><br>
             <span id='${key}Avb'></span>
           </div>
           <div class='tooltip-content'>
             Lv : <span class='fwhite f16' id='${key}Lv'></span><br>
-            Buy : <span class='fwhite f16' id='${key}Quantity'></span><br>
-            Cost : <span class='fwhite f16' id='${key}Cost'></span><img class='imgFix' id='${key}Res' src='img/inv/${item.res}16.png'><br>
+            Cost : <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'><br>
             DPS : <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'> (<span class='fwhite f16' id='${key}ofTotal'></span>)<hr>
             DPS / Lv : <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'><br>
             Cost / Lv : <span class='fwhite f16'>+ ${item.costPerLv * 100 - 100}%</span><hr>
@@ -260,10 +241,7 @@ function generateUpgrades() {
 ===========================================================*/
 function unlockUpgrade(key) {
   elem(key).className = 'item';
-  //elem(key).addEventListener('click', buyUpgrade);
-  elem(key).onclick = function() {
-    buyUpgrade(key);
-  }
+  elem(key).onclick = function() { buyUpgrade(key, Game.buyQuantity); }
 }
 /*===========================================================
 =         Lock Upgrades                                     =
@@ -271,56 +249,83 @@ function unlockUpgrade(key) {
 function lockUpgrades() {
 	for(key in Game.Upgrades) {
     elem(key).className = 'hidden';
-    //elem(key).removeEventListener('click', buyUpgrade);
-    elem(key).onclick = function() { }
+    elem(key).onclick = function() {}
 	}
 }
 /*===========================================================
-=         Select Quantity                                   =
+=         Upgrade Event Listener                            =
 ===========================================================*/
-function selectQuantity(key, quantity) {
-  let item = Game.Upgrades[key];
-  let cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + quantity) - Math.pow(item.costPerLv, item.lv)) / (item.costPerLv - 1))
+var kbdBtns = [ 'kbdZ', 'kbdX', 'kbdC' ]
+document.addEventListener('keypress', function(event) {
+  for(key in kbdBtns)
+    elem(kbdBtns[key]).style.opacity = .4;
+    
+  switch(event.key) {
+    case 'z':
+      updateQuantity(1, 'Z');
+    break;
+    case 'x':
+      updateQuantity(20, 'X');
+    break;
+    case 'c':
+      updateQuantity(100, 'C');
+    break;
+    default:
+      return;
+  }
 
-  item.cost = cost;
-  item.quantity = quantity;
+  cl(`addEventListener(keypress) - ${event.key}`);
+});
 
-  elem(`${key}Cost`).innerHTML = nFormat(item.cost);
-  elem(`${key}Quantity`).innerHTML = `x${item.quantity} Lvs`;
-  checkUpgrades();
+function updateQuantity(quantity, kbd) {
+  Game.buyQuantity = quantity;
+  save('buyQuantity', Game.buyQuantity);
+  elem(`kbd${kbd}`).style.opacity = 1;
+
+  for(key in Game.Upgrades) {
+    let item = Game.Upgrades[key];
+    let cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + Game.buyQuantity) - Math.pow(item.costPerLv, item.lv)) / (item.costPerLv - 1))
+    item.cost = cost;
+    elem(`${key}Cost`).innerHTML = nFormat(item.cost);
+    checkUpgrades();
+  }
 }
 /*===========================================================
 =         Buy Upgrade                                       =
 ===========================================================*/
-function buyUpgrade(key) {
+function buyUpgrade(key, quantity) {
   let item = Game.Upgrades[key];
   let inv = Game.Inventory[item.res];
 
-  if(inv.amount <= item.cost)
+  if(inv.amount < item.cost)
     return;
+  else {
+    inv.amount -= item.cost;
+    item.lv += quantity;
 
-  item.lv += item.quantity;
-  inv.amount -= item.cost;
+    let cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + quantity) - Math.pow(item.costPerLv, item.lv)) / (item.costPerLv - 1))
+    let dps = (item.lv * item.baseDps) * Math.pow(2, Math.floor(item.lv / 20));
+    let dpsPerLv = item.baseDps * Math.pow(2, Math.floor(item.lv / 20));
+    let nextLv = (Math.floor(item.lv / 20) + 1) * 20;
+    let width = (20 - (nextLv - item.lv)) * 5;
 
-  let dpsPerLv = item.baseDps * Math.pow(2, Math.floor(item.lv / 20));
-  let nextLv = (Math.floor(item.lv / 20) + 1) * 20;
-  let width = (20 - (nextLv - item.lv)) * 5;
+    item.cost = cost;
+    item.dps = dps;
 
-  item.dps = (item.lv * item.baseDps) * Math.pow(2, Math.floor(item.lv / 20));
-  item.cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + item.quantity) - Math.pow(item.costPerLv, item.lv)) / 0.04);
+    updateDamage();
+    checkUpgrades();
+    progressBar(key, width);
+    playAudio('click');
 
-  progressBar(key, width);
-  updateDamage();
-  checkUpgrades();
-  playAudio('click');
+    save(`${item.res}Amount`, inv.amount);
+    save(`${key}Lv`, item.lv);
 
-  save(`${key}Lv`, item.lv);
-  save(`${item.res}Amount`, inv.amount);
-  elem(`${key}Lv`).innerHTML = item.lv;
-  elem(`${key}Cost`).innerHTML = nFormat(item.cost);
-  elem(`${key}Dps`).innerHTML = nFormat(item.dps);
-  elem(`${key}DpsPerLv`).innerHTML = `+ ${nFormat(dpsPerLv)}`;
-  elem(`${item.res}Amount`).innerHTML = nFormat(inv.amount);
+    elem(`${item.res}Amount`).innerHTML = nFormat(inv.amount);
+    elem(`${key}Lv`).innerHTML = item.lv;
+    elem(`${key}Cost`).innerHTML = nFormat(item.cost);
+    elem(`${key}Dps`).innerHTML = nFormat(item.dps);
+    elem(`${key}DpsPerLv`).innerHTML = `+ ${nFormat(dpsPerLv)}`;
+  }
 }
 /*===========================================================
 =         Check Upgrades                                    =
@@ -331,13 +336,13 @@ function checkUpgrades() {
     let inv = Game.Inventory[item.res];
 
     if(inv.amount >= item.cost) {
-      elem(`${key}Avb`).innerHTML = 'Click to buy';
+      elem(`${key}Avb`).innerHTML = `Click to buy x ${Game.buyQuantity}`;
       elem(`${key}Avb`).className = 'fwhite';
       elem(`${key}Cost`).className = 'fwhite f16';
       elem(key).style.cursor = 'pointer';
     }
-    else if(inv.amount <= item.cost) {
-      elem(`${key}Avb`).innerHTML = 'Unavailable';
+    else if(inv.amount < item.cost) {
+      elem(`${key}Avb`).innerHTML = `Not enough ${item.res} for x ${Game.buyQuantity}`;
       elem(`${key}Avb`).className = 'fred';
       elem(`${key}Cost`).className = 'fred f16';
       elem(key).style.cursor = 'not-allowed';
@@ -350,17 +355,18 @@ function checkUpgrades() {
 function updateUpgrades() {
   for(key in Game.Upgrades) {
     let item = Game.Upgrades[key];
+    let cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + Game.buyQuantity) - Math.pow(item.costPerLv, item.lv)) / (item.costPerLv - 1))
+    let dps = (item.lv * item.baseDps) * Math.pow(2, Math.floor(item.lv / 20));
     let dpsPerLv = item.baseDps * Math.pow(2, Math.floor(item.lv / 20));
     let nextLv = (Math.floor(item.lv / 20) + 1) * 20;
     let width = (20 - (nextLv - item.lv)) * 5;
 
-    item.dps = (item.lv * item.baseDps) * Math.pow(2, Math.floor(item.lv / 20));
-    item.cost = Math.floor(item.baseCost * Math.pow(item.costPerLv, item.lv));
+    item.dps = dps;
+    item.cost = cost;
 
     progressBar(key, width);
 
     elem(`${key}Lv`).innerHTML = item.lv;
-    elem(`${key}Quantity`).innerHTML = `x${item.quantity} Lvs`;
     elem(`${key}Cost`).innerHTML = nFormat(item.cost);
     elem(`${key}Dps`).innerHTML = nFormat(item.dps);
     elem(`${key}DpsPerLv`).innerHTML = `+ ${nFormat(dpsPerLv)}`;

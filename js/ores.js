@@ -98,10 +98,10 @@ Game.Ores = {
 ===========================================================*/
 function generateHpBar() {
   let html = `
-    <div class='ore-lv ore-num fgrey'>
+    <div class='ore-lv ore-num'>
       Lv <span class='fwhite f16' id='oreLv'></span>
     </div>
-    <div class='ore-hp ore-num fgrey'>
+    <div class='ore-hp ore-num'>
       <span class='fwhite f16' id='oreHp'></span> Hp
     </div>
     <div class='hp-bar'>

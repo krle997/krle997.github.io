@@ -7,6 +7,7 @@ var Game = {
   author: 'Krle',
   fps: 60,
   muted: true,
+  buyQuantity: 1,
 
   time: {
     seconds: 0,
@@ -82,46 +83,18 @@ else if(typeof document.webkitHidden !== 'undefined') {
   visibilityChange = 'webkitvisibilitychange';
 }
 
-function handleVisibilityChange() {
-  if(document[hidden]) {
-    if(Game.debugging) cl('Navigating away...');
-  }
-  else {
-    if(Game.debugging) cl('Welcome back!');
-  }
-}
+
 
 if(typeof document.addEventListener === 'undefined' || typeof document.hidden === 'undefined') {
   cl('This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.');
 }
 else {
-  document.addEventListener(visibilityChange, handleVisibilityChange, false);
+
 }
 /*===========================================================
 =         Window Loaded                                     =
 ===========================================================*/
 window.addEventListener('load', generateGame);
-/*===========================================================
-=         Keyboard Button Pressed                           =
-===========================================================*/
-document.addEventListener('keypress', function(event) {
-  switch(event.key) {
-    case 'z':
-      for(key in Game.Upgrades)
-        selectQuantity(key, 1);
-      break;
-    case 'x':
-      for(key in Game.Upgrades)
-        selectQuantity(key, 20);
-      break;
-    case 'c':
-      for(key in Game.Upgrades)
-        selectQuantity(key, 100);
-      break;
-  }
-
-  cl(`addEventListener(keypress) - ${event.key}`);
-});
 /*===========================================================
 =					Load Game																					=
 ===========================================================*/
@@ -201,6 +174,9 @@ function loadGame() {
   if(load('characterXp'))
     Game.Character.xp = load('characterXp');
 
+  if(load('buyQuantity'))
+    Game.buyQuantity = load('buyQuantity');
+
   for(key in Game.Achievements) {
     for(i in Game.Achievements[key].ach) {
       if(load(key + i))
@@ -265,6 +241,10 @@ function gameLoop() {
   let frame = time - Game.gameLoopStarted;
   Game.gameLoopStarted = time;
 
+  if(Game.Character.dps > 0 && !Game.dpsAnimFrame) {
+    // finish
+  }
+
   Game.time.seconds += frame / 1000;
 
   if(Game.time.seconds > 59) {
@@ -320,9 +300,7 @@ function startDamage(key) {
     dpsAnim(time, key);
   });
 
-  elem('oreImg').onclick = function() {
-    doDpc(key);
-  }
+  elem('oreImg').onclick = function() { doDpc(key); }
 
   cl(`startDamage(${key})`);
 }
@@ -336,12 +314,26 @@ function stopDamage() {
 
   cl(`stopDamage()`);
 }
+
+var focusOutDamage = 0;
 /*===========================================================
 =         Animate Damage per Second                         =
 ===========================================================*/
 function dpsAnim(time, key) {
+
+  document.addEventListener('visibilitychange', focusOut, false);
+
+  function focusOut() {
+    if(document['hidden']) {
+      cancelAnimationFrame(Game.dpsAnimFrame);
+    } else {
+      
+    }
+  }
+
   let frame = time - Game.dpsAnimStart;
-  Game.dpsAnimStart = time;
+  let timePassed = time - Game.dpsAnimStart;
+  //Game.dpsAnimStart = time;
 
   let item = Game.Ores[key];
   let char = Game.Character;
@@ -371,7 +363,7 @@ function dpsAnim(time, key) {
     });
   }
   else if(item.armor - penetrate >= char.dps || char.dps <= 0)
-    return;
+    cancelAnimationFrame(Game.dpsAnimFrame);
 
   healthBar(key);
 
@@ -460,6 +452,7 @@ function oreClear(key) {
   item.prog ++;
   item.rewarded = true;
 
+  healthBar(key);
   giveXp();
   giveLoot(key);
 
@@ -498,14 +491,14 @@ function oreLvUp(key) {
   if(item.lv >= char.highestLv[key]) {
     char.highestLv[key] = item.lv;
 
+    // FIX -- add planet ID to ores
+    for(i in lvGoals) {
+      if(char.highestLv[key] >= lvGoals[i] && !Game.Achievements[key].ach[i])
+        unlockAchievement(key, i);
+    }
+
     save(`${key}HighestLv`, char.highestLv[key]);
     elem(`${key}HighestLv`).innerHTML = char.highestLv[key];
-  }
-
-  // FIX -- add planet ID to ores
-  for(i in lvGoals) {
-    if(char.highestLv[key] >= lvGoals[i] && !Game.Achievements[key].ach[i])
-      unlockAchievement(key, i);
   }
 
   giveSpecialLoot(key);
@@ -526,8 +519,6 @@ function resetOre(key) {
   item.hp = oreMaxHp;
   item.maxHp = oreMaxHp;
   item.rewarded = false;
-
-  healthBar(key);
 
   startDamage(key);
 
@@ -627,7 +618,7 @@ function giveSpecialLoot(key) {
     inv.antiMatter.amount += 1;
     char.total.antiMatter ++;
 
-    canCraft();
+    checkCrafting();
     generateResource('antiMatter', 1);
     popUpAnim('antiMatter');
 
@@ -804,9 +795,9 @@ function loadNtf(key, name, text) {
     <div class='notification' id='ntf${key}'>
       <div class='notification-header fcenter fwhite'>
         ${item.header}
-        <div class='notification-btn fgrey f16' id='ntf${key}Close'>X</div>
+        <div class='notification-btn f16' id='ntf${key}Close'>X</div>
       </div>
-      <div class='notification-content fgrey'>
+      <div class='notification-content'>
         ${item.content}
       </div>
     </div>

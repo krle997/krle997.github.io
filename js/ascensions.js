@@ -109,7 +109,7 @@ function generateAscensions() {
         <div class='item-bar'>
           <div class='item-progress' id='${key}Progress'></div>
         </div>
-        <div class='tooltip item-tooltip-right fgrey'>
+        <div class='tooltip item-tooltip-right'>
           <div class='tooltip-header fcenter'>
             <span class='fwhite'>${item.name}</span><br>
             <span id='${key}Avb'></span>
@@ -223,7 +223,7 @@ function updateAscensions() {
     if(!Game.Ascensions[key].current)
       counter ++;
 
-  if(counter >= Game.Ascensions.length)
+  if(counter >= 6)
     Game.Ascensions['earth'].current = true;
 
   for(key in Game.Ascensions) {

@@ -30,7 +30,7 @@ function generateDonate() {
         <div class='item-img'>
           <img src='img/donate/${key}.png' onclick='prompt("Press CTRL + C to copy my address to your clipboard", "${item.addr}")'>
         </div>
-				<div class='tooltip item-tooltip-left fgrey'>
+				<div class='tooltip item-tooltip-left'>
           <div class='tooltip-header fcenter'>
             <span class='fwhite f14'>${item.name}</span><br>
             <span class='fwhite'>Click to donate</span>

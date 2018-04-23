@@ -5,8 +5,9 @@ Game.Inventory = {
 	titanium: {
 		name: 'Titanium',
 		info: `
-			<span class='fgreen'>Titanium</span> is a powerful oxide. It can be
-			obtained on planet Earth
+			<span class='fgreen'>Titanium</span> is an oxide. It is very common, but
+			also easily obtainable. You can mine it on planet
+			<span class='fwhite'>Earth</span>
 		`,
 		amount: 0
 	},
@@ -14,7 +15,7 @@ Game.Inventory = {
 		name: 'Plutonium',
 		info: `
 			<span class='fgreen'>Plutonium</span> is a powerful isotope. It can be
-			mined on planet Grudnock
+			mined on planet <span class='fwhite'>Grudnock</span>
 		`,
 		amount: 0
 	},
@@ -22,7 +23,7 @@ Game.Inventory = {
 		name: 'Chrysonite',
 		info: `
 			<span class='fgreen'>Chrysonite</span> is a powerful silicate. It can
-			be mined on planet Tetherus
+			be mined on planet <span class='fwhite'>Tetherus</span>
 		`,
 		amount: 0
 	},
@@ -30,7 +31,7 @@ Game.Inventory = {
 		name: 'Armadium',
 		info: `
 			<span class='fgreen'>Armadium</span> is an exotic element. It can be mined
-			on planet Gazorpazorp
+			on planet <span class='fwhite'>Gazorpazorp</span>
 		`,
 		amount: 0
 	},
@@ -38,24 +39,23 @@ Game.Inventory = {
 		name: 'Solanium',
 		info: `
 			<span class='fgreen'>Solanium</span> is an exotic element. It can be
-			mined on planet Xeln
+			mined on planet <span class='fwhite'>Xeln</span>
 		`,
 		amount: 0
 	},
 	singularity: {
-		name: 'Hawking Radiation',
+		name: 'Singularity',
 		info: `
-			<span class='fgreen'>Hawking Radiation</span> holds secrets burried
-			throughout billions of Black Holes existence. It can be mined in a Black
-			Hole
+			<span class='fgreen'>Singularity</span> is burried deep within the Black
+			Hole. This might be the most valuable resource in the entire universe
 		`,
 		amount: 0
 	},
 	antiMatter: {
-		name: `Anti Matter`,
+		name: 'Anti Matter',
 		info: `
-			Collect <span class='fblue'>Anti Matter</span> to craft various items and
-			boost your progress
+			<span class='fblue'>Anti Matter</span> is the strongest source of energy
+			in the whole universe. It is also the shortest-lasting one.
 		`,
 		amount: 0
 	},
@@ -98,14 +98,14 @@ function generateInventory() {
 				<div class='stat-img'>
 					<img src='img/inv/${key}.png'>
 				</div>
-				<div class='stat-num fcenter fgrey'>
+				<div class='stat-num fcenter'>
 					<div id='${key}Amount'></div>
 				</div>
 				<div class='tooltip stat-tooltip'>
 					<div class='tooltip-header fcenter fwhite'>
 						${item.name}
 					</div>
-					<div class='tooltip-content fgrey'>
+					<div class='tooltip-content'>
 						${item.info}
 					</div>
 				</div>

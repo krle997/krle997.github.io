@@ -6,7 +6,7 @@ Game.Damage = {
 		name: 'Damage per Second',
 		info: `
 			This is how much damage you do each second. DPS cannot critically hit, and
-			can be reduced by Ores Armor
+			can be reduced by Ores Armor.
 		`,
 		misc: `
 			Critical Chance: <span class='fwhite f16'>0%</span><br>
@@ -17,7 +17,8 @@ Game.Damage = {
 		name: 'Damage per Click',
 		info: `
 			This is how much damage you do each click. DPC can critically hit, dealing
-			significantly more damage. DPC also completely ignores Ores Armor
+			significantly more damage. DPC also completely ignores Ores Armor. DPC
+			can't be increased and it is always fixed at 5% of total DPS.
 		`,
 		misc: `
 			Critical Chance: <span class='fwhite f16' id='critChance'></span><br>
@@ -47,10 +48,10 @@ function generateDamage() {
 				<div class='stat-img'>
 					<img src='img/character/${key}.png'>
 				</div>
-				<div class='stat-num fcenter fgrey'>
+				<div class='stat-num fcenter'>
 					<span id='${key}'></span>
 				</div>
-				<div class='tooltip stat-tooltip fgrey'>
+				<div class='tooltip stat-tooltip'>
 					<div class='tooltip-header fcenter'>
 						<span class='fwhite f14'>${item.name}</span>
 					</div>
@@ -83,13 +84,12 @@ function updateDamage() {
 
   for(key in Game.Upgrades) {
     let item = Game.Upgrades[key];
-
-    let ofTotal = (item.dps * 100 / totalDps).toFixed(2);
+    let ofTotal = (item.dps * 100 / totalDps);
 
     if(totalDps <= 0) {
-      elem(key + 'ofTotal').innerHTML = '%';
+      elem(key + 'ofTotal').innerHTML = '0%';
     } else {
-      elem(key + 'ofTotal').innerHTML = ofTotal + '%';
+      elem(key + 'ofTotal').innerHTML = nFormat(ofTotal) + '%';
     }
   }
 

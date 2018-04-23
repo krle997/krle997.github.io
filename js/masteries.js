@@ -274,7 +274,7 @@ function generateMasteries() {
   for(key in Game.Masteries) {
     let item = Game.Masteries[key];
 
-    let content = `
+    let html = `
       <div class='item' id='${key}'>
         <div class='item-img' id='${key}Img'>
           <img src='img/achievements/${key}.png'>
@@ -282,7 +282,7 @@ function generateMasteries() {
         <div class='item-bar'>
           <div class='item-progress' id='${key}Progress'></div>
         </div>
-        <div class='tooltip item-tooltip-bottom fgrey'>
+        <div class='tooltip item-tooltip-bottom'>
           <div class='tooltip-header fcenter'>
             <span class='fwhite'>${item.name}</span><br>
             ${item.type}
@@ -296,7 +296,7 @@ function generateMasteries() {
       </div>
     `;
 
-    elem('masteryItems').insertAdjacentHTML('beforeend', content);
+    elem('masteryItems').insertAdjacentHTML('beforeend', html);
   }
 }
 /*===========================================================

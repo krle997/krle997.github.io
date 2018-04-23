@@ -4,7 +4,13 @@
 Game.Crafting = {
   titaniumBattery: {
     name: 'Titanium Battery',
-    info: 'Increases Damage Increment by 1% per Upgrade Lv',
+    info: `
+      <span class='fgreen'>Titanium</span> is very common, so it's practically worthless. However, interesting
+      things start to happen when you combine it with a little bit of
+      <span class='fblue'>Anti Matter</span>. This short-lived battery increases
+      your <span class='fwhite'>Damage Increment</span> by
+      <span class='fwhite'>0.1%</span> per each Upgrade Lv
+    `,
     active: false,
     duration: 600000,
     remaining: 600000,
@@ -58,31 +64,31 @@ function generateCrafting() {
 	for(key in Game.Crafting) {
     let item = Game.Crafting[key];
 
-    let content = `
-      <div class='hidden' id='${key}' onclick='craft("${key}")'>
+    let html = `
+      <div class='hidden' id='${key}'>
         <div class='item-img' id='${key}Img'>
           <img src='img/crafting/${key}.png'>
         </div>
         <div class='item-bar'>
           <div class='item-progress' id='${key}Progress'></div>
         </div>
-        <div class='tooltip item-tooltip-right fgrey'>
+        <div class='tooltip item-tooltip-right'>
           <div class='tooltip-header fcenter'>
-            <span class='fwhite f14'>${item.name}</span><br>
+            <span class='fwhite'>${item.name}</span><br>
             <span id='${key}Avb'></span>
           </div>
           <div class='tooltip-content'>
-            Cost: <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/antiMatter16.png'><br>
-            Boost: <span class='fwhite f16' id='${key}Bonus'></span><br>
-            Duration: <span class='fwhite f16'>${item.duration / 1000} s</span><br>
-            Remaining: <span class='fwhite f16' id='${key}Remaining'></span><hr>
+            Cost : <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/antiMatter16.png'><br>
+            Boost : <span class='fwhite f16' id='${key}Bonus'></span><br>
+            Duration : <span class='fwhite f16'>${item.duration / 1000} s</span><br>
+            Remaining : <span class='fwhite f16' id='${key}Remaining'></span><hr>
             ${item.info}
           </div>
         </div>
       </div>
     `;
 
-    elem('craftingItems').insertAdjacentHTML('beforeend', content);
+    elem('craftingItems').insertAdjacentHTML('beforeend', html);
 	}
 }
 /*===========================================================
@@ -90,6 +96,9 @@ function generateCrafting() {
 ===========================================================*/
 function unlockCrafting(key) {
   elem(key).className = 'item';
+  elem(key).onclick = function() {
+    craft(key);
+  }
 }
 /*===========================================================
 =         Lock Crafting                                     =
@@ -97,6 +106,9 @@ function unlockCrafting(key) {
 function lockCrafting() {
   for(key in Game.Crafting) {
     elem(key).className = 'hidden';
+    elem(key).onclick = function() {
+      craft(key);
+    }
   }
 }
 /*===========================================================
@@ -106,22 +118,20 @@ function craft(key) {
   let item = Game.Crafting[key];
   let inv = Game.Inventory;
 
-  if(inv.antiMatter.amount < item.cost) {
+  if(inv.antiMatter.amount < item.cost || item.active)
     return;
-  } else if(item.active) {
-    return;
-  } else {
+  else {
     inv.antiMatter.amount -= item.cost;
     item.active = true;
 
     save('antiMatterAmount', inv.antiMatter.amount);
     save(`${key}Active`, item.active);
 
-    let width = 100 / (600000 / item.remaining);
-    progressBar(key, width);
+    //let width = 100 / (600000 / item.remaining);
+    //progressBar(key, width);
 
     updateDamage();
-    canCraft();
+    checkCrafting();
 
     playAudio('click');
 
@@ -132,7 +142,7 @@ function craft(key) {
 /*===========================================================
 =         Check Crafting                                    =
 ===========================================================*/
-function canCraft() {
+function checkCrafting() {
   for(key in Game.Crafting) {
     let item = Game.Crafting[key];
     let inv = Game.Inventory;
@@ -142,13 +152,15 @@ function canCraft() {
       elem(`${key}Avb`).className = 'fblue';
       elem(`${key}Cost`).className = 'fwhite f16';
       elem(`${key}`).style.cursor = 'not-allowed';
-    } else if(!item.active && inv.antiMatter.amount >= item.cost) {
+    }
+    else if(!item.active && inv.antiMatter.amount >= item.cost) {
       elem(`${key}Avb`).innerHTML = 'Click to craft';
       elem(`${key}Avb`).className = 'fwhite';
       elem(`${key}Cost`).className = 'fwhite f16';
       elem(`${key}`).style.cursor = 'pointer';
-    } else if(!item.active && inv.antiMatter.amount <= item.cost) {
-      elem(`${key}Avb`).innerHTML = 'Not enough resources';
+    }
+    else if(!item.active && inv.antiMatter.amount < item.cost) {
+      elem(`${key}Avb`).innerHTML = 'Unavailable';
       elem(`${key}Avb`).className = 'fred';
       elem(`${key}Cost`).className = 'fred f16';
       elem(`${key}`).style.cursor = 'not-allowed';
@@ -165,7 +177,8 @@ function updateCrafting() {
     if(item.active) {
       elem(`${key}Img`).style.animation = 'crafting-anim 3s linear infinite';
       elem(`${key}Remaining`).innerHTML = `${item.remaining / 1000} s`;
-    } else {
+    }
+    else {
       elem(`${key}Img`).style.animation = '';
       elem(`${key}Remaining`).innerHTML = 'Inactive';
     }
@@ -174,8 +187,7 @@ function updateCrafting() {
     progressBar(key, width);
 
     elem(`${key}Cost`).innerHTML = nFormat(item.cost);
-
   }
 
-  canCraft();
+  checkCrafting();
 }

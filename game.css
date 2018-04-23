@@ -7,6 +7,7 @@ html, body {
 	height: 100vh;
 	margin: 0;
 	padding: 0;
+	color: rgb(102, 102, 102);
 	font-family: 'conthrax';
 	font-size: 12px;
 	line-height: 1.6;
@@ -34,26 +35,17 @@ html, body {
 =					Horizontal Line																		=
 ===========================================================*/
 hr {
-	width: 100%;
-	height: 2px;
+	width: 90%;
+	height: 1px;
 	margin: 8px 0 8px 0;
+	padding: 0;
 	border: 0;
-	line-height: 1.6;
-	background: linear-gradient(90deg, rgba(102, 102, 102, 1), rgba(102, 102, 102, 0));
-}
-
-.keyboard-btn {
-	display: inline-block;
-	width: 32px;
-	height: auto;
-	margin: 4px;
-  padding: 0;
-	box-sizing: border-box;
-	font-family: 'conthrax';
-	border-radius: 4px;
-  background-color: rgba(230, 230, 230, 1);
-  box-shadow: inset 0 0 4px 2px rgba(102, 102, 102, 1);
-	border: 1px solid rgba(230, 230, 230, 1);
+	font-size: 0;
+	background: linear-gradient(90deg,
+		rgba(102, 102, 102, 1),
+		rgba(102, 102, 102, .5),
+		rgba(102, 102, 102, 0)
+	);
 }
 /*===========================================================
 =					Miscellaneous																			=
@@ -61,6 +53,7 @@ hr {
 .hidden{ display: none; }
 .visible{ display: initial; }
 .imgFix { vertical-align: text-bottom; }
+.img-mid { vertical-align: middle; }
 .fcenter { text-align: center; }
 
 .fgrey{ color: rgb(102, 102, 102); }
@@ -212,6 +205,7 @@ hr {
 	height: 64px;
 	border-radius: 4px;
 	opacity: .6;
+	border-radius: 50%;
 	transition: opacity .3s ease-in-out;
 }
 .item-bar {
@@ -222,7 +216,7 @@ hr {
 }
 .item-progress {
 	height: 2px;
-	background-color: rgba(102, 102, 102, 1);
+	background-color: rgba(0, 204, 255, 1);
 }
 .item-tooltip-right {
 	top: 0;
@@ -312,7 +306,7 @@ hr {
 	transition: width .3s ease-in-out;
 }
 .ore-tooltip {
-	top: 50px; /* MATH: ore-content(h74) - distance(w24) = 50px */
+	bottom: 50px; /* MATH: ore-content(h74) - distance(w24) = 50px */
 	right: 112px; /* MATH: tooltip(w288/2) - mid(w512/2) = 112px */
 	animation: ore-tooltip-anim .3s ease-in-out;
 }
@@ -329,7 +323,7 @@ hr {
 	width: 288px;
 	height: auto;
 	background-color: rgba(0, 0, 0, .8);
-	box-shadow: 0 0 4px 2px rgba(0, 204, 255, .2);
+	box-shadow: 0 0 4px 4px rgba(0, 204, 255, .2);
 	z-index: 2;
 }
 .tooltip-header {
@@ -439,16 +433,6 @@ hr {
 ===========================================================*/
 @keyframes crafting-anim {
 	0% { box-shadow: 0 0 64px 8px rgba(0, 204, 255, 0), inset 0 0 16px 32px rgba(0, 204, 255, 0); }
-	50% { box-shadow: 0 0 32px 16px rgba(0, 204, 255, .4), inset 0 0 32px 16px rgba(0, 204, 255, .4); }
+	50% { box-shadow: 0 0 32px 16px rgba(0, 204, 255, .6), inset 0 0 32px 16px rgba(0, 204, 255, .6); }
 	100% { box-shadow: 0 0 16px 32px rgba(0, 204, 255, 0), inset 0 0 64px 8px rgba(0, 204, 255, 0); }
-}
-/*
-0% { box-shadow: 0 0 64px 8px rgba(0, 204, 255, 0), inset 0 0 0px 32px rgba(0, 204, 255, 0); }
-50% { box-shadow: 0 0 32px 16px rgba(0, 204, 255, .4), inset 0 0 32px 16px rgba(0, 204, 255, .4); }
-100% { box-shadow: 0 0 0px 32px rgba(0, 204, 255, 0), inset 0 0 64px 8px rgba(0, 204, 255, 0); }
-*/
-@keyframes autobuy-anim {
-	0% { box-shadow: 0 0 64px 8px rgba(102, 255, 102, 0), inset 0 0 16px 32px rgba(102, 255, 102, 0); }
-	50% { box-shadow: 0 0 32px 16px rgba(102, 255, 102, .4), inset 0 0 32px 16px rgba(102, 255, 102, .4); }
-	100% { box-shadow: 0 0 16px 32px rgba(102, 255, 102, 0), inset 0 0 64px 8px rgba(102, 255, 102, 0); }
 }

@@ -3,7 +3,7 @@ Game.Modals = {
     name: 'Character',
     content: `
       <div class='character-modal'>
-        <div class='microverse fgrey'>
+        <div class='microverse'>
           <p class='fwhite'>The Microverse Ascension</p>
           This technology allows us to create new universes like ours, and explore them.
           Transitioning inside a new universe destroys all upgrades, crafted items,
@@ -17,21 +17,21 @@ Game.Modals = {
         </div>
 				Total Frost Crystal: <span class='fwhite f16' id='frostCrystalTotal'></span>
       </div>
-      <div class='modal-btn fcenter fgrey' onclick='closeModal("character")'>Close</div>
+      <div class='modal-btn fcenter' onclick='closeModal("character")'>Close</div>
     `
   },
   achievements: {
     name: 'Achievements',
     content: `
       <div class='modal-content nine-per-row' id='achievementItems'></div>
-      <div class='modal-btn fcenter fgrey' onclick='closeModal("achievements")'>Close</div>
+      <div class='modal-btn fcenter' onclick='closeModal("achievements")'>Close</div>
     `
   },
   masteries: {
     name: 'Masteries',
     content: `
       <div class='modal-content nine-per-row' id='masteryItems'></div>
-      <div class='modal-btn fcenter fgrey' onclick='closeModal("masteries")'>Close</div>
+      <div class='modal-btn fcenter' onclick='closeModal("masteries")'>Close</div>
     `
   }
 }
