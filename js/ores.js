@@ -15,7 +15,7 @@ Game.Ores = {
     armorPerLv: 1.0,
     antiMatterRate: 50,
     darkMatterRate: 20,
-    lootRewarded: false
+    rewarded: false
   },
   plutonium: {
     name: 'Plutonium',
@@ -30,7 +30,7 @@ Game.Ores = {
     armorPerLv: 1.01,
     antiMatterRate: 55,
     darkMatterRate: 25,
-    lootRewarded: false
+    rewarded: false
   },
   chrysonite: {
     name: 'Chrysonite',
@@ -45,7 +45,7 @@ Game.Ores = {
     armorPerLv: 1.02,
     antiMatterRate: 60,
     darkMatterRate: 14,
-    lootRewarded: false
+    rewarded: false
   },
   armadium: {
     name: 'Armadium',
@@ -60,7 +60,7 @@ Game.Ores = {
     armorPerLv: 1.03,
     antiMatterRate: 65,
     darkMatterRate: 16,
-    lootRewarded: false
+    rewarded: false
   },
   solanium: {
     name: 'Solanium',
@@ -75,7 +75,7 @@ Game.Ores = {
     armorPerLv: 1.04,
     antiMatterRate: 70,
     darkMatterRate: 18,
-    lootRewarded: false
+    rewarded: false
   },
   singularity: {
     name: 'Singularity',
@@ -90,7 +90,7 @@ Game.Ores = {
     armorPerLv: 1.05,
     antiMatterRate: 75,
     darkMatterRate: 20,
-    lootRewarded: false
+    rewarded: false
   }
 }
 /*===========================================================
@@ -133,20 +133,6 @@ function oreProgressBar(key) {
 
   elem('oreProgBar').style.width = `${width}%`;
   elem('oreProgress').innerHTML = `${item.prog} / 10`;
-}
-/*===========================================================
-=         Reset Ore                                         =
-===========================================================*/
-function resetOre(key) {
-  let item = Game.Ores[key];
-  let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
-
-  item.hp = oreMaxHp;
-  item.maxHp = oreMaxHp;
-  item.lootRewarded = false;
-
-  save(`${key}Rewarded`, item.lootRewarded);
-  elem('oreMaxHp').innerHTML = nFormat(item.maxHp);
 }
 /*===========================================================
 =         Update Ore Stats                                  =

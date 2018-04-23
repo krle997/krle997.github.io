@@ -2,6 +2,7 @@
 =					Account																						=
 ===========================================================*/
 Game.Character = {
+	userName: 'Player',
 	lv: 0,
 	xp: 0,
 	xpReq: 30,
@@ -34,6 +35,8 @@ Game.Character = {
 		singularity: 0,
 	}
 }
+
+
 Game.Account = {
 	character: {
 		name: 'Character',
@@ -85,7 +88,7 @@ function generateAccount() {
 	for(key in Game.Account) {
 		let item = Game.Account[key];
 
-		let content = `
+		let html = `
 	    <div class='item' id='${key}' onclick='${item.onclick}'>
 				<div class='item-img' id='${key}Img'>
 					<img src='img/character/${key}.png'>
@@ -105,7 +108,7 @@ function generateAccount() {
 	    </div>
 	  `;
 
-		elem('accountItems').insertAdjacentHTML('beforeend', content);
+		elem('accountItems').insertAdjacentHTML('beforeend', html);
 	}
 }
 /*===========================================================
@@ -134,7 +137,7 @@ function updateAccount() {
   }
 
 	for(key in char.highestLv) {
-		elem(key + 'UppermostLv').innerHTML = nFormat(char.highestLv[key]);
+		elem(key + 'HighestLv').innerHTML = nFormat(char.highestLv[key]);
 	}
 
   elem('charXp').innerHTML = nFormat(char.xp) + ' / ' + nFormat(char.xpReq);

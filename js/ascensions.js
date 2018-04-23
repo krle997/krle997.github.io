@@ -111,14 +111,14 @@ function generateAscensions() {
         </div>
         <div class='tooltip item-tooltip-right fgrey'>
           <div class='tooltip-header fcenter'>
-            <span class='fwhite f14'>${item.name}</span><br>
+            <span class='fwhite'>${item.name}</span><br>
             <span id='${key}Avb'></span>
           </div>
           <div class='tooltip-content'>
-            Requirement: <span class='fwhite f16' id='${key}Req'></span> <img class='imgFix' src='img/inv/darkMatter16.png'><br>
+            Requirement : <span class='fwhite f16' id='${key}Req'></span> <img class='imgFix' src='img/inv/darkMatter16.png'><br>
             <div class='hidden' id='${key}Content'>
-              Ore: <span class='fgreen'>${ore.name}</span> <img class='imgFix' src='img/inv/${item.oreId}16.png'><br>
-              Lv: <span class='fwhite f16' id='${item.oreId}Lv'></span><hr>
+              Ore : <span class='fgreen'>${ore.name}</span> <img class='imgFix' src='img/inv/${item.oreId}16.png'><br>
+              Lv : <span class='fwhite f16' id='${item.oreId}Lv'></span><hr>
               ${item.info}
             </div>
           </div>
@@ -223,7 +223,7 @@ function updateAscensions() {
     if(!Game.Ascensions[key].current)
       counter ++;
 
-  if(counter >= 6)
+  if(counter >= Game.Ascensions.length)
     Game.Ascensions['earth'].current = true;
 
   for(key in Game.Ascensions) {

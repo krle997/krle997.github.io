@@ -1,3 +1,4 @@
+
 Game.Help = {
   account: {
     name: 'Account',
@@ -47,12 +48,12 @@ Game.Help = {
   upgrades: {
     name: 'Upgrades',
     info: `
-      Acumulate <span class='fgreen'>resources</span> to buy upgrades and increase your DPS.
-      Each upgrade has its individual DPS doubled every 20 Lvs<hr>
-      <div class='keyboard-btn fcenter fgrey f16'>z</div> - Buy <span class='fwhite f16'>x1 Lvs</span><br>
-      <div class='keyboard-btn fcenter fgrey f16'>x</div> - Buy <span class='fwhite f16'>x20 Lvs</span><br>
-      <div class='keyboard-btn fcenter fgrey f16'>c</div> - Buy <span class='fwhite f16'>x100 Lvs</span><br>
-      <div class='keyboard-btn fcenter fgrey f16'>a</div> - Toggle <span class='fwhite f16'>auto-buy</span>
+      Mine <span class='fgreen'>resources</span> to buy upgrades and increase
+      your DPS. Each upgrade has its individual DPS doubled every 20 Lvs. Use
+      commands below to change buying parameters<hr>
+      <img class='imgFix' src='img/kbd/z.png'> - Buy <span class='fwhite f16'>x1 Lvs</span><br>
+      <img class='imgFix' src='img/kbd/x.png'> - Buy <span class='fwhite f16'>x10 Lvs</span><br>
+      <img class='imgFix' src='img/kbd/c.png'> - Buy <span class='fwhite f16'>x100 Lvs</span><br>
     `,
     tooltip: 'panel-tooltip-right'
   },

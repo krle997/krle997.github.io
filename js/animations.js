@@ -21,7 +21,9 @@ function generateResource(ore, amount) {
   Game.res[id] = makeResource();
 
   let item = Game.res[id];
-  let html = `<img class='animated-resource' id='resource${id}' src='img/inv/${ore}.png'>`;
+  let html = `
+    <img class='animated-resource' id='resource${id}' src='img/inv/${ore}.png'>
+  `;
 
   elem('resourceContainer').insertAdjacentHTML('beforeend', html);
   elem(`resource${id}`).style.left = item.x + 'px';
@@ -38,7 +40,7 @@ function resourceAnim(timestamp, id) {
   let item = Game.res[id];
   let resourcePos = elem('resourceContainer').getBoundingClientRect();
 
-  item.gravityPull += 0.1;
+  item.gravityPull += .1;
   item.y += item.gravityPull;
   item.x += item.side;
 
@@ -146,7 +148,7 @@ function floatingTextAnim(timestamp, id) {
 /*===========================================================
 =         Animate Stat Num                                  =
 ===========================================================*/
-function numPopUp(key) {
+function popUpAnim(key) {
   let frame = 0;
   let scale = 1;
 

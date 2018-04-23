@@ -170,7 +170,7 @@ function updateCrafting() {
       elem(`${key}Remaining`).innerHTML = 'Inactive';
     }
 
-    let width = 100 / (600000 / item.remaining);
+    let width = 100 / (item.duration / item.remaining);
     progressBar(key, width);
 
     elem(`${key}Cost`).innerHTML = nFormat(item.cost);

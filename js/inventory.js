@@ -93,7 +93,7 @@ function generateInventory() {
 	for(key in Game.Inventory) {
     let item = Game.Inventory[key];
 
-		let content = `
+		let html = `
 			<div class='hidden' id='${key}'>
 				<div class='stat-img'>
 					<img src='img/inv/${key}.png'>
@@ -112,7 +112,7 @@ function generateInventory() {
 			</div>
 		`;
 
-		elem('inventoryStats').insertAdjacentHTML('beforeend', content);
+		elem('inventoryStats').insertAdjacentHTML('beforeend', html);
 	}
 }
 /*===========================================================

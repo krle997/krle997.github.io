@@ -81,7 +81,7 @@ hr {
 .game {
 	display: grid;
 	grid-template-areas: 'outter-left inner-left mid inner-right outter-right';
-	width: 1384px; /* MATH: outter-left(w128) + inner-left(w312) + mid(w528) + inner-right(w288) + outter-right(w128) = 1384px */
+	width: 1344px; /* MATH: outter-left(w120) + inner-left(w304) + mid(w520) + inner-right(w280) + outter-right(w120) = 1384px */
 	height: 100%;
 	margin: 0 auto;
 }
@@ -90,36 +90,35 @@ hr {
 ===========================================================*/
 .outter-left {
 	grid-area: outter-left;
-	width: 128px; /* MATH: item(w64 + m16) + panel(m16 + p32) = 128px */
+	width: 120px; /* MATH: item(w64 + m16) + panel(m8 + p32) = 120px */
 	height: auto;
 }
 .inner-left {
 	grid-area: inner-left;
-	width: 312px; /* MATH: stat(w88 x3/col) + panel(m16 + p32) = 312px*/
+	width: 304px; /* MATH: stat(w88 x3/col) + panel(m8 + p32) = 304px*/
 	height: auto;
 }
 .mid {
 	grid-area: mid;
-	width: 528px; /* MATH: ore-img(w512) + panel(m16 + p32) = 528px */
+	width: 520px; /* MATH: ore-img(w512) + panel(m8 + p32) = 520px */
 	height: auto;
 }
 .inner-right {
 	grid-area: inner-right;
-	width: 288px; /* MATH: item(w64 + m16 x3/col) + panel(m16 + p32) = 288px*/
+	width: 280px; /* MATH: item(w64 + m16 x3/col) + panel(m8 + p32) = 280px*/
 	height: auto;
 }
 .outter-right {
 	grid-area: outter-right;
-	width: 128px; /* MATH: item(w64 + m16) + panel(m16 + p32) = 128px */
+	width: 120px; /* MATH: item(w64 + m16) + panel(m8 + p32) = 120px */
 	height: auto;
 }
 /*===========================================================
 =					Panel																							=
 ===========================================================*/
 .panel {
-	margin: 16px 8px;
+	margin: 8px 4px 8px 4px;
 	background-color: rgba(0, 0, 0, .4);
-	/*box-shadow: 0 0 0px 1px rgba(0, 204, 255, .4);*/
 }
 .panel-header {
 	position: relative;
@@ -211,6 +210,7 @@ hr {
 .item-img {
 	width: 64px;
 	height: 64px;
+	border-radius: 4px;
 	opacity: .6;
 	transition: opacity .3s ease-in-out;
 }
@@ -330,7 +330,7 @@ hr {
 	height: auto;
 	background-color: rgba(0, 0, 0, .8);
 	box-shadow: 0 0 4px 2px rgba(0, 204, 255, .2);
-	z-index: 1;
+	z-index: 2;
 }
 .tooltip-header {
 	background-color: rgba(0, 0, 0, .6);
@@ -342,31 +342,42 @@ hr {
 	box-sizing: border-box;
 }
 /*===========================================================
-=			Notification container 																=
+=			Notification 																					=
 ===========================================================*/
 .notification-container {
-	position: absolute;
-	width: 20%;
+	position: fixed;
+	bottom: 32px;
+	left: 32px;
+	width: 320px;
 	height: auto;
-	right: 40%;
-	bottom: 15px;
+	z-index: 1;
 }
-/*===========================================================
-=			Notification  																				=
-===========================================================*/
-.notification{
-	position: absolute;
+.notification {
 	width: 100%;
 	height: auto;
-	padding: 10px;
-	box-sizing: border-box;
-	left: 0;
-	bottom: 0;
+	margin: 16px 0 0 0;
+	box-shadow: 0 0 4px 2px rgba(0, 204, 255, .2);
 	background-color: rgba(0, 0, 0, .8);
 }
-@keyframes notification-anim {
-	from { opacity: 1; }
-	to { opacity: 0; }
+.notification-header {
+	position: relative;
+	background-color: rgba(0, 0, 0, .6);
+	padding: 8px 0 8px 0;
+	box-sizing: border-box;
+}
+.notification-btn {
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 4px 8px 4px 8px;
+	box-sizing: border-box;
+	cursor: pointer;
+	transition: color .3s ease-in-out;
+}
+.notification-btn:hover { color: rgb(230, 230, 230); }
+.notification-content {
+	padding: 16px;
+	box-sizing: border-box;
 }
 /*===========================================================
 =					Modal																							=
@@ -378,7 +389,7 @@ hr {
 	height: 100%;
 	left: 0;
 	top: 0;
-	background-color: rgba(0, 0, 0, .4);
+	background-color: rgba(0, 0, 0, .6);
 	z-index: 1;
 }
 .modal-panel {
@@ -387,7 +398,7 @@ hr {
 	height: auto;
 	margin: 64px auto 0 auto;
 	background-color: rgba(0, 0, 0, .8);
-	box-shadow: 0 0 8px 4px rgba(0, 204, 255, .4);
+	box-shadow: 0 0 4px 2px rgba(0, 204, 255, .2);
 	animation: modal-anim .3s ease-in-out;
 }
 @keyframes modal-anim {
@@ -397,7 +408,7 @@ hr {
 .modal-header {
 	width: 100%;
 	height: auto;
-	padding: 8px 0 8px 0;
+	padding: 16px 8px 16px 8px;
 	box-sizing: border-box;
 	background-color: rgba(0, 0, 0, .6);
 }
@@ -427,7 +438,17 @@ hr {
 =					Animations																				=
 ===========================================================*/
 @keyframes crafting-anim {
-	0% { box-shadow: inset 0 0 50px 0 rgba(0, 204, 255, 0); }
-	50% { box-shadow: inset 0 0 50px 0 rgba(0, 204, 255, 1); }
-	100% { box-shadow: inset 0 0 50px 0 rgba(0, 204, 255, 0); }
+	0% { box-shadow: 0 0 64px 8px rgba(0, 204, 255, 0), inset 0 0 16px 32px rgba(0, 204, 255, 0); }
+	50% { box-shadow: 0 0 32px 16px rgba(0, 204, 255, .4), inset 0 0 32px 16px rgba(0, 204, 255, .4); }
+	100% { box-shadow: 0 0 16px 32px rgba(0, 204, 255, 0), inset 0 0 64px 8px rgba(0, 204, 255, 0); }
+}
+/*
+0% { box-shadow: 0 0 64px 8px rgba(0, 204, 255, 0), inset 0 0 0px 32px rgba(0, 204, 255, 0); }
+50% { box-shadow: 0 0 32px 16px rgba(0, 204, 255, .4), inset 0 0 32px 16px rgba(0, 204, 255, .4); }
+100% { box-shadow: 0 0 0px 32px rgba(0, 204, 255, 0), inset 0 0 64px 8px rgba(0, 204, 255, 0); }
+*/
+@keyframes autobuy-anim {
+	0% { box-shadow: 0 0 64px 8px rgba(102, 255, 102, 0), inset 0 0 16px 32px rgba(102, 255, 102, 0); }
+	50% { box-shadow: 0 0 32px 16px rgba(102, 255, 102, .4), inset 0 0 32px 16px rgba(102, 255, 102, .4); }
+	100% { box-shadow: 0 0 16px 32px rgba(102, 255, 102, 0), inset 0 0 64px 8px rgba(102, 255, 102, 0); }
 }

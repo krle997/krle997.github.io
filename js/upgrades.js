@@ -229,20 +229,20 @@ function generateUpgrades() {
     let html = `
       <div class='hidden' id='${key}'>
         <div class='item-img'>
-          <img src='img/upgrades/${key}.png'>
+          <img src='img/upgrades/${key}.png' id='${key}Img'>
         </div>
         <div class='item-bar'>
           <div class='item-progress' id='${key}Progress'></div>
         </div>
         <div class='tooltip item-tooltip-right fgrey'>
           <div class='tooltip-header fcenter'>
-            <span class='fwhite f14'>${item.name}</span><br>
+            <span class='fwhite'>${item.name}</span><br>
             <span id='${key}Avb'></span>
           </div>
           <div class='tooltip-content'>
             Lv : <span class='fwhite f16' id='${key}Lv'></span><br>
             Buy : <span class='fwhite f16' id='${key}Quantity'></span><br>
-            Cost : <span class='fwhite f16' id='${key}Cost'></span> <img class='imgFix' src='img/inv/${item.res}16.png'><br>
+            Cost : <span class='fwhite f16' id='${key}Cost'></span><img class='imgFix' id='${key}Res' src='img/inv/${item.res}16.png'><br>
             DPS : <span class='fwhite f16' id='${key}Dps'></span> <img class='imgFix' src='img/character/dps16.png'> (<span class='fwhite f16' id='${key}ofTotal'></span>)<hr>
             DPS / Lv : <span class='fwhite f16' id='${key}DpsPerLv'></span> <img class='imgFix' src='img/character/dps16.png'><br>
             Cost / Lv : <span class='fwhite f16'>+ ${item.costPerLv * 100 - 100}%</span><hr>
@@ -260,7 +260,10 @@ function generateUpgrades() {
 ===========================================================*/
 function unlockUpgrade(key) {
   elem(key).className = 'item';
-  elem(key).addEventListener('click', buyUpg);
+  //elem(key).addEventListener('click', buyUpgrade);
+  elem(key).onclick = function() {
+    buyUpgrade(key);
+  }
 }
 /*===========================================================
 =         Lock Upgrades                                     =
@@ -268,92 +271,61 @@ function unlockUpgrade(key) {
 function lockUpgrades() {
 	for(key in Game.Upgrades) {
     elem(key).className = 'hidden';
-    elem(key).removeEventListener('click', buyUpg);
+    //elem(key).removeEventListener('click', buyUpgrade);
+    elem(key).onclick = function() { }
 	}
+}
+/*===========================================================
+=         Select Quantity                                   =
+===========================================================*/
+function selectQuantity(key, quantity) {
+  let item = Game.Upgrades[key];
+  let cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + quantity) - Math.pow(item.costPerLv, item.lv)) / (item.costPerLv - 1))
+
+  item.cost = cost;
+  item.quantity = quantity;
+
+  elem(`${key}Cost`).innerHTML = nFormat(item.cost);
+  elem(`${key}Quantity`).innerHTML = `x${item.quantity} Lvs`;
+  checkUpgrades();
 }
 /*===========================================================
 =         Buy Upgrade                                       =
 ===========================================================*/
-window.addEventListener('keypress', function(event) {
-  switch(event.key) {
-    case 'z':
-      for(key in Game.Upgrades) {
-        let item = Game.Upgrades[key];
-
-        item.cost = Math.floor(item.baseCost * Math.pow(item.costPerLv, item.lv));
-        item.quantity = 1;
-
-        elem(`${key}Cost`).innerHTML = nFormat(item.cost);
-        elem(`${key}Quantity`).innerHTML = `x${item.quantity} Lvs`;
-        canBuyUpgrade();
-      }
-      break;
-    case 'x':
-      for(key in Game.Upgrades) {
-        let item = Game.Upgrades[key];
-        let cost = item.baseCost * (Math.pow(item.costPerLv, item.lv + 20) - Math.pow(item.costPerLv, item.lv)) / (item.costPerLv - 1);
-
-        item.cost = Math.floor(cost);
-        item.quantity = 20;
-
-        elem(`${key}Cost`).innerHTML = nFormat(item.cost);
-        elem(`${key}Quantity`).innerHTML = `x${item.quantity} Lvs`;
-        canBuyUpgrade();
-      }
-      break;
-    case 'c':
-      for(key in Game.Upgrades) {
-
-        let item = Game.Upgrades[key];
-
-        item.cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + 100) - Math.pow(item.costPerLv, item.lv)) / 0.04);
-        item.quantity = 100;
-
-        elem(`${key}Cost`).innerHTML = nFormat(item.cost);
-        elem(`${key}Quantity`).innerHTML = `x${item.quantity} Lvs`;
-        canBuyUpgrade();
-      }
-  }
-});
-
-function buyUpg() {
-  let item = Game.Upgrades[this.id];
+function buyUpgrade(key) {
+  let item = Game.Upgrades[key];
   let inv = Game.Inventory[item.res];
 
-  if(inv.amount < item.cost) {
+  if(inv.amount <= item.cost)
     return;
-  } else {
-    item.lv += item.quantity;
-    inv.amount -= item.cost;
 
-    let dpsPerLv = item.baseDps * Math.pow(2, Math.floor(item.lv / 20));
-    let nextLv = (Math.floor(item.lv / 20) + 1) * 20;
+  item.lv += item.quantity;
+  inv.amount -= item.cost;
 
-    item.dps = (item.lv * item.baseDps) * Math.pow(2, Math.floor(item.lv / 20));
-    item.cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + item.quantity) - Math.pow(item.costPerLv, item.lv)) / 0.04);
+  let dpsPerLv = item.baseDps * Math.pow(2, Math.floor(item.lv / 20));
+  let nextLv = (Math.floor(item.lv / 20) + 1) * 20;
+  let width = (20 - (nextLv - item.lv)) * 5;
 
-    save(`${item.res}Amount`, inv.amount);
-    save(`${this.id}Lv`, item.lv);
+  item.dps = (item.lv * item.baseDps) * Math.pow(2, Math.floor(item.lv / 20));
+  item.cost = Math.floor(item.baseCost * (Math.pow(item.costPerLv, item.lv + item.quantity) - Math.pow(item.costPerLv, item.lv)) / 0.04);
 
-    let width = (20 - (nextLv - item.lv)) * 5;
-    progressBar(this.id, width);
+  progressBar(key, width);
+  updateDamage();
+  checkUpgrades();
+  playAudio('click');
 
-    updateDamage();
-    canBuyUpgrade();
-
-    playAudio('click');
-
-    elem(`${this.id}Lv`).innerHTML = item.lv;
-    elem(`${this.id}Cost`).innerHTML = nFormat(item.cost);
-    elem(`${this.id}Dps`).innerHTML = nFormat(item.dps);
-    elem(`${this.id}DpsPerLv`).innerHTML = `+ ${nFormat(dpsPerLv)}`;
-    elem(`${item.res}Amount`).innerHTML = nFormat(Game.Inventory[item.res].amount);
-  }
+  save(`${key}Lv`, item.lv);
+  save(`${item.res}Amount`, inv.amount);
+  elem(`${key}Lv`).innerHTML = item.lv;
+  elem(`${key}Cost`).innerHTML = nFormat(item.cost);
+  elem(`${key}Dps`).innerHTML = nFormat(item.dps);
+  elem(`${key}DpsPerLv`).innerHTML = `+ ${nFormat(dpsPerLv)}`;
+  elem(`${item.res}Amount`).innerHTML = nFormat(inv.amount);
 }
 /*===========================================================
 =         Check Upgrades                                    =
 ===========================================================*/
-function canBuyUpgrade() {
+function checkUpgrades() {
   for(key in Game.Upgrades) {
     let item = Game.Upgrades[key];
     let inv = Game.Inventory[item.res];
@@ -394,5 +366,5 @@ function updateUpgrades() {
     elem(`${key}DpsPerLv`).innerHTML = `+ ${nFormat(dpsPerLv)}`;
   }
 
-  canBuyUpgrade();
+  checkUpgrades();
 }

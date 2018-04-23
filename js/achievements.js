@@ -28,7 +28,7 @@ Game.Achievements = {
   earth: {
     name: `
       Titanium Domination<br>
-      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='titaniumUppermostLv'></span> <img class='imgFix' src='img/character/lv16.png'>
+      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='titaniumHighestLv'></span> <img class='imgFix' src='img/character/lv16.png'>
     `,
     misc: `
       <div id='earthAchievements'></div><hr>
@@ -74,7 +74,7 @@ Game.Achievements = {
   grudnock: {
     name: `
       Grudnock Invasion<br>
-      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='plutoniumUppermostLv'></span> <img class='imgFix' src='img/character/lv16.png'>
+      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='plutoniumHighestLv'></span> <img class='imgFix' src='img/character/lv16.png'>
     `,
     misc: `
       <div id='grudnockAchievements'></div><hr>
@@ -120,7 +120,7 @@ Game.Achievements = {
   tetherus: {
     name: `
       Tetheruss Rings Collab<br>
-      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='chrysoniteUppermostLv'></span> <img class='imgFix' src='img/character/lv16.png'>
+      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='chrysoniteHighestLv'></span> <img class='imgFix' src='img/character/lv16.png'>
     `,
     misc: `
       <div id='tetherusAchievements'></div><hr>
@@ -166,7 +166,7 @@ Game.Achievements = {
   gazorpazorp: {
     name: `
       Wubba Lubba Dub Dub<br>
-      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='armadiumUppermostLv'></span> <img class='imgFix' src='img/character/lv16.png'>
+      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='armadiumHighestLv'></span> <img class='imgFix' src='img/character/lv16.png'>
     `,
     misc: `
       <div id='gazorpazorpAchievements'></div><hr>
@@ -212,7 +212,7 @@ Game.Achievements = {
   xeln: {
     name: `
       Underwater Triumph<br>
-      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='solaniumUppermostLv'></span> <img class='imgFix' src='img/character/lv16.png'>
+      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='solaniumHighestLv'></span> <img class='imgFix' src='img/character/lv16.png'>
     `,
     misc: `
       <div id='xelnAchievements'></div><hr>
@@ -258,7 +258,7 @@ Game.Achievements = {
   blackhole: {
     name: `
       Deep Rabbit Hole<br>
-      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='singularityUppermostLv'></span> <img class='imgFix' src='img/character/lv16.png'>
+      <span class='fgrey'>Highest Lv:</span> <span class='f16' id='singularityHighestLv'></span> <img class='imgFix' src='img/character/lv16.png'>
     `,
     misc: `
       <div id='blackholeAchievements'></div><hr>

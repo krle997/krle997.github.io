@@ -2,7 +2,8 @@
 =					Game																							=
 ===========================================================*/
 var Game = {
-  version: 'v1.0',
+  name: 'No Mans Click',
+  version: 'v0.9 Alpha',
   author: 'Krle',
   fps: 60,
   muted: true,
@@ -14,8 +15,10 @@ var Game = {
   },
 
   connected: false,
+  debugging: false,
 
   resetOreTo: null,
+  tutorialTo: null,
 
   dpsAnimFrame: null,
   dpsAnimStart: null,
@@ -28,26 +31,97 @@ var Game = {
   resFadeOutAnim: null,
 
   fText: {},
-  fTextAnimFrame: null
+  fTextAnimFrame: null,
+
+  ntf: {},
+  ntfAnimFrame: null,
+  ntfFadeOutStart: null,
+  ntfFadeOutFrame: null
 }
 /*===========================================================
-=					Get Element ID																		=
+=					Miscellaneous																			=
 ===========================================================*/
-function elem(id) {
-  return document.getElementById(id);
+function elem(key) {
+  return document.getElementById(key);
 }
-/*===========================================================
-=					Save To LocalStorage															=
-===========================================================*/
+
 function save(key, num) {
 	return localStorage.setItem(key, JSON.stringify(num));
 }
-/*===========================================================
-=					Load From LocalStorage														=
-===========================================================*/
+
 function load(key) {
 	return JSON.parse(localStorage.getItem(key));
 }
+
+function openModal(key) {
+  elem(`${key}Modal`).style.display = 'initial';
+}
+
+function closeModal(key) {
+  elem(`${key}Modal`).style.display = 'none';
+}
+
+function cl(key) {
+  if(Game.debugging)
+    return console.log(key);
+}
+/*===========================================================
+=         Game Tab Activity                             		=
+===========================================================*/
+var hidden, visibilityChange;
+if(typeof document.hidden !== 'undefined') {
+  hidden = 'hidden';
+  visibilityChange = 'visibilitychange';
+}
+else if(typeof document.msHidden !== 'undefined') {
+  hidden = 'msHidden';
+  visibilityChange = "msvisibilitychange";
+}
+else if(typeof document.webkitHidden !== 'undefined') {
+  hidden = 'webkitHidden';
+  visibilityChange = 'webkitvisibilitychange';
+}
+
+function handleVisibilityChange() {
+  if(document[hidden]) {
+    if(Game.debugging) cl('Navigating away...');
+  }
+  else {
+    if(Game.debugging) cl('Welcome back!');
+  }
+}
+
+if(typeof document.addEventListener === 'undefined' || typeof document.hidden === 'undefined') {
+  cl('This demo requires a browser, such as Google Chrome or Firefox, that supports the Page Visibility API.');
+}
+else {
+  document.addEventListener(visibilityChange, handleVisibilityChange, false);
+}
+/*===========================================================
+=         Window Loaded                                     =
+===========================================================*/
+window.addEventListener('load', generateGame);
+/*===========================================================
+=         Keyboard Button Pressed                           =
+===========================================================*/
+document.addEventListener('keypress', function(event) {
+  switch(event.key) {
+    case 'z':
+      for(key in Game.Upgrades)
+        selectQuantity(key, 1);
+      break;
+    case 'x':
+      for(key in Game.Upgrades)
+        selectQuantity(key, 20);
+      break;
+    case 'c':
+      for(key in Game.Upgrades)
+        selectQuantity(key, 100);
+      break;
+  }
+
+  cl(`addEventListener(keypress) - ${event.key}`);
+});
 /*===========================================================
 =					Load Game																					=
 ===========================================================*/
@@ -55,28 +129,24 @@ function loadGame() {
 	for(key in Game.Upgrades) {
 		let item = Game.Upgrades[key];
 
-		if(load(key + 'Lv')) {
-			item.lv = load(key + 'Lv');
-		}
+		if(load(`${key}Lv`))
+			item.lv = load(`${key}Lv`);
 	}
 
 	for(key in Game.Crafting) {
 		let item = Game.Crafting[key];
 
-		if(load(key + 'Active')) {
-			item.active = load(key + 'Active');
-		};
-		if(load(key + 'Remaining')) {
-			item.remaining = load(key + 'Remaining');
-		}
+		if(load(`${key}Active`))
+			item.active = load(`${key}Active`);
+		if(load(`${key}Remaining`))
+			item.remaining = load(`${key}Remaining`);
 	}
 
   for(key in Game.Masteries) {
     let item = Game.Masteries[key];
 
-    if(load(key + 'Lv')) {
-      item.lv = load(key + 'Lv');
-    }
+    if(load(`${key}Lv`))
+      item.lv = load(`${key}Lv`);
   }
 
 	for(key in Game.Ascensions) {
@@ -100,14 +170,14 @@ function loadGame() {
 			item.hp = load(`${key}Hp`);
 
     if(load(`${key}Rewarded`))
-      item.lootRewarded = load(`${key}Rewarded`);
+      item.rewarded = load(`${key}Rewarded`);
   }
 
 	for(key in Game.Inventory) {
 		let inv = Game.Inventory[key];
 
-		if(load(key + 'Amount'))
-			inv.amount = load(key + 'Amount');
+		if(load(`${key}Amount`))
+			inv.amount = load(`${key}Amount`);
 	}
 
 	for(key in Game.time) {
@@ -116,9 +186,13 @@ function loadGame() {
 	}
 
   for(key in Game.Character.total) {
-    if(load(key + 'Total')) {
-      Game.Character.total[key] = load(key + 'Total');
-    }
+    if(load(`${key}Total`))
+      Game.Character.total[key] = load(`${key}Total`);
+  }
+
+  for(key in Game.Character.highestLv) {
+    if(load(`${key}HighestLv`))
+      Game.Character.highestLv[key] = load(`${key}HighestLv`);
   }
 
   if(load('characterLv'))
@@ -129,16 +203,27 @@ function loadGame() {
 
   for(key in Game.Achievements) {
     for(i in Game.Achievements[key].ach) {
-      if(load(key + i)) {
+      if(load(key + i))
         Game.Achievements[key].ach[i] = load(key + i);
-      }
     }
   }
+
+  if(load('notifications')) {
+    Game.ntf = load('notifications');
+
+    for(key in Game.ntf) {
+      let item = Game.ntf[key];
+
+      loadNtf(key, item.header, item.content);
+    }
+  }
+
+  cl('loadGame()');
 }
 /*===========================================================
 =					Generate Game																			=
 ===========================================================*/
-function generateContent() {
+function generateGame() {
   loadGame();
 
   generateModals();
@@ -165,20 +250,22 @@ function generateContent() {
 
   muteSounds();
 
-  Game.gameLoopStarted = Date.now();
+  Game.gameLoopStarted = performance.now();
   Game.gameLoopInt = setInterval(function() {
     gameLoop();
   }, 1000);
+
+  cl('generateGame()');
 }
 /*===========================================================
 =					Game Loop																					=
 ===========================================================*/
 function gameLoop() {
-  let timestamp = Date.now();
-  let runtime = timestamp - Game.gameLoopStarted;
+  let time = performance.now();
+  let frame = time - Game.gameLoopStarted;
+  Game.gameLoopStarted = time;
 
-  Game.gameLoopStarted = timestamp;
-  Game.time.seconds += runtime / 1000;
+  Game.time.seconds += frame / 1000;
 
   if(Game.time.seconds > 59) {
     Game.time.seconds = 0;
@@ -199,7 +286,7 @@ function gameLoop() {
     let item = Game.Crafting[key];
 
     if(item.active) {
-      item.remaining -= runtime;
+      item.remaining -= frame;
 
       save(`${key}Remaining`, item.remaining);
       elem(`${key}Remaining`).innerHTML = `${Math.round(item.remaining / 1000)} s`;
@@ -221,26 +308,36 @@ function gameLoop() {
       progressBar(key, width);
     }
   }
+
+  cl('gameLoop()');
 }
 /*===========================================================
 =         Start Damage                                      =
 ===========================================================*/
 function startDamage(key) {
-  elem('oreImg').onclick = function() { doDpc(key); }
-
   Game.dpsAnimStart = performance.now();
   Game.dpsAnimFrame = requestAnimationFrame(function(time) {
     dpsAnim(time, key);
   });
+
+  elem('oreImg').onclick = function() {
+    doDpc(key);
+  }
+
+  cl(`startDamage(${key})`);
 }
 /*===========================================================
 =         Stop Damage                                       =
 ===========================================================*/
 function stopDamage() {
-  elem('oreImg').onclick = function () {}
+  cancelAnimationFrame(Game.dpsAnimFrame);
+
+  elem('oreImg').onclick = function() {}
+
+  cl(`stopDamage()`);
 }
 /*===========================================================
-=         Damage per Second                                 =
+=         Animate Damage per Second                         =
 ===========================================================*/
 function dpsAnim(time, key) {
   let frame = time - Game.dpsAnimStart;
@@ -248,201 +345,40 @@ function dpsAnim(time, key) {
 
   let item = Game.Ores[key];
   let char = Game.Character;
-
   let penetrate = item.armor / 100 * char.armorPen;
   let damage = char.dps - (item.armor - penetrate);
   let damagePerFrame = (damage * frame) / 1000;
 
-  if(item.armor - penetrate >= char.dps || char.dps <= 0)
-    return;
-  else if(item.hp > 0)
-    item.hp -= damagePerFrame;
-  else if(item.hp <= 0 && !item.lootRewarded) {
-    item.lootRewarded = true;
-    item.hp = 0;
-    item.prog ++;
-
-    console.log('hp <= 1, loot true ? =', item.lootRewarded);
-
-    giveXp();
-    giveLoot(key);
-
-    if(item.prog >= 10) {
-      let lvGoals = {
-        One: 25,
-        Two: 50,
-        Three: 75,
-        Four: 100,
-        Five: 250,
-        Six: 500,
-        Seven: 750,
-        Eight: 1000,
-        Nine: 2500,
-        Ten: 5000
-      }
-
-      item.lv ++;
-      item.prog = 0;
-
-      if(item.lv >= char.highestLv[key]) {
-        char.highestLv[key] = item.lv;
-
-        elem(`${key}UppermostLv`).innerHTML = char.highestLv[key];
-      }
-
-      // FIX -- add planet ID to ores
-      for(i in lvGoals) {
-        if(char.highestLv[key] >= lvGoals[i] && !Game.Achievements[key].ach[i])
-          unlockAchievement(key, i);
-      }
-
-      giveSpecialLoot(key);
-    }
+  if(item.hp <= 0 && !item.rewarded) {
+    oreClear(key);
 
     Game.resetOreTo = setTimeout(function() {
-      let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
-
-      item.hp = oreMaxHp;
-      item.maxHp = oreMaxHp;
-      item.lootRewarded = false;
-
-      save(`${key}Rewarded`, item.lootRewarded);
-
-      console.log('hp <= 1, loot false ? =', item.lootRewarded);
-
-      elem('oreMaxHp').innerHTML = nFormat(item.maxHp);
-
-      requestAnimationFrame(function(time) {
-        dpsAnim(time, key);
-      });
+      resetOre(key);
     }, 500);
-
-    oreProgressBar(key);
-
-    save(`${key}Rewarded`, item.lootRewarded);
-    save(`${key}Lv`, item.lv);
-    save(`${key}Prog`, item.prog);
-    elem(`${key}Lv`).innerHTML = item.lv;
-    elem('oreLv').innerHTML = item.lv;
   }
-  /*else if(item.hp <= 0 && item.lootRewarded) { // If lv is cleared but user already received loot
+  else if(item.hp <= 0 && item.rewarded) {
+    stopDamage();
 
-  }*/
+    Game.resetOreTo = setTimeout(function() {
+      resetOre(key);
+    }, 500);
+  }
+  else if(item.hp > 0 && char.dps > 0) {
+    item.hp -= damagePerFrame;
 
-  healthBar(key);
-  save(`${key}Hp`, item.hp);
-
-  if(item.hp > 0 || !item.lootRewarded) {
-    requestAnimationFrame(function(time) {
+    Game.dpsAnimFrame = requestAnimationFrame(function(time) {
       dpsAnim(time, key);
     });
   }
-}
-
-
-
-
-/*
-function doDps(timestamp, key) {
-  let runtime = timestamp - Game.dpsAnimStarted; // Runtime roughly equals 1 frame (16ms);
-  Game.dpsAnimStarted = timestamp; // Function frames lag
-
-  let item = Game.Ores[key];
-  let char = Game.Character;
-  let penetrate = item.armor / 100 * char.armorPen;
-  let damage = char.dps - (item.armor - penetrate);
-  let damagePerFrame = (damage * runtime) / 1000; // Move 1.66% hp per frame
-
-  if(item.armor - penetrate >= char.dps || char.dps <= 0)
+  else if(item.armor - penetrate >= char.dps || char.dps <= 0)
     return;
 
-  item.hp -= damagePerFrame;
-
-  if(item.hp <= 0) {
-    item.hp = 0;
-
-    if(!item.lootRewarded) {
-      item.lootRewarded = true;
-      item.prog ++;
-
-      giveXp();
-      giveLoot(key);
-
-      if(item.prog >= 10) {
-        let lvGoals = {
-          One: 25,
-          Two: 50,
-          Three: 75,
-          Four: 100,
-          Five: 250,
-          Six: 500,
-          Seven: 750,
-          Eight: 1000,
-          Nine: 2500,
-          Ten: 5000
-        }
-
-        item.prog = 0;
-        item.lv ++;
-
-        if(item.lv >= char.highestLv[key]) {
-          char.highestLv[key] = item.lv;
-
-          elem(`${key}UppermostLv`).innerHTML = char.highestLv[key];
-        }
-
-        // FIX -- add planet ID to ores
-        for(i in lvGoals) {
-          if(char.highestLv[key] >= lvGoals[i] && !Game.Achievements[key].ach[i])
-            unlockAchievement(key, i);
-        }
-
-        giveSpecialLoot(key);
-
-      }
-
-
-      oreProgressBar(key);
-
-      save(`${key}Lv`, item.lv);
-      elem(`${key}Lv`).innerHTML = item.lv;
-      elem('oreLv').innerHTML = item.lv;
-      save(`${key}Prog`, item.prog);
-      save(`${key}Rewarded`, item.lootRewarded);
-
-      Game.resetOreTo = setTimeout(function() {
-        resetOre(key);
-        startDamage(key);
-      }, 500);
-    }
-    resetOre(key);
-
-    else {
-      Game.resetOreTo = setTimeout(function() {
-        resetOre(key);
-        startDamage(key);
-      }, 500);
-    }
-  }
-
-  if(item.hp <= 0) {
-    stopDamage();
-    oreClear(key);
-    //return;
-  }
-
   healthBar(key);
+
   save(`${key}Hp`, item.hp);
 
-  if(Game.doDpsActive) {
-  requestAnimationFrame(function(timestamp) {
-    doDps(timestamp, key);
-  });
-  }
-  else {
-    cancelAnimationFrame(Game.doDpsAnimFrame);
-  }
-}*/
+  cl(`dpsAnim(${key})`);
+}
 /*===========================================================
 =         Damage per Click                                  =
 ===========================================================*/
@@ -454,33 +390,50 @@ function doDpc(key) {
     checkCrit();
 
   if(char.critHit) {
-    item.hp -= char.dpc * 2;
+    let damage = char.dpc * 2;
+
+    item.hp -= damage;
     char.total.critHits ++;
     char.critHit = false;
 
-    generateFloatingText(nFormat(char.dpc * 2), 'character/dps16.png', event.clientX, event.clientY - 20);
+    generateFloatingText(nFormat(damage), 'character/dps16.png', event.clientX, event.clientY - 20);
 
 		save('critHitsTotal', char.total.critHits);
     elem('critHitsTotal').innerHTML = nFormat(char.total.critHits);
   }
   else {
-    item.hp -= char.dpc;
+    let damage = char.dpc;
+
+    item.hp -= damage;
     char.total.clicks ++;
 
-    generateFloatingText(nFormat(char.dpc), 'character/dps16.png', event.clientX, event.clientY - 20);
+    generateFloatingText(nFormat(damage), 'character/dps16.png', event.clientX, event.clientY - 20);
 
   	save('clicksTotal', char.total.clicks);
     elem('clicksTotal').innerHTML = nFormat(char.total.clicks);
   }
 
-  if(item.hp <= 0) {
+  if(item.hp <= 0 && !item.rewarded) {
+    oreClear(key);
+
+    Game.resetOreTo = setTimeout(function() {
+      resetOre(key);
+    }, 500);
+  }
+  else if(item.hp <= 0 && item.rewarded) {
     stopDamage();
-    //oreClear(key);
+
+    Game.resetOreTo = setTimeout(function() {
+      resetOre(key);
+    }, 500);
   }
 
   healthBar(key);
-  save(`${key}Hp`, item.hp);
   playAudio('dpc');
+
+  save(`${key}Hp`, item.hp);
+
+  cl(`doDpc(${key})`);
 }
 /*===========================================================
 =         Check Critical Hit                                =
@@ -492,6 +445,8 @@ function checkCrit() {
 
   if(rand > req)
     char.critHit = true;
+
+  cl('checkCrit()');
 }
 /*===========================================================
 =         Ore Cleared                                       =
@@ -499,33 +454,24 @@ function checkCrit() {
 function oreClear(key) {
   let item = Game.Ores[key];
 
+  stopDamage();
+
   item.hp = 0;
+  item.prog ++;
+  item.rewarded = true;
 
-  if(!item.lootRewarded) {
-    item.lootRewarded = true;
-    item.prog ++;
+  giveXp();
+  giveLoot(key);
 
-    giveXp();
-    giveLoot(key);
+  if(item.prog >= 10)
+    oreLvUp(key);
 
-    if(item.prog >= 10)
-      oreLvUp(key);
+  oreProgressBar(key);
 
-    oreProgressBar(key);
-    save(`${key}Prog`, item.prog);
-    save(`${key}Rewarded`, item.lootRewarded);
+  save(`${key}Prog`, item.prog);
+  save(`${key}Rewarded`, item.rewarded);
 
-    Game.resetOreTo = setTimeout(function() {
-      resetOre(key);
-      startDamage(key);
-    }, 500);
-  }
-  else {
-    Game.resetOreTo = setTimeout(function() {
-      resetOre(key);
-      startDamage(key);
-    }, 500);
-  }
+  cl(`oreClear(${key})`);
 }
 /*===========================================================
 =         Ore Lv Up                                         =
@@ -552,7 +498,8 @@ function oreLvUp(key) {
   if(item.lv >= char.highestLv[key]) {
     char.highestLv[key] = item.lv;
 
-    elem(`${key}UppermostLv`).innerHTML = char.highestLv[key];
+    save(`${key}HighestLv`, char.highestLv[key]);
+    elem(`${key}HighestLv`).innerHTML = char.highestLv[key];
   }
 
   // FIX -- add planet ID to ores
@@ -562,9 +509,32 @@ function oreLvUp(key) {
   }
 
   giveSpecialLoot(key);
+
   save(`${key}Lv`, item.lv);
   elem(`${key}Lv`).innerHTML = item.lv;
   elem('oreLv').innerHTML = item.lv;
+
+  cl(`oreLvUp(${key})`);
+}
+/*===========================================================
+=         Reset Ore                                         =
+===========================================================*/
+function resetOre(key) {
+  let item = Game.Ores[key];
+  let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
+
+  item.hp = oreMaxHp;
+  item.maxHp = oreMaxHp;
+  item.rewarded = false;
+
+  healthBar(key);
+
+  startDamage(key);
+
+  save(`${key}Rewarded`, item.rewarded);
+  elem('oreMaxHp').innerHTML = nFormat(item.maxHp);
+
+  cl(`resetOre(${key})`);
 }
 /*===========================================================
 =         Give Loot                                         =
@@ -590,25 +560,27 @@ function giveLoot(key) {
   inv.amount += resGain;
   char.total[key] += resGain;
 
-  for(i in resGoals) {
-    if(char.total[key] >= resGoals[i] && !Game.Achievements[key].ach[i])
-      unlockAchievement(key, i);
+  for(prop in resGoals) {
+    if(char.total[key] >= resGoals[prop] && !Game.Achievements[key].ach[prop])
+      unlockAchievement(key, prop);
   }
 
+  checkUpgrades();
   generateResource(key, resGain);
-  numPopUp(key);
-  canBuyUpgrade();
+  popUpAnim(key);
+
   save(`${key}Amount`, inv.amount);
 	save(`${key}Total`, char.total[key]);
   elem(`${key}Amount`).innerHTML = nFormat(inv.amount);
   elem(`${key}Total`).innerHTML = nFormat(char.total[key]);
+
+  cl(`giveLoot(${key})`);
 }
 /*===========================================================
 =         Give XP                                           =
 ===========================================================*/
 function giveXp() {
   let char = Game.Character;
-  let width = char.xp / char.xpReq * 100;
 
   char.xp ++;
 
@@ -618,12 +590,18 @@ function giveXp() {
     char.xpReq = 30 * Math.pow(1.5, char.lv);
 
     giveMastery();
+    generateNtf('Level up', `Congratulations, ${char.userName}, you have reached Lv ${char.lv}`);
+
     save('characterLv', char.lv);
   }
 
+  let width = char.xp / char.xpReq * 100;
   progressBar('character', width);
+
   save('characterXp', char.xp);
   elem('charXp').innerHTML = `${nFormat(char.xp)} / ${nFormat(char.xpReq)}`;
+
+  cl('giveXp()');
 }
 /*===========================================================
 =         Give Special Loot                                 =
@@ -637,9 +615,10 @@ function giveSpecialLoot(key) {
   if(rand < item.darkMatterRate) {
     inv.darkMatter.amount += 1;
 
-    generateResource('darkMatter', 1);
-    numPopUp('darkMatter');
     updateAscensions();
+    generateResource('darkMatter', 1);
+    popUpAnim('darkMatter');
+
     save('darkMatterAmount', inv.darkMatter.amount);
     elem('darkMatterAmount').innerHTML = nFormat(inv.darkMatter.amount);
   }
@@ -648,39 +627,46 @@ function giveSpecialLoot(key) {
     inv.antiMatter.amount += 1;
     char.total.antiMatter ++;
 
-    generateResource('antiMatter', 1);
-    numPopUp('antiMatter');
     canCraft();
+    generateResource('antiMatter', 1);
+    popUpAnim('antiMatter');
+
     save('antiMatterAmount', inv.antiMatter.amount);
     save('antiMatterTotal', char.total.antiMatter);
     elem('antiMatterAmount').innerHTML = nFormat(inv.antiMatter.amount);
     elem('antiMatterTotal').innerHTML = nFormat(char.total.antiMatter);
   }
+
+  cl(`giveSpecialLoot(${key})`);
 }
 /*===========================================================
 =					Microverse Ascension															=
 ===========================================================*/
 function microverseAscension() {
-	let inv = Game.Inventory;
+  let cDarkMatter = Game.Inventory.concentratedDarkMatter.amount;
+  let darkMatter = Game.Inventory.darkMatter.amount;
+  let prestige = darkMatter;
 
   stopDamage();
 
-  let reward = inv.darkMatter.amount;
+  for(key in Game.Inventory) {
+    let inv = Game.Inventory[key];
 
-  for(key in inv)
-    inv[key].amount = 0;
+    inv.amount = 0;
 
-  inv.concentratedDarkMatter.amount += reward;
+    save(`${key}Amount`, inv.amount);
+  }
 
-	for(key in inv)
-		save(`${key}Amount`, inv[key].amount);
+  cDarkMatter += prestige;
+
+  save('concentratedDarkMatterAmount', cDarkMatter);
 
   for(key in Game.Upgrades) {
 		let upg = Game.Upgrades[key];
 
     upg.lv = 0;
 
-		save(key + 'Lv', upg.lv);
+		save(`${key}Lv`, upg.lv);
   }
 
   for(key in Game.Crafting) {
@@ -689,28 +675,28 @@ function microverseAscension() {
     craft.active = false;
     craft.remaining = 600000;
 
-		save(key + 'Remaining', craft.remaining);
-		save(key + 'Active', craft.active);
+		save(`${key}Remaining`, craft.remaining);
+		save(`${key}Active`, craft.active);
   }
 
   for(key in Game.Ascensions) {
     let item = Game.Ascensions[key];
 
-
     item.current = false;
 
+    save(`${key}Current`, item.current);
   }
 
   for(key in Game.Ores) {
-    let ore = Game.Ores[key];
+    let item = Game.Ores[key];
 
-    ore.lv = 1;
-    ore.prog = 1;
-    ore.hp = ore.baseHp;
+    item.lv = 1;
+    item.prog = 1;
+    item.hp = item.baseHp;
 
-		save(`${item.oreId}Lv`, ore.lv);
-		save(`${item.oreId}Hp`, ore.hp);
-    save(`${item.oreId}Prog`, ore.prog);
+		save(`${key}Lv`, item.lv);
+		save(`${key}Hp`, item.hp);
+    save(`${key}Prog`, item.prog);
   }
 
   lockUpgrades();
@@ -723,12 +709,17 @@ function microverseAscension() {
   updateUpgrades();
   updateCrafting();
   updateAscensions();
-  updateOreStats('earth');
+  updateOreStats('titanium');
   updateInventory();
   updateDamage();
 
   Game.connected = false;
+
   ascend('earth');
+
+  generateNtf('Microverse Ascension', `You have received + ${prestige} <span class='forange'>Concentrated Dark Matter</span>`);
+
+  cl('microverseAscension()');
 }
 /*===========================================================
 =					Update Progress Bar																=
@@ -737,13 +728,14 @@ function progressBar(key, width) {
   elem(`${key}Progress`).style.width = `${width}%`;
 }
 /*===========================================================
-=			Mute / unmute settings																=
+=         Mute / Unmute Sounds							   				   		=
 ===========================================================*/
 function muteSounds() {
 	if(Game.muted) {
 		Game.muted = false;
 		elem('sounds').innerHTML = 'On';
-	} else {
+	}
+  else {
 		Game.muted = true;
 		elem('sounds').innerHTML = 'Off';
 	}
@@ -758,7 +750,7 @@ function playAudio(key) {
   }
 }
 /*===========================================================
-=			Number formatter																			=
+=         Number formatter                                  =
 ===========================================================*/
 function nFormat(num) {
 	var si = [
@@ -784,64 +776,88 @@ function nFormat(num) {
 	return num.toFixed(2).replace(rx, '$1');
 }
 /*===========================================================
-=			Open Modal																						=
+=         Generate Notification                             =
 ===========================================================*/
-function openModal(which) {
-  elem(which + 'Modal').style.display = 'initial';
+function generateNtf(name, text) {
+  let key = Math.random();
+
+  function makeNtf() {
+  	return {
+      header: name,
+      content: text,
+      opacity: 1,
+  	}
+  }
+
+  Game.ntf[key] = makeNtf();
+
+  loadNtf(key, name, text);
+
+  save(`notifications`, Game.ntf);
 }
 /*===========================================================
-=			Close Modal																						=
+=         Load Notification                                 =
 ===========================================================*/
-function closeModal(which) {
-  elem(which + 'Modal').style.display = 'none';
-}
-
-var notifCount = 0;
-var letMe;
-
-function notification(header, content) {
-  clearTimeout(letMe);
-
-  let notif = `
-    <div class='notification' id='notif${notifCount}'>
-      <div class='col-full forange'>${header}</div>
-      <div class='notification-header fwhite'>${content}</div>
+function loadNtf(key, name, text) {
+  let item = Game.ntf[key];
+  let html = `
+    <div class='notification' id='ntf${key}'>
+      <div class='notification-header fcenter fwhite'>
+        ${item.header}
+        <div class='notification-btn fgrey f16' id='ntf${key}Close'>X</div>
+      </div>
+      <div class='notification-content fgrey'>
+        ${item.content}
+      </div>
     </div>
   `;
 
-  elem('notifContainer').insertAdjacentHTML('beforeend', notif);
-  elem('notif' + notifCount).style.animation = 'notification-anim 5s ease-in forwards';
-
-  for(i = 0; i < notifCount; i ++)
-    elem('notif' + i).style.bottom = (notifCount - i) * 80 + 'px';
-
-  notifCount ++;
-
-	letMe = setTimeout(function() {
-    clearNotification();
-  }, 5000);
+  elem('ntfContainer').insertAdjacentHTML('afterbegin', html);
+  elem(`ntf${key}Close`).onclick = function() {
+    dismissNtf(key);
+  }
 }
 /*===========================================================
-=			Clear notification																		=
+=         Dismiss Notification                              =
 ===========================================================*/
-function clearNotification() {
-  elem('notifContainer').innerHTML = '';
-  clearTimeout(letMe);
-  notifCount = 0;
+function dismissNtf(key) {
+  elem(`ntf${key}Close`).onclick = function() {}
+
+  Game.ntfFadeOutFrame = requestAnimationFrame(function(time) {
+    dismissNtfAnim(time, key);
+  });
 }
 /*===========================================================
-=			Set username												      						=
+=         Notification Fade Out                             =
+===========================================================*/
+function dismissNtfAnim(time, key) {
+  let item = Game.ntf[key];
+
+  item.opacity -= .01;
+  elem(`ntf${key}`).style.opacity = item.opacity.toFixed(2);
+
+  if(item.opacity <= 0) {
+    elem(`ntf${key}`).parentNode.removeChild(elem(`ntf${key}`));
+    delete Game.ntf[key];
+    save(`notifications`, Game.ntf);
+    cancelAnimationFrame(Game.ntfFadeOutFrame);
+  }
+  else {
+    requestAnimationFrame(function(time) {
+      dismissNtfAnim(time, key);
+    });
+  }
+}
+/*===========================================================
+=         Set Username                                      =
 ===========================================================*/
 function setUsername() {
-	game.userName = document.getElementById("username").value;
+  let char = Game.Character;
 
-	if (game.userName.length < 3) {
+	char.userName = elem('username').value;
+
+	if(char.userName.length < 3)
 		return false;
-	}
 
-	document.getElementById("displayuser").innerHTML = "Welcome back, <span class=\"fblue\">" + game.userName + "</span>";
+	elem('displayuser').innerHTML = `Welcome back, <span class='fblue'>${char.userName}</span>`;
 }
-/*===========================================================
-=			HTML onload?      					       	             			=
-===========================================================*/
-window.onload = function() { generateContent(); }
