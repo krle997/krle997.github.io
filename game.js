@@ -314,33 +314,40 @@ function stopDamage() {
 
   cl(`stopDamage()`);
 }
-
-var focusOutDamage = 0;
 /*===========================================================
 =         Animate Damage per Second                         =
 ===========================================================*/
 function dpsAnim(time, key) {
-
-  document.addEventListener('visibilitychange', focusOut, false);
-
-  function focusOut() {
-    if(document['hidden']) {
-      cancelAnimationFrame(Game.dpsAnimFrame);
-    } else {
-      
-    }
-  }
-
   let frame = time - Game.dpsAnimStart;
-  let timePassed = time - Game.dpsAnimStart;
-  //Game.dpsAnimStart = time;
+  Game.dpsAnimStart = time;
 
   let item = Game.Ores[key];
   let char = Game.Character;
   let penetrate = item.armor / 100 * char.armorPen;
   let damage = char.dps - (item.armor - penetrate);
-  let damagePerFrame = (damage * frame) / 1000;
+  let damagePerFrame = (damage / 1000) * frame;
 
+/*if(item.hp >= 0 && frame >= 16.7) { // can only occur if frame gets compounded (aka user is alt tabbed)
+    //item.hp -= damagePerFrame;
+
+    if(item.hp >= damagePerFrame) {
+      item.hp -= damagePerFrame;
+    }
+    else if(item.hp <= damagePerFrame) {
+      //damagePerFrame -= item.hp;
+      item.lv ++;
+
+      let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
+
+      item.hp = oreMaxHp;
+      item.maxHp = oreMaxHp;
+    }
+
+    if(item.hp <= 0) {
+      oreClear(key);
+      resetOre(key);
+    }
+  }*/
   if(item.hp <= 0 && !item.rewarded) {
     oreClear(key);
 
