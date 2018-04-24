@@ -314,47 +314,84 @@ function stopDamage() {
 
   cl(`stopDamage()`);
 }
+
 /*===========================================================
 =         Animate Damage per Second                         =
 ===========================================================*/
 function dpsAnim(time, key) {
   let frame = time - Game.dpsAnimStart;
   Game.dpsAnimStart = time;
-
+ 
   let item = Game.Ores[key];
   let char = Game.Character;
   let penetrate = item.armor / 100 * char.armorPen;
   let damage = char.dps - (item.armor - penetrate);
   let damagePerFrame = (damage / 1000) * frame;
-
-  if(item.hp <= 0 && !item.rewarded) {
-    oreClear(key);
-
-    Game.resetOreTo = setTimeout(function() {
-      resetOre(key);
-    }, 500);
-  }
-  else if(item.hp <= 0 && item.rewarded) {
-    stopDamage();
-
-    Game.resetOreTo = setTimeout(function() {
-      resetOre(key);
-    }, 500);
-  }
-  else if(item.hp > 0 && damage > 0) {
+ 
+  if(item.hp > 0 && damage > 0) {
     item.hp -= damagePerFrame;
+ 
+    let delta = item.hp - damagePerFrame;
+	 
+    checkDifference();
+ 
+    function checkDifference() {
+		cancelAnimationFrame(Game.dpsAnimFrame);
+		
+        if(delta <= 0) {
+			item.hp = 0;
+			item.prog ++;
+			healthBar(key);
+			giveXp();
+			giveLoot(key);
+			oreProgressBar(key);
 
-    Game.dpsAnimFrame = requestAnimationFrame(function(time) {
-      dpsAnim(time, key);
-    });
+			save(`${key}Prog`, item.prog);
+			save(`${key}Rewarded`, item.rewarded);
+ 
+            if(item.prog >= 10) {
+                item.prog = 0;
+				item.lv ++;
+				
+				giveSpecialLoot(key);
+
+				save(`${key}Lv`, item.lv);
+				elem(`${key}Lv`).innerHTML = item.lv;
+				elem('oreLv').innerHTML = item.lv;
+			}
+ 
+			let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
+
+			item.hp = oreMaxHp + delta;
+			delta = item.hp;
+			item.maxHp = oreMaxHp;
+  
+			save(`${key}Rewarded`, item.rewarded);
+			elem('oreMaxHp').innerHTML = nFormat(item.maxHp);
+			
+			checkDifference();
+        }
+		else {
+			Game.dpsAnimFrame = requestAnimationFrame(function(time) {
+				dpsAnim(time, key);
+			});
+		}
+    }
+   
+    //generateResource(key, delta);
+    //popUpAnim(key);
   }
   else if(item.armor - penetrate >= char.dps || char.dps <= 0)
     cancelAnimationFrame(Game.dpsAnimFrame);
-
+ 
+  Game.dpsAnimFrame = requestAnimationFrame(function(time) {
+	dpsAnim(time, key);
+  });
+	
   healthBar(key);
-
+ 
   save(`${key}Hp`, item.hp);
-
+ 
   cl(`dpsAnim(${key})`);
 }
 /*===========================================================
@@ -432,18 +469,18 @@ function checkCrit() {
 function oreClear(key) {
   let item = Game.Ores[key];
 
-  stopDamage();
+  //stopDamage();
 
   item.hp = 0;
   item.prog ++;
-  item.rewarded = true;
+  //item.rewarded = true;
 
   healthBar(key);
   giveXp();
   giveLoot(key);
 
-  if(item.prog >= 10)
-    oreLvUp(key);
+//  if(item.prog >= 10)
+  //  oreLvUp(key);
 
   oreProgressBar(key);
 
@@ -451,6 +488,24 @@ function oreClear(key) {
   save(`${key}Rewarded`, item.rewarded);
 
   cl(`oreClear(${key})`);
+}
+/*===========================================================
+=         Reset Ore                                         =
+===========================================================*/
+function resetOre(key, delta) {
+  let item = Game.Ores[key];
+  let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
+
+  item.hp = oreMaxHp + delta;
+  item.maxHp = oreMaxHp;
+  //item.rewarded = false;
+
+  //startDamage(key);
+
+  save(`${key}Rewarded`, item.rewarded);
+  elem('oreMaxHp').innerHTML = nFormat(item.maxHp);
+
+  cl(`resetOre(${key})`);
 }
 /*===========================================================
 =         Ore Lv Up                                         =
@@ -496,24 +551,6 @@ function oreLvUp(key) {
   cl(`oreLvUp(${key})`);
 }
 /*===========================================================
-=         Reset Ore                                         =
-===========================================================*/
-function resetOre(key) {
-  let item = Game.Ores[key];
-  let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
-
-  item.hp = oreMaxHp;
-  item.maxHp = oreMaxHp;
-  item.rewarded = false;
-
-  startDamage(key);
-
-  save(`${key}Rewarded`, item.rewarded);
-  elem('oreMaxHp').innerHTML = nFormat(item.maxHp);
-
-  cl(`resetOre(${key})`);
-}
-/*===========================================================
 =         Give Loot                                         =
 ===========================================================*/
 function giveLoot(key) {
@@ -543,8 +580,8 @@ function giveLoot(key) {
   }
 
   checkUpgrades();
-  generateResource(key, resGain);
-  popUpAnim(key);
+  //generateResource(key, resGain);
+  //popUpAnim(key);
 
   save(`${key}Amount`, inv.amount);
 	save(`${key}Total`, char.total[key]);
@@ -593,8 +630,8 @@ function giveSpecialLoot(key) {
     inv.darkMatter.amount += 1;
 
     updateAscensions();
-    generateResource('darkMatter', 1);
-    popUpAnim('darkMatter');
+   // generateResource('darkMatter', 1);
+    //popUpAnim('darkMatter');
 
     save('darkMatterAmount', inv.darkMatter.amount);
     elem('darkMatterAmount').innerHTML = nFormat(inv.darkMatter.amount);
@@ -605,8 +642,8 @@ function giveSpecialLoot(key) {
     char.total.antiMatter ++;
 
     checkCrafting();
-    generateResource('antiMatter', 1);
-    popUpAnim('antiMatter');
+   // generateResource('antiMatter', 1);
+    //popUpAnim('antiMatter');
 
     save('antiMatterAmount', inv.antiMatter.amount);
     save('antiMatterTotal', char.total.antiMatter);
