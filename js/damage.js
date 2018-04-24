@@ -9,8 +9,8 @@ Game.Damage = {
 			can be reduced by Ores Armor.
 		`,
 		misc: `
-			Critical Chance: <span class='fwhite f16'>0%</span><br>
-			Armor Pen: <span class='fwhite f16' id='armorPen'></span>
+			Critical Chance : <span class='fwhite f16'>0%</span><br>
+			Armor Pen : <span class='fwhite f16' id='armorPen'></span>
 		`
 	},
 	dpc: {
@@ -21,8 +21,8 @@ Game.Damage = {
 			can't be increased and it is always fixed at 5% of total DPS.
 		`,
 		misc: `
-			Critical Chance: <span class='fwhite f16' id='critChance'></span><br>
-			Armor Pen: <span class='fwhite f16'>100%</span>
+			Critical Chance : <span class='fwhite f16' id='critChance'></span><br>
+			Armor Pen : <span class='fwhite f16'>100%</span>
 		`
 	},
 	increment: {
@@ -32,7 +32,7 @@ Game.Damage = {
 			increased in various ways.
 		`,
 		misc: `
-			From <img src='img/inv/concentratedDarkMatter16.png'>: <span class='fwhite f16' id='fromCDarkMatter'></span>
+			From <img src='img/inv/cDarkMatter16.png'> : <span class='fwhite f16' id='fromCDarkMatter'></span>
 		`
 	}
 }
@@ -42,8 +42,7 @@ Game.Damage = {
 function generateDamage() {
 	for(key in Game.Damage) {
     let item = Game.Damage[key];
-
-		let content = `
+		let html = `
 			<div class='stat'>
 				<div class='stat-img'>
 					<img src='img/character/${key}.png'>
@@ -52,8 +51,8 @@ function generateDamage() {
 					<span id='${key}'></span>
 				</div>
 				<div class='tooltip stat-tooltip'>
-					<div class='tooltip-header fcenter'>
-						<span class='fwhite f14'>${item.name}</span>
+					<div class='tooltip-header fcenter fwhite'>
+						${item.name}
 					</div>
 					<div class='tooltip-content'>
 						${item.misc}<hr>
@@ -63,7 +62,7 @@ function generateDamage() {
 			</div>
 		`;
 
-		elem('damageStats').insertAdjacentHTML('beforeend', content);
+		elem('damageStats').insertAdjacentHTML('beforeend', html);
 	}
 }
 /*===========================================================
@@ -95,7 +94,7 @@ function updateDamage() {
 
   totalDpc = 1 + Math.floor(totalDps / 100 * 10);
 
-  char.increment = Game.Inventory.concentratedDarkMatter.amount;
+  char.increment = Game.Inventory.cDarkMatter.amount;
 
   if(Game.Crafting.titaniumBattery.active)
     char.increment += totalLvs;
@@ -125,7 +124,7 @@ function updateDamage() {
   elem('increment').innerHTML = nFormat(char.increment) + '%';
   elem('critChance').innerHTML = char.critChance + '%';
   elem('armorPen').innerHTML = char.armorPen + '%';
-	elem('fromCDarkMatter').innerHTML = nFormat(Game.Inventory.concentratedDarkMatter.amount);
+	elem('fromCDarkMatter').innerHTML = nFormat(Game.Inventory.cDarkMatter.amount);
   elem('titaniumBatteryBonus').innerHTML = totalLvs + '%';
   elem('plutoniumBatteryBonus').innerHTML = totalLvs / 100 + '%';
   elem('chrysoniteBatteryBonus').innerHTML = totalLvs / 100 + '%';

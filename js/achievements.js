@@ -301,10 +301,10 @@ Game.Achievements = {
       Ten: false
     }
   },
-  concentratedDarkMatter: {
+  cDarkMatter: {
     name: 'Concentrated Power',
     misc: `
-      <div id='concentratedDarkMatterAchievements'></div><hr>
+      <div id='cDarkMatterAchievements'></div><hr>
       Reward: Undying
     `,
     unlocked: 0,
@@ -366,7 +366,7 @@ function generateAchievements() {
   generateAchTiles('singularity', farm, 'Total');
   generateAchTiles('blackhole', lv, 'Beat Lv');
   generateAchTiles('antiMatter', lv, 'Total');
-  generateAchTiles('concentratedDarkMatter', lv, 'Total');
+  generateAchTiles('cDarkMatter', lv, 'Total');
 }
 
 function generateAchTiles(key, amount, what) {

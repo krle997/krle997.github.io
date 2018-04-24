@@ -327,27 +327,6 @@ function dpsAnim(time, key) {
   let damage = char.dps - (item.armor - penetrate);
   let damagePerFrame = (damage / 1000) * frame;
 
-/*if(item.hp >= 0 && frame >= 16.7) { // can only occur if frame gets compounded (aka user is alt tabbed)
-    //item.hp -= damagePerFrame;
-
-    if(item.hp >= damagePerFrame) {
-      item.hp -= damagePerFrame;
-    }
-    else if(item.hp <= damagePerFrame) {
-      //damagePerFrame -= item.hp;
-      item.lv ++;
-
-      let oreMaxHp = Math.floor(item.baseHp * Math.pow(item.hpPerLv, item.lv));
-
-      item.hp = oreMaxHp;
-      item.maxHp = oreMaxHp;
-    }
-
-    if(item.hp <= 0) {
-      oreClear(key);
-      resetOre(key);
-    }
-  }*/
   if(item.hp <= 0 && !item.rewarded) {
     oreClear(key);
 
@@ -362,7 +341,7 @@ function dpsAnim(time, key) {
       resetOre(key);
     }, 500);
   }
-  else if(item.hp > 0 && char.dps > 0) {
+  else if(item.hp > 0 && damage > 0) {
     item.hp -= damagePerFrame;
 
     Game.dpsAnimFrame = requestAnimationFrame(function(time) {
@@ -641,7 +620,7 @@ function giveSpecialLoot(key) {
 =					Microverse Ascension															=
 ===========================================================*/
 function microverseAscension() {
-  let cDarkMatter = Game.Inventory.concentratedDarkMatter.amount;
+  let cDarkMatter = Game.Inventory.cDarkMatter.amount;
   let darkMatter = Game.Inventory.darkMatter.amount;
   let prestige = darkMatter;
 
@@ -657,7 +636,7 @@ function microverseAscension() {
 
   cDarkMatter += prestige;
 
-  save('concentratedDarkMatterAmount', cDarkMatter);
+  save('cDarkMatterAmount', cDarkMatter);
 
   for(key in Game.Upgrades) {
 		let upg = Game.Upgrades[key];
